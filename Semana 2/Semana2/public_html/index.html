@@ -16,26 +16,19 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
     precision highp float;
     #endif
 
-    //varying vec4 vcolor;//Semana3
-    
     void main(void) {
         gl_FragColor = vec4(1.0,1.0,1.0,1.0);
-        //gl_FragColor = vcolor;//Semana3
     }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
-    //attribute vec4 aVertexColor;//Semana3
     
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
 
-    //varying vec4 vcolor;//Semana3
-    
     void main(void) {
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        //vcolor = aVertexColor;//Semana3
     }
 </script>
 
@@ -112,9 +105,6 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
         gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
-        shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");//Semana3
-        gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);//Semana3
-
         shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     }
@@ -146,17 +136,6 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         triangleVertexPositionBuffer.itemSize = 3;
         triangleVertexPositionBuffer.numItems = 3;
 
-        //triangleVertexColorBuffer = gl.createBuffer();//Semana3
-        //gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);//Semana3
-        //var colors = [//Semana3
-        //  1.0, 0.0, 0.0, 1.0,//Semana3
-        //  0.0, 1.0, 0.0, 1.0,//Semana3
-        //  0.0, 0.0, 1.0, 1.0//Semana3
-        //];//Semana3
-        //gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);//Semana3
-        //triangleVertexColorBuffer.itemSize = 4;//Semana3
-        //triangleVertexColorBuffer.numItems = 3;//Semana3
-        
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         vertices = [
@@ -167,17 +146,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         squareVertexPositionBuffer.itemSize = 3;
-        squareVertexPositionBuffer.numItems = 4;
-        
-        //squareVertexColorBuffer = gl.createBuffer();//Semana3
-        //gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);//Semana3
-        //colors = []//Semana3
-        //for(var i = 0; i < 4; i++){//Semana3
-        //    colors = colors.concat([0.5, 0.5,1.0,1.0]);//Semana3
-        //}//Semana3
-        //gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);//Semana3
-        //squareVertexColorBuffer.itemSize = 4;//Semana3
-        //squareVertexColorBuffer.numItems = 4;//Semana3
+        squareVertexPositionBuffer.numItems = 4;        
     }
 
 
@@ -192,16 +161,12 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         mat4.translate(mvMatrix, [-3.0, 0.0, -14.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-        //gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);//Semana3
-        //gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT,false, 0,0);//Semana3        
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 
         mat4.translate(mvMatrix, [6.0, 0.0, 0.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-        //gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);//Semana3
-        //gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);//Semana3
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
     }
