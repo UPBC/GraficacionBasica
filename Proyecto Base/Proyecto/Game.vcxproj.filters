@@ -60,9 +60,4 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Ejecutable\Readme.txt">
-      <Filter>Archivos de recursos</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

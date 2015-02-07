@@ -7,6 +7,6 @@ int main(int argc, char *argv[]){
 
 	if(navesGame->Start())   
 		navesGame->Finalize(); // Liberamos los recursos utilizados.
-    
+	getchar();
     return EXIT_SUCCESS;
 }

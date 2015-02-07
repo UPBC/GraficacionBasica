@@ -5,7 +5,7 @@ Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module)
 	nave = new Objeto(screen, rutaImagen, x, y, module);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
-		bala[i] = new Objeto(screen, "../Data/balas.bmp", 0, 0, MODULO_BALAS_BALA);
+		bala[i] = new Objeto(screen, "balas.bmp", 0, 0, MODULO_BALAS_BALA);
 		bala[i]->SetVisible(false);
 	}
 	balaVisible = 0;
