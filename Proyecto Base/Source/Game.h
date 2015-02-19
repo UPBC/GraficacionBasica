@@ -27,35 +27,39 @@ public:
 
 
 private:
-	void Iniciando();
+	void CargandoObjetos();
+	void IniciandoVideo();
 	void MoverEnemigo();
-	void Menu();
+	void MenuPintar();
+	void MenuActualizar();
+	void JugandoPintar();
+	void JugandoActualizar();
 	bool LimitePantalla(Objeto * objeto, int bandera);
-	unsigned int x;
+	void InicializandoStage();
 
-	int opcionSeleccionada;
 	Uint8 *keys;//Esta variable nos servira para ver si determinadas teclas estan o no pulsadas
 	SDL_Event event;//La variable event de tipo evento de SDL nos servira para motorizar
-	SDL_Surface *screen, *image;
+	SDL_Surface *screenBuffer;
+
+	int opcionSeleccionada;
+	int nivelActual;
+	int vida;
+	int enemigosEliminados;
 
 	Nave *nave;
 	Nave *enemigoArreglo[5];
 	Stage nivel[4];
-	void Inicializandotage();
-	int nivelActual;
-
-	Estado estado;
-	Estado condicion;
-
+	
+	Estado estadoJuego;
+	
 	int tick;
 	int tiempoFrameInicial;
 	int tiempoFrameFinal;
 
-	Objeto *menu;//Fondo del menu
-	Objeto *textos;//Textos del juego
-	Objeto *fondo;//Fondo del juego
+	Objeto *menuObjeto;//Fondo del menu
+	Objeto *textosObjeto;//Textos del juego
+	Objeto *fondoObjeto;//Fondo del juego
 
-	int vida;
-	int enemigosEliminados;
+	
 
 };

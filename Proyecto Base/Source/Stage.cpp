@@ -1,6 +1,6 @@
 #include "Game.h"
 
-void CGame::Inicializandotage(){
+void CGame::InicializandoStage(){
 	nivel[0].fondoNivel = 0;
 	nivel[0].balasMaximas = 3;
 	nivel[0].NumeroEnemigosEliminar = 10;

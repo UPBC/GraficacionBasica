@@ -141,24 +141,27 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         triangleVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         var vertices = [
-             0.0,  2.0,  0.0,
-            -2.0, -2.0,  0.0,
-             2.0, -2.0,  0.0
+            //x    y     z
+             0.0,  4.0,  0.0,//a
+            -2.0, 0.0,  -2.0,//b
+             2.0, 0.0,  -2.0,//c
+             2.0, 0.0, 2.0//d
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         triangleVertexPositionBuffer.itemSize = 3;
-        triangleVertexPositionBuffer.numItems = 3;
+        triangleVertexPositionBuffer.numItems = 4;
 
         triangleVertexColorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);
         var colors = [
           1.0, 0.0, 0.0, 1.0,
           0.0, 1.0, 0.0, 1.0,
-          0.0, 0.0, 1.0, 1.0
+          0.0, 0.0, 1.0, 1.0,
+          1.0, 0.5, 0.0, 1.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         triangleVertexColorBuffer.itemSize = 4;
-        triangleVertexColorBuffer.numItems = 3;
+        triangleVertexColorBuffer.numItems = 4;
         
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -203,13 +206,16 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         
         hexagonoVertexColorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);
+        gl.enable( gl.BLEND );
+        //gl.blendEquation( gl.FUNC_ADD );
+        gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
         var colors = [
-          1.0, 1.0, 0.0, 1.0,
-          0.0, 1.0, 1.0, 1.0,
-          1.0, 0.0, 1.0, 1.0,
-          1.0, 0.0, 0.0, 1.0,
+          1.0, 1.0, 0.0, 0.0,
+          0.0, 1.0, 1.0, 0.0,
+          1.0, 0.0, 1.0, 0.0,
+          1.0, 0.0, 0.0, 0.0,
           0.0, 1.0, 0.0, 1.0,
-          0.0, 0.0, 1.0, 1.0
+          0.0, 0.0, 1.0, 0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
         hexagonoVertexColorBuffer.itemSize = 4;
@@ -225,31 +231,35 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
         mat4.identity(mvMatrix);
-
-        mat4.translate(mvMatrix, [-3.0, -3.0, -20.0]);
         
+        mat4.translate(mvMatrix, [-3.0, -3.0, -20.0]);
         mvPushMatrix();//Semana4
+        
         mat4.rotate(mvMatrix, degToRad(rTri), [0, 1, 0]);//Semana4
-
+        
         
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleVertexColorBuffer.itemSize, gl.FLOAT,false, 0,0);        
         setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems);
 
         mvPopMatrix();//Semana4
         
-        mat4.translate(mvMatrix, [6.0, 0.0, 0.0]);
+        mat4.translate(mvMatrix, [6.0, 0.0, -20.0]);
+        mvPushMatrix();//Semana4
+        mat4.rotate(mvMatrix, degToRad(rTri), [1, 0, 0]);//Semana4
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-
+        mvPopMatrix();
+        
         mat4.translate(mvMatrix, [-3.0, 6.0, 0.0]);
+        mat4.rotate(mvMatrix, degToRad(rTri), [0, 0, 1]);//Semana4
         gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, hexagonoVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);

@@ -6,25 +6,23 @@
 
 <script type="text/javascript">
 //<![CDATA[
-try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"ce5bff8b32537c10d6b15b9646416153",petok:"b638a40e5e2139e20f80904999fa4f47354a73df-1421805786-1800",zone:"learningwebgl.com",rocket:"0",apps:{}}];CloudFlare.push({"apps":{"ape":"4b608541ae14c3784404e3a14b943f02"}});!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=919620257c/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"12cdd4df4c0990e28fbd3f15ed4a18a9",petok:"95f32f845d4dc1853450d78b783d3a78de09e58b-1421914657-1800",zone:"learningwebgl.com",rocket:"0",apps:{}}];CloudFlare.push({"apps":{"ape":"90a7e37c0fb44a8a88256f3b4f7292f6"}});!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=919620257c/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
 //]]>
 </script>
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
 
 <script id="shader-fs" type="x-shader/x-fragment">
-    #ifdef GL_ES
-    precision highp float;
-    #endif
+    precision mediump float;
 
     void main(void) {
-        gl_FragColor = vec4(1.0,1.0,1.0,1.0);
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
-    
-    uniform mat4 uMVMatrix;
+
+    uniform mat4 uMVMatrix;//los uniform se pueden acceder fuera de los shader
     uniform mat4 uPMatrix;
 
     void main(void) {
@@ -88,23 +86,26 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
     var shaderProgram;
 
     function initShaders() {
-        var fragmentShader = getShader(gl, "shader-fs");
-        var vertexShader = getShader(gl, "shader-vs");
+        var fragmentShader = getShader(gl, "shader-fs");//Optenemos 2 productos
+        var vertexShader = getShader(gl, "shader-vs");//frag y verte
 
         shaderProgram = gl.createProgram();
-        gl.attachShader(shaderProgram, vertexShader);
-        gl.attachShader(shaderProgram, fragmentShader);
-        gl.linkProgram(shaderProgram);
+        gl.attachShader(shaderProgram, vertexShader);//Se unen para crear el
+        gl.attachShader(shaderProgram, fragmentShader);//program shader
+        gl.linkProgram(shaderProgram);//se enlaza el program con el canvas
 
         if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
             alert("Could not initialise shaders");
         }
 
-        gl.useProgram(shaderProgram);
+        gl.useProgram(shaderProgram);//Indicamos que se usara el programa
 
+        //obtenemos el atributo del shader "aVertexPosition"
         shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        //Lo habilitamos
         gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
+        //obtenmos las matrices de los shaderProgram
         shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     }
@@ -118,19 +119,18 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
     }
 
+
+
     var triangleVertexPositionBuffer;
-    var triangleVertexColorBuffer;//Semana3
-    
     var squareVertexPositionBuffer;
-    var squareVertexColorBuffer;//Semana3
 
     function initBuffers() {
         triangleVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         var vertices = [
-             0.0,  2.0,  0.0,
-            -2.0, -2.0,  0.0,
-             2.0, -2.0,  0.0
+             0.0,  1.0,  0.0,
+            -1.0, -1.0,  0.0,
+             1.0, -1.0,  0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         triangleVertexPositionBuffer.itemSize = 3;
@@ -139,59 +139,55 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         squareVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         vertices = [
-             2.0,  2.0,  0.0,
-            -2.0,  2.0,  0.0,
-             2.0, -2.0,  0.0,
-            -2.0, -2.0,  0.0
+            -1.0,  1.0,  0.0,
+             1.0,  1.0,  0.0,
+             1.0, -1.0,  0.0,
+            -1.0, -1.0,  0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         squareVertexPositionBuffer.itemSize = 3;
-        squareVertexPositionBuffer.numItems = 4;        
+        squareVertexPositionBuffer.numItems = 4;
     }
-
 
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+        mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
         mat4.identity(mvMatrix);
 
-        mat4.translate(mvMatrix, [-3.0, 0.0, -14.0]);
+        mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
 
-        mat4.translate(mvMatrix, [6.0, 0.0, 0.0]);
+
+        mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
     }
 
+
+
     function webGLStart() {
         var canvas = document.getElementById("lesson01-canvas");
         initGL(canvas);
         initShaders();
         initBuffers();
-        
-        gl.clearColor(0.5, 0.0, 1.0, 1.0);
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
         drawScene();
     }
-
-
 </script>
-
-
 </head>
-
-
 <body onload="webGLStart();">
-     <canvas id="lesson01-canvas" style="border: none;" width="800" height="500"></canvas>
+    <canvas id="lesson01-canvas" style="border: none;" width="500" height="500"></canvas>
 </body>
 
 </html>

@@ -134,6 +134,9 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
     var squareVertexPositionBuffer;
     var squareVertexColorBuffer;//Semana3
 
+    var hexagonoVertexPositionBuffer;
+    var hexagonoVertexColorBuffer;//Semana3
+
     function initBuffers() {
         triangleVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
@@ -182,6 +185,36 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);//Semana3
         squareVertexColorBuffer.itemSize = 4;//Semana3
         squareVertexColorBuffer.numItems = 5;//Semana3
+        
+        //////////
+        hexagonoVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        vertices = [
+             0.0, 3.0, 0.0,
+             -3.0, 1.3,  0.0,
+             3.0, 1.3,  0.0,
+             -3.0, -1.3,  0.0,
+            3.0, -1.3, 0.0,
+            0.0, -3.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        hexagonoVertexPositionBuffer.itemSize = 3;
+        hexagonoVertexPositionBuffer.numItems = 6;
+        
+        hexagonoVertexColorBuffer = gl.createBuffer();//Semana3
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);//Semana3
+        var colors = [//Semana3
+          1.0, 1.0, 0.0, 1.0,//Semana3
+          0.0, 1.0, 1.0, 1.0,//Semana3
+          1.0, 0.0, 1.0, 1.0,//Semana3
+          1.0, 0.0, 0.0, 1.0,//Semana3
+          0.0, 1.0, 0.0, 1.0,//Semana3
+          0.0, 0.0, 1.0, 1.0//Semana3
+        ];//Semana3
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);//Semana3
+        hexagonoVertexColorBuffer.itemSize = 4;//Semana3
+        hexagonoVertexColorBuffer.numItems = 6;//Semana3
+
     }
 
 
@@ -193,7 +226,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
 
         mat4.identity(mvMatrix);
 
-        mat4.translate(mvMatrix, [-3.0, 0.0, -14.0]);
+        mat4.translate(mvMatrix, [-3.0, -3.0, -20.0]);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexColorBuffer);//Semana3
@@ -208,6 +241,15 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);//Semana3
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+
+        mat4.translate(mvMatrix, [-3.0, 6.0, 0.0]);
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, hexagonoVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);//Semana3
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, hexagonoVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);//Semana3
+        setMatrixUniforms();
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, hexagonoVertexPositionBuffer.numItems);
+
     }
 
     function webGLStart() {
