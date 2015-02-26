@@ -1,0 +1,387 @@
+<html> 
+<head>
+<title>Learning WebGL &mdash; lesson 1</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"ce5bff8b32537c10d6b15b9646416153",petok:"b638a40e5e2139e20f80904999fa4f47354a73df-1421805786-1800",zone:"learningwebgl.com",rocket:"0",apps:{}}];CloudFlare.push({"apps":{"ape":"4b608541ae14c3784404e3a14b943f02"}});!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=919620257c/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
+//]]>
+</script>
+<script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+
+    varying vec2 vTextureCoord;//Semana6
+    uniform sampler2D uSampler;//Semana6
+    
+    void main(void) {
+        //gl_FragColor = vec4(1.0,1.0,1.0,1.0);
+        gl_FragColor =  texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));//Semana6
+    }
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec2 aTextureCoord;//Semana6
+    
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    varying vec2 vTextureCoord;//Semana6
+    
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;//Semana6
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    var gl;
+    function initGL(canvas) {
+        try {
+            gl = canvas.getContext("webgl");
+            gl.viewportWidth = canvas.width;
+            gl.viewportHeight = canvas.height;
+        } catch (e) {
+        }
+        if (!gl) {
+            alert("Could not initialise WebGL, sorry :-(");
+        }
+    }
+
+
+    function getShader(gl, id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) {
+            return null;
+        }
+
+        var str = "";
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType == 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
+
+        var shader;
+        if (shaderScript.type == "x-shader/x-fragment") {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderScript.type == "x-shader/x-vertex") {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return null;
+        }
+
+        gl.shaderSource(shader, str);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            alert(gl.getShaderInfoLog(shader));
+            return null;
+        }
+
+        return shader;
+    }
+
+
+    var shaderProgram;
+
+    function initShaders() {
+        var fragmentShader = getShader(gl, "shader-fs");
+        var vertexShader = getShader(gl, "shader-vs");
+
+        shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            alert("Could not initialise shaders");
+        }
+
+        gl.useProgram(shaderProgram);
+
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+        shaderProgram.vertexTextureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");//Semana6
+        gl.enableVertexAttribArray(shaderProgram.vertexTextureCoordAttribute);//Semana6
+
+        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    }
+
+
+    var mvMatrix = mat4.create();
+    var mvMatrixStack = [];//Semana4
+    var pMatrix = mat4.create();
+
+    function setMatrixUniforms() {
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+    }
+
+    var triangleVertexPositionBuffer;
+    var triangleVertexColorBuffer;
+    
+    var squareVertexPositionBuffer;
+    var squareVertexColorBuffer;
+
+    var hexagonoVertexPositionBuffer;
+    var hexagonoVertexColorBuffer;
+
+    function initBuffers() {
+        triangleVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+        var vertices = [
+            //x    y     z
+             2.0, 0.0,  2.0,//a
+            -2.0, 0.0,  -2.0,//b
+             2.0, 0.0,  -2.0,//c
+             0.0, 4.0, 0.0,//d
+             2.0, 0.0,  2.0,//e
+            -2.0, 0.0, 2.0, //f
+            -2.0, 0.0,  -2.0,//g
+            0.0, 4.0, 0.0//h
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        triangleVertexPositionBuffer.itemSize = 3;
+        triangleVertexPositionBuffer.numItems = 8;
+
+        /*triangleVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);
+        var colors = [
+          1.0, 0.0, 0.0, 1.0,
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 1.0,
+          1.0, 0.5, 0.0, 1.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        triangleVertexColorBuffer.itemSize = 4;
+        triangleVertexColorBuffer.numItems = 4;
+        */
+        triangleVertexTextureCoordBuffer = gl.createBuffer();//Semana6
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexTextureCoordBuffer);//Semana6
+        var textureCoords = [//Semana6
+         // Front face//Semana6
+         0.0, 0.0,//Semana6
+         1.0, 0.0,//Semana6
+         1.0, 1.0,//Semana6
+         0.0, 1.0,//Semana6
+
+         // Back face//Semana6
+         1.0, 0.0,//Semana6
+         1.0, 1.0,//Semana6
+         0.0, 1.0,//Semana6
+         0.0, 0.0,//Semana6
+
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);//Semana6
+        triangleVertexTextureCoordBuffer.itemSize = 2;//Semana6
+        triangleVertexTextureCoordBuffer.numItems = 8;//Semana6
+        
+        squareVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+        vertices = [
+             0.0, 3.0, 0.0,
+             -3.0, 1.0,  0.0,
+             3.0, 1.0,  0.0,
+             -1.8, -2.0,  0.0,
+            1.8, -2.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        squareVertexPositionBuffer.itemSize = 3;
+        squareVertexPositionBuffer.numItems = 5;
+        
+        squareVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
+        var colors = [
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 1.0,
+          1.0, 1.0, 1.0, 1.0,
+          1.0, 1.0, 1.0, 1.0,
+          1.0, 0.0, 0.0, 1.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        squareVertexColorBuffer.itemSize = 4;
+        squareVertexColorBuffer.numItems = 5;
+        
+        //////////
+        hexagonoVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        vertices = [
+             0.0, 3.0, 0.0,
+             -3.0, 1.3,  0.0,
+             3.0, 1.3,  0.0,
+             -3.0, -1.3,  0.0,
+            3.0, -1.3, 0.0,
+            0.0, -3.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        hexagonoVertexPositionBuffer.itemSize = 3;
+        hexagonoVertexPositionBuffer.numItems = 6;
+        
+        hexagonoVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);
+        gl.enable( gl.BLEND );
+        //gl.blendEquation( gl.FUNC_ADD );
+        gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+        var colors = [
+          1.0, 1.0, 0.0, 0.0,
+          0.0, 1.0, 1.0, 0.0,
+          1.0, 0.0, 1.0, 0.0,
+          1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        hexagonoVertexColorBuffer.itemSize = 4;
+        hexagonoVertexColorBuffer.numItems = 6;
+
+    }
+
+    var xRot = 0; //Semana6
+    var yRot = 0; //Semana6
+    var zRot = 0; //Semana6
+    function drawScene() {
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+        mat4.identity(mvMatrix);
+        
+        mat4.translate(mvMatrix, [-3.0, -3.0, -25.0]);
+        mat4.translate(pMatrix, [-8.0, 0.0, 0.0]); //Semana6
+        
+        //mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);//Semana6
+        //mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);//Semana6
+        //mat4.rotate(mvMatrix, degToRad(zRot), [0, 0, 1]);//Semana6
+
+        mvPushMatrix();//Semana4
+        
+        mat4.rotate(mvMatrix, degToRad(rTri), [1, 1, 0]);//Semana4
+        
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexTextureCoordBuffer);//Semana6
+        gl.vertexAttribPointer(shaderProgram.vertexTextureCoordAttribute, triangleVertexTextureCoordBuffer.itemSize, gl.FLOAT,false, 0,0);//Semana6
+        
+        gl.activeTexture(gl.TEXTURE0);//Semana6
+        gl.bindTexture(gl.TEXTURE_2D, neheTexture);//Semana6
+        gl.uniform1i(shaderProgram.samplerUniform, 0);//Semana6
+        
+        setMatrixUniforms();
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems);
+
+        mvPopMatrix();//Semana4
+        ////PENTAGONO
+        mat4.translate(mvMatrix, [6.0, 0.0, -20.0]);
+        mvPushMatrix();//Semana4
+        mat4.rotate(mvMatrix, degToRad(rTri), [1, 0, 0]);//Semana4
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);
+        setMatrixUniforms();
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+        mvPopMatrix();
+        
+        mat4.translate(mvMatrix, [-3.0, 6.0, 0.0]);
+        mat4.rotate(mvMatrix, degToRad(rTri), [0, 0, 1]);//Semana4
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, hexagonoVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, hexagonoVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);
+        setMatrixUniforms();
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, hexagonoVertexPositionBuffer.numItems);
+
+    }
+
+    function handleLoadedTexture(texture) {//Semana6
+        gl.bindTexture(gl.TEXTURE_2D, texture);//Semana6
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);//Semana6
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);//Semana6
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);//Semana6
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);//Semana6
+        gl.bindTexture(gl.TEXTURE_2D, null);//Semana6
+    }//Semana6
+
+    var neheTexture;//Semana6
+    function initTexture() {//Semana6
+        neheTexture = gl.createTexture();//Semana6
+        neheTexture.image = new Image();//Semana6
+        neheTexture.image.onload = function() {//Semana6
+            handleLoadedTexture(neheTexture);//Semana6
+        }//Semana6
+        neheTexture.image.src = "UPBC.gif";//Semana6
+    }//Semana6
+
+    function webGLStart() {
+        var canvas = document.getElementById("lesson01-canvas");
+        initGL(canvas);
+        initShaders();
+        initBuffers();
+        initTexture();//Semana6
+        
+        gl.clearColor(0.5, 0.0, 1.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+
+        //drawScene();//Semana4
+        tick();//Semana4
+    }
+
+    function tick() {//Semana4
+        requestAnimationFrame(tick);//Semana4
+        drawScene();//Semana4
+        animate();//Semana4
+    }//Semana4
+
+    var rTri = 0;//Semana4
+ 
+    var lastTime = 0;//Semana4
+    function animate() {//Semana4
+        var timeNow = new Date().getTime();//Semana4
+        if (lastTime != 0) {//Semana4
+            var elapsed = timeNow - lastTime;//Semana4
+            rTri += (90 * elapsed) / 1000.0;//Semana4
+        }//Semana4
+        lastTime = timeNow;//Semana4
+    }//Semana4
+    
+    function mvPushMatrix() {//Semana4
+        var copy = mat4.create();//Semana4
+        mat4.set(mvMatrix, copy);//Semana4
+        mvMatrixStack.push(copy);//Semana4
+    }
+
+    function mvPopMatrix() {//Semana4
+        if (mvMatrixStack.length == 0) {//Semana4
+            throw "Invalid popMatrix!";//Semana4
+        }//Semana4
+        mvMatrix = mvMatrixStack.pop();//Semana4
+    }//Semana4
+    
+    function degToRad(degrees) {//Semana4
+        return degrees * Math.PI / 180;//Semana4
+    }//Semana4
+</script>
+
+
+</head>
+
+
+<body onload="webGLStart();">
+     <canvas id="lesson01-canvas" style="border: none;" width="800" height="500"></canvas>
+</body>
+
+</html>
