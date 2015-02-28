@@ -1,13 +1,9 @@
 <html> 
 <head>
-<title>Learning WebGL &mdash; lesson 1</title>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 
-<script type="text/javascript">
-//<![CDATA[
-try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"ce5bff8b32537c10d6b15b9646416153",petok:"b638a40e5e2139e20f80904999fa4f47354a73df-1421805786-1800",zone:"learningwebgl.com",rocket:"0",apps:{}}];CloudFlare.push({"apps":{"ape":"4b608541ae14c3784404e3a14b943f02"}});!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=919620257c/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
-//]]>
-</script>
+<title>Learning WebGL &mdash; lesson 8</title>
+
+</head>
 
 <script type="text/javascript" src="glUtils.js"></script>
 <script type="text/javascript" src="blender-cube.js"></script>
@@ -139,9 +135,9 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
     function initBuffers() {
         figureVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexPositionBuffer);
-        var vertices = BlenderExport.Cube.vertices;
+    	vertices = BlenderExport.Cube.vertices;
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        figureertexPositionBuffer.itemSize = 3;
+        figureVertexPositionBuffer.itemSize = 3;
         figureVertexPositionBuffer.numItems = BlenderExport.Cube.vertices.length / 3;
 
         figureVertexTextureCoordBuffer = gl.createBuffer();
@@ -201,7 +197,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, figureVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
  
         gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexTextureCoordBuffer);
-        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, figureVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.vertexAttribPointer(shaderProgram.vertexTextureCoordAttribute, figureVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
  
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, neheTexture);
@@ -240,28 +236,30 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         initBuffers();
         initTexture();
         
-        gl.clearColor(0.5, 0.0, 1.0, 1.0);
+        gl.clearColor(1.0, 1.0, 1.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
         
         gl.depthFunc(gl.LEQUAL);
         
-        tick();
+    	setInterval(tick, 40);
     }
 
     function tick() {
-        requestAnimationFrame(tick);
+        //requestAnimationFrame(tick);
         drawScene();
         animate();
     }
 
-    var rTri = 0;
  
     var lastTime = 0;
     function animate() {
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
-            rTri += (90 * elapsed) / 1000.0;
+ 
+      		xRot += (90 * elapsed) / 1000.0;
+     		yRot += (90 * elapsed) / 1000.0;
+      		zRot += (90 * elapsed) / 1000.0;
         }
         lastTime = timeNow;
     }
@@ -283,9 +281,6 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         return degrees * Math.PI / 180;
     }
 </script>
-
-
-</head>
 
 
 <body onload="webGLStart();">

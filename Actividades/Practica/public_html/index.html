@@ -1,9 +1,11 @@
+<html> 
+<head>
 
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>Blender to WebGL JavaScript exporter example</title> 
+<title>Learning WebGL &mdash; lesson 8</title>
+
 <script type="text/javascript" src="sylvester.js"></script>
 </head>
-<body onload="webGLStart();">
+
 <script type="text/javascript" src="glUtils.js"></script>
 <script type="text/javascript" src="blender-cube.js"></script>
 <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
@@ -118,12 +120,12 @@
     }
 
 
-  var mvMatrix;
-  var mvMatrixStack = [];
- var pMatrix;
- 
- function setMatrixUniforms() {
-    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, new Float32Array(pMatrix.flatten()));
+    var mvMatrix = mat4.create();
+    var mvMatrixStack = [];
+    var pMatrix = mat4.create();
+
+    function setMatrixUniforms() {
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, new Float32Array(mvMatrix.flatten()));
   }
   
@@ -147,34 +149,30 @@
     multMatrix(m);
   }
  
-   function perspective(fovy, aspect, znear, zfar) {
-    pMatrix = makePerspective(fovy, aspect, znear, zfar);
-  }
- 
-  var cubeVertexPositionBuffer;
-  var cubeVertexTextureCoordBuffer;
-  var cubeVertexIndexBuffer;
+    var figureVertexPositionBuffer;
+    var figureVertexTextureCoordBuffer;
+    var figureVertexIndexBuffer;
     function initBuffers() {
-    cubeVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-    vertices = BlenderExport.Cube.vertices;
+        figureVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexPositionBuffer);
+    	vertices = BlenderExport.Cube.vertices;
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    cubeVertexPositionBuffer.itemSize = 3;
-    cubeVertexPositionBuffer.numItems = BlenderExport.Cube.vertices.length / 3;
+        figureVertexPositionBuffer.itemSize = 3;
+        figureVertexPositionBuffer.numItems = BlenderExport.Cube.vertices.length / 3;
 
-    cubeVertexTextureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+        figureVertexTextureCoordBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexTextureCoordBuffer);
         var textureCoords = BlenderExport.Cube.texCoords;
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-    cubeVertexTextureCoordBuffer.itemSize = 2;
-    cubeVertexTextureCoordBuffer.numItems = BlenderExport.Cube.texCoords.length / 2;
+        figureVertexTextureCoordBuffer.itemSize = 2;
+        figureVertexTextureCoordBuffer.numItems = BlenderExport.Cube.texCoords.length / 2;
  
-    cubeVertexIndexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-    var cubeVertexIndices = BlenderExport.Cube.indices;
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), gl.STATIC_DRAW);
-    cubeVertexIndexBuffer.itemSize = 1;
-    cubeVertexIndexBuffer.numItems = BlenderExport.Cube.indices.length;
+        figureVertexIndexBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, figureVertexIndexBuffer);
+        var figureVertexIndices = BlenderExport.Cube.indices;
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(figureVertexIndices), gl.STATIC_DRAW);
+        figureVertexIndexBuffer.itemSize = 1;
+        figureVertexIndexBuffer.numItems = BlenderExport.Cube.indices.length;
     }
 
     var xRot = 0;
@@ -198,34 +196,37 @@
  	}
         
 
-    perspective(45, 1.0, 0.1, 100.0);
+        mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
     loadIdentity();
  
+ 	mat4.translate(pMatrix, [-8.0, 0.0, 0.0]); 
     mvTranslate([0.0, 0.0, -50.0])
     
     mvRotate(xRot, [1, 0, 0]);
     mvRotate(yRot, [0, 1, 0]);
 //    mvRotate(zRot, [0, 0, 1]);
 
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+        mvPushMatrix();
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexPositionBuffer);
         vertices = BlenderExport.Cube.frames[frameCount];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, figureVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
  
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexTextureCoordAttribute, cubeVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexTextureCoordBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexTextureCoordAttribute, figureVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
  
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, neheTexture);
         gl.uniform1i(shaderProgram.samplerUniform, 0);
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, figureVertexIndexBuffer);
         setMatrixUniforms();
-    gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, figureVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
   
+        mvPopMatrix();
     }
 
     function handleLoadedTexture(texture) {
@@ -242,30 +243,28 @@
         neheTexture = gl.createTexture();
         neheTexture.image = new Image();
         neheTexture.image.onload = function() {
-      handleLoadedTexture(neheTexture)
+            handleLoadedTexture(neheTexture);
         }
         neheTexture.image.src = "UPBC.gif";
     }
 
     function webGLStart() {
-    var canvas = document.getElementById("lesson05-canvas");
+        var canvas = document.getElementById("lesson01-canvas");
         initGL(canvas);
         initShaders();
         initBuffers();
         initTexture();
         
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
- 
-    gl.clearDepth(1.0);
- 
+        gl.clearColor(1.0, 1.0, 1.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
         
         gl.depthFunc(gl.LEQUAL);
         
-    setInterval(tick, 40);
+    	setInterval(tick, 40);
     }
 
     function tick() {
+        //requestAnimationFrame(tick);
         drawScene();
         animate();
     }
@@ -277,29 +276,32 @@
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
  
-      xRot += (90 * elapsed) / 1000.0;
-      yRot += (90 * elapsed) / 1000.0;
-      zRot += (90 * elapsed) / 1000.0;
+      		xRot += (90 * elapsed) / 1000.0;
+     		yRot += (90 * elapsed) / 1000.0;
+      		zRot += (90 * elapsed) / 1000.0;
         }
         lastTime = timeNow;
     }
     
-function mvPushMatrix(m) {
-    if (m) {
-      mvMatrixStack.push(m.dup());
-      mvMatrix = m.dup();
-    } else {
-      mvMatrixStack.push(mvMatrix.dup());
+    function mvPushMatrix() {
+        var copy = mat4.create();
+        mat4.set(mvMatrix, copy);
+        mvMatrixStack.push(copy);
     }
-  }
+
     function mvPopMatrix() {
         if (mvMatrixStack.length == 0) {
             throw "Invalid popMatrix!";
         }
         mvMatrix = mvMatrixStack.pop();
     return mvMatrix;
-  }
- 
-</script> 
-   <canvas id="lesson05-canvas" style="border: none;" width="1000" height="800"></canvas> 
- </body></html>
+    }
+    
+</script>
+
+
+<body onload="webGLStart();">
+     <canvas id="lesson01-canvas" style="border: none;" width="800" height="500"></canvas>
+</body>
+
+</html>
