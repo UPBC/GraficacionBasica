@@ -215,75 +215,74 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         mvPopMatrix();
     }
 
-    function handleLoadedTexture(texture) {//Semana6
-        gl.bindTexture(gl.TEXTURE_2D, texture);//Semana6
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);//Semana6
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);//Semana6
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);//Semana6
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);//Semana6
-        gl.bindTexture(gl.TEXTURE_2D, null);//Semana6
-    }//Semana6
+    function handleLoadedTexture(texture) {
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+    }
 
-    var neheTexture;//Semana6
-    function initTexture() {//Semana6
-        neheTexture = gl.createTexture();//Semana6
-        neheTexture.image = new Image();//Semana6
-        neheTexture.image.onload = function() {//Semana6
-            handleLoadedTexture(neheTexture);//Semana6
-        }//Semana6
-        neheTexture.image.src = "UPBC.gif";//Semana6
-    }//Semana6
+    var neheTexture;
+    function initTexture() {
+        neheTexture = gl.createTexture();
+        neheTexture.image = new Image();
+        neheTexture.image.onload = function() {
+            handleLoadedTexture(neheTexture);
+        }
+        neheTexture.image.src = "UPBC.gif";
+    }
 
     function webGLStart() {
         var canvas = document.getElementById("lesson01-canvas");
         initGL(canvas);
         initShaders();
         initBuffers();
-        initTexture();//Semana6
+        initTexture();
         
         gl.clearColor(0.5, 0.0, 1.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
         
         gl.depthFunc(gl.LEQUAL);
         
-        //drawScene();//Semana4
         tick();//Semana4
     }
 
-    function tick() {//Semana4
-        requestAnimationFrame(tick);//Semana4
-        drawScene();//Semana4
-        animate();//Semana4
-    }//Semana4
-
-    var rTri = 0;//Semana4
- 
-    var lastTime = 0;//Semana4
-    function animate() {//Semana4
-        var timeNow = new Date().getTime();//Semana4
-        if (lastTime != 0) {//Semana4
-            var elapsed = timeNow - lastTime;//Semana4
-            rTri += (90 * elapsed) / 1000.0;//Semana4
-        }//Semana4
-        lastTime = timeNow;//Semana4
-    }//Semana4
-    
-    function mvPushMatrix() {//Semana4
-        var copy = mat4.create();//Semana4
-        mat4.set(mvMatrix, copy);//Semana4
-        mvMatrixStack.push(copy);//Semana4
+    function tick() {
+        requestAnimationFrame(tick);
+        drawScene();
+        animate();
     }
 
-    function mvPopMatrix() {//Semana4
-        if (mvMatrixStack.length == 0) {//Semana4
-            throw "Invalid popMatrix!";//Semana4
-        }//Semana4
-        mvMatrix = mvMatrixStack.pop();//Semana4
-    }//Semana4
+    var rTri = 0;
+ 
+    var lastTime = 0;
+    function animate() {
+        var timeNow = new Date().getTime();
+        if (lastTime != 0) {
+            var elapsed = timeNow - lastTime;
+            rTri += (90 * elapsed) / 1000.0;
+        }
+        lastTime = timeNow;
+    }
     
-    function degToRad(degrees) {//Semana4
-        return degrees * Math.PI / 180;//Semana4
-    }//Semana4
+    function mvPushMatrix() {
+        var copy = mat4.create();
+        mat4.set(mvMatrix, copy);
+        mvMatrixStack.push(copy);
+    }
+
+    function mvPopMatrix() {
+        if (mvMatrixStack.length == 0) {
+            throw "Invalid popMatrix!";
+        }//Semana4
+        mvMatrix = mvMatrixStack.pop();
+    }
+    
+    function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
 </script>
 
 
