@@ -127,28 +127,24 @@
     function setMatrixUniforms() {
         gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, new Float32Array(mvMatrix.flatten()));
-  }
-  
+    }
+
     function loadIdentity() {
     mvMatrix = Matrix.I(4);
   }
- 
- 
+
   function multMatrix(m) {
     mvMatrix = mvMatrix.x(m);
   }
- 
   function mvTranslate(v) {
     var m = Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4();
     multMatrix(m);
   }
- 
   function mvRotate(ang, v) {
     var arad = ang * Math.PI / 180.0;
     var m = Matrix.Rotation(arad, $V([v[0], v[1], v[2]])).ensure4x4();
     multMatrix(m);
   }
- 
     var figureVertexPositionBuffer;
     var figureVertexTextureCoordBuffer;
     var figureVertexIndexBuffer;
@@ -197,15 +193,16 @@
         
 
         mat4.perspective(40, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-    loadIdentity();
- 
- 	mat4.translate(pMatrix, [-8.0, 0.0, 0.0]); 
-    mvTranslate([0.0, 0.0, -50.0])
-    
-    mvRotate(xRot, [1, 0, 0]);
-    mvRotate(yRot, [0, 1, 0]);
-    mvRotate(zRot, [0, 0, 1]);
 
+    loadIdentity();
+
+        mat4.translate(pMatrix, [-8.0, 0.0, -20.0]); 
+    mvTranslate([0.0, 0.0, -50.0])
+        
+   //- mvRotate(xRot, [1, 0, 0]);
+   //- mvRotate(yRot, [0, 1, 0]);
+   //- mvRotate(zRot, [0, 0, 1]);
+        
         mvPushMatrix();
         
         gl.bindBuffer(gl.ARRAY_BUFFER, figureVertexPositionBuffer);
