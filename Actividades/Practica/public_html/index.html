@@ -204,7 +204,7 @@
     
     mvRotate(xRot, [1, 0, 0]);
     mvRotate(yRot, [0, 1, 0]);
-//    mvRotate(zRot, [0, 0, 1]);
+    mvRotate(zRot, [0, 0, 1]);
 
         mvPushMatrix();
         
@@ -294,9 +294,11 @@
             throw "Invalid popMatrix!";
         }
         mvMatrix = mvMatrixStack.pop();
-    return mvMatrix;
     }
     
+    function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
 </script>
 
 
