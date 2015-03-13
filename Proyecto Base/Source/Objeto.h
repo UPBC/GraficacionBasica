@@ -23,7 +23,7 @@ public:
 	void SetPasoLimite(int pasos);
 	int ObtenerPasoActual();
 	void IncrementarPasoActual();
-	bool EstaColicionando(Objeto * b);
+	//bool EstaColicionando(Objeto * b);
 	void Pintar();
 	void Pintar(int modulo, int x, int y);
 	void MoverLados(int posicion);

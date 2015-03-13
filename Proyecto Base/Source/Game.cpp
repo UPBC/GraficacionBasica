@@ -103,9 +103,7 @@ bool CGame::Start()
 			tiempoFrameFinal = SDL_GetTicks();
 			SDL_Delay(1);
 		}
-#if DEBUG
-		printf("Frames:%d Tiempo:%d Tiempo Promedio;%f Tiempo por Fame:%d FPS:%f\n", tick, SDL_GetTicks(), (float)SDL_GetTicks() / (float)tick, tiempoFrameFinal - tiempoFrameInicial, 1000.0f / (float)(tiempoFrameFinal - tiempoFrameInicial));
-#endif
+
 		tiempoFrameInicial = tiempoFrameFinal;
 		tick++;
 
@@ -173,9 +171,9 @@ void CGame::JugandoPintar(){
 	//////// CONTROL DE COLISIONES /////////
 	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
 	{
-		if (enemigoArreglo[i]->estaColisionandoConBala(nave))
+		if (enemigoArreglo[i]->Colision(nave))
 			vida--;
-		if (nave->estaColisionandoConBala(enemigoArreglo[i])){
+		if (nave->Colision(enemigoArreglo[i])){
 			enemigoArreglo[i]->setVisible(false);
 			enemigosEliminados++;
 			if (enemigosEliminados < nivel[nivelActual].NumeroEnemigosEliminar)

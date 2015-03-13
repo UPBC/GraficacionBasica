@@ -102,41 +102,20 @@ void Nave::setVisible(bool visible)
 	this->visible = visible;
 }
 
-bool Nave::estaColisionandoConBala(Nave * nave){
-	
-	/*if ((nave->GetNaveObjeto()->ObtenerX() <= GetNaveObjeto()->ObtenerX() + GetNaveObjeto()->ObtenerW() &&
-		nave->GetNaveObjeto()->ObtenerY() <= GetNaveObjeto()->ObtenerY() + GetNaveObjeto()->ObtenerH()) ||
-		(GetNaveObjeto()->ObtenerX() <= nave->GetNaveObjeto()->ObtenerX() + nave->GetNaveObjeto()->ObtenerW() &&
-		GetNaveObjeto()->ObtenerY() <= nave->GetNaveObjeto()->ObtenerY() + nave->GetNaveObjeto()->ObtenerH()))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}*/
+bool Nave::Colision(Nave * nave){
+	int x = GetNaveObjeto()->ObtenerX();
+	int y = GetNaveObjeto()->ObtenerY();
+	int w = GetNaveObjeto()->ObtenerW();
+	int h = GetNaveObjeto()->ObtenerH();
 
-	if ((nave->GetNaveObjeto()->ObtenerX() <= GetNaveObjeto()->ObtenerX() + GetNaveObjeto()->ObtenerW() &&
-		nave->GetNaveObjeto()->ObtenerY() <= GetNaveObjeto()->ObtenerY() + GetNaveObjeto()->ObtenerH()) ||
-		(GetNaveObjeto()->ObtenerX() <= nave->GetNaveObjeto()->ObtenerX() + nave->GetNaveObjeto()->ObtenerW() &&
-		GetNaveObjeto()->ObtenerY() <= nave->GetNaveObjeto()->ObtenerY() + nave->GetNaveObjeto()->ObtenerH()))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	int x_o = nave->GetNaveObjeto()->ObtenerX();
+	int y_o = nave->GetNaveObjeto()->ObtenerY();
+	int w_o = nave->GetNaveObjeto()->ObtenerW();
+	int h_o = nave->GetNaveObjeto()->ObtenerH();
 
-	/*if ((rectangle1.x <= rectangle2.x + rectangle2.width and
-		rectangle1.y <= rectangle2.y + rectangle2.height) or
-		(rectangle2.x <= rectangle1.x + rectangle1.width and
-		rectangle2.y <= rectangle1.y + rectangle1.height))
-	{
-		Console.WriteLine(“The boxes are overlapping”);
-	}
+	if ((x <= x_o + w_o && 	y <= y_o + h_o) && (x_o <= x + w && y_o <= y + h))
+		return true;
 	else
-	{
-		Console.WriteLine(“The boxes don\'t collide”);
-	}*/
+		return false;
+
 }

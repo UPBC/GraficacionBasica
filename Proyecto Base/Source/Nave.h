@@ -20,7 +20,7 @@ public:
 	void MoverDerecha(int velocidad);
 	Objeto* GetNaveObjeto();
 	void setVisible(bool visible);
-	bool estaColisionandoConBala(Nave * nave);
+	bool Colision(Nave * nave);
 	void crearNuevo();
 };
 #endif
