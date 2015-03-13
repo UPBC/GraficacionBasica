@@ -8,7 +8,6 @@ CGame::CGame(){
 	estadoJuego = ESTADO_INICIANDO;
 	tiempoFrameInicial = CERO;
 	tick = CERO;
-
 	atexit(SDL_Quit);
 }
 
@@ -46,7 +45,6 @@ void CGame::Finalize(){
 	delete(nave);
 	SDL_FreeSurface(screenBuffer);
 	SDL_Quit();
-
 }
 
 bool CGame::Start()
@@ -180,7 +178,6 @@ void CGame::JugandoPintar(){
 		if (nave->estaColisionandoConBala(enemigoArreglo[i])){
 			enemigoArreglo[i]->setVisible(false);
 			enemigosEliminados++;
-			nave->simularColision(false);
 			if (enemigosEliminados < nivel[nivelActual].NumeroEnemigosEliminar)
 			{
 				enemigoArreglo[i]->crearNuevo();
@@ -242,15 +239,12 @@ void CGame::JugandoActualizar(){
 	{
 		nave->Disparar(NAVE_PROPIA, nivel[nivelActual].balasMaximas);
 	}
-	///////////////////////////////////////
-	if (keys[SDLK_x]){//bala enemigo / nave nuestra
-		nave->simularColision(true);
-	}
-
+	
 	if (keys[SDLK_c]){//nuestra bala / nave enemigo
 		int enemigoAEliminar = rand() % nivel[nivelActual].NumeroEnemigosVisibles;
-		enemigoArreglo[enemigoAEliminar]->simularColision(true);
+		//enemigoArreglo[enemigoAEliminar]->simularColision(true);
 	}
+
 	if (keys[SDLK_v]){//nuestra nave / nave enemigo
 
 	}

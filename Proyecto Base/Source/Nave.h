@@ -22,7 +22,5 @@ public:
 	void setVisible(bool visible);
 	bool estaColisionandoConBala(Nave * nave);
 	void crearNuevo();
-
-	void simularColision(bool colision);
 };
 #endif
