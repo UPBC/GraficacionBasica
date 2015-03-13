@@ -129,13 +129,18 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
     }
 
-    var piramideVertexPositionBuffer;
-    var cuadroVertexPositionBuffer;
+    var triangleVertexPositionBuffer;
+    var triangleVertexColorBuffer;
     
+    var squareVertexPositionBuffer;
+    var squareVertexColorBuffer;
+
+    var hexagonoVertexPositionBuffer;
+    var hexagonoVertexColorBuffer;
 
     function initBuffers() {
-        piramideVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, piramideVertexPositionBuffer);
+        triangleVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
         var vertices = [
             //x    y     z
              2.0, 0.0,  2.0,//a
@@ -148,44 +153,99 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
             0.0, 4.0, 0.0//h
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        piramideVertexPositionBuffer.itemSize = 3;
-        piramideVertexPositionBuffer.numItems = 8;
+        triangleVertexPositionBuffer.itemSize = 3;
+        triangleVertexPositionBuffer.numItems = 8;
 
+        /*triangleVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER,triangleVertexColorBuffer);
+        var colors = [
+          1.0, 0.0, 0.0, 1.0,
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 1.0,
+          1.0, 0.5, 0.0, 1.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        triangleVertexColorBuffer.itemSize = 4;
+        triangleVertexColorBuffer.numItems = 4;
+        */
         triangleVertexTextureCoordBuffer = gl.createBuffer();//Semana6
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexTextureCoordBuffer);//Semana6
         var textureCoords = [//Semana6
          // Front face//Semana6
          0.0, 0.0,//Semana6
-         0.5, 0.0,//Semana6
-         0.0, 0.5,//Semana6
-         0.5, 0.5,//Semana6
-         
-         0.0, 0.0,//Semana6
          1.0, 0.0,//Semana6
-         0.0, 1.0,//Semana6
          1.0, 1.0,//Semana6
+         0.0, 1.0,//Semana6
+
+         // Back face//Semana6
+         1.0, 0.0,//Semana6
+         1.0, 1.0,//Semana6
+         0.0, 1.0,//Semana6
+         0.0, 0.0,//Semana6
+
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);//Semana6
         triangleVertexTextureCoordBuffer.itemSize = 2;//Semana6
         triangleVertexTextureCoordBuffer.numItems = 8;//Semana6
         
-        cuadroVertexPositionBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cuadroVertexPositionBuffer);
+        squareVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         vertices = [
-            // 6.0, -6.0, 0.0,
-            // -6.0, -6.0,  0.0,
-            // 6.0, 6.0,  0.0,
-            // -6.0, 6.0,  0.0
-             
-             -6.0, -6.0,  0.0,//a
-             6.0, -6.0, 0.0,//b
-             -6.0, 6.0,  0.0,//c   
-             6.0, 6.0,  0.0,//d
+             0.0, 3.0, 0.0,
+             -3.0, 1.0,  0.0,
+             3.0, 1.0,  0.0,
+             -1.8, -2.0,  0.0,
+            1.8, -2.0, 0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        cuadroVertexPositionBuffer.itemSize = 3;
-        cuadroVertexPositionBuffer.numItems = 4;
+        squareVertexPositionBuffer.itemSize = 3;
+        squareVertexPositionBuffer.numItems = 5;
         
+        squareVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
+        var colors = [
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 1.0,
+          1.0, 1.0, 1.0, 1.0,
+          1.0, 1.0, 1.0, 1.0,
+          1.0, 0.0, 0.0, 1.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        squareVertexColorBuffer.itemSize = 4;
+        squareVertexColorBuffer.numItems = 5;
+        
+        //////////
+        hexagonoVertexPositionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        vertices = [
+             0.0, 3.0, 0.0,
+             -3.0, 1.3,  0.0,
+             3.0, 1.3,  0.0,
+             -3.0, -1.3,  0.0,
+            3.0, -1.3, 0.0,
+            0.0, -3.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        hexagonoVertexPositionBuffer.itemSize = 3;
+        hexagonoVertexPositionBuffer.numItems = 6;
+        
+        hexagonoVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);
+        gl.enable( gl.BLEND );
+        //gl.blendEquation( gl.FUNC_ADD );
+        gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+        var colors = [
+          1.0, 1.0, 0.0, 0.0,
+          0.0, 1.0, 1.0, 0.0,
+          1.0, 0.0, 1.0, 0.0,
+          1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 1.0,
+          0.0, 0.0, 1.0, 0.0
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        hexagonoVertexColorBuffer.itemSize = 4;
+        hexagonoVertexColorBuffer.numItems = 6;
+
     }
 
     var xRot = 0; //Semana6
@@ -211,9 +271,8 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         mat4.rotate(mvMatrix, degToRad(rTri), [1, 1, 0]);//Semana4
         
         
-        gl.bindBuffer(gl.ARRAY_BUFFER, piramideVertexPositionBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, piramideVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-        
+        gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
         gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexTextureCoordBuffer);//Semana6
         gl.vertexAttribPointer(shaderProgram.vertexTextureCoordAttribute, triangleVertexTextureCoordBuffer.itemSize, gl.FLOAT,false, 0,0);//Semana6
         
@@ -222,20 +281,30 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         gl.uniform1i(shaderProgram.samplerUniform, 0);//Semana6
         
         setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, piramideVertexPositionBuffer.numItems);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, triangleVertexPositionBuffer.numItems);
 
         mvPopMatrix();//Semana4
         ////PENTAGONO
         mat4.translate(mvMatrix, [6.0, 0.0, -20.0]);
         mvPushMatrix();//Semana4
-        //mat4.rotate(mvMatrix, degToRad(rTri), [1, 0, 0]);//Semana4
-        gl.bindBuffer(gl.ARRAY_BUFFER, cuadroVertexPositionBuffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cuadroVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-        
+        mat4.rotate(mvMatrix, degToRad(rTri), [1, 0, 0]);//Semana4
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);
         setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, cuadroVertexPositionBuffer.numItems);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
         mvPopMatrix();
         
+        mat4.translate(mvMatrix, [-3.0, 6.0, 0.0]);
+        mat4.rotate(mvMatrix, degToRad(rTri), [0, 0, 1]);//Semana4
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexPositionBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, hexagonoVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, hexagonoVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, hexagonoVertexColorBuffer.itemSize,gl.FLOAT, false, 0,0);
+        setMatrixUniforms();
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, hexagonoVertexPositionBuffer.numItems);
+
     }
 
     function handleLoadedTexture(texture) {//Semana6
@@ -254,7 +323,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         neheTexture.image.onload = function() {//Semana6
             handleLoadedTexture(neheTexture);//Semana6
         }//Semana6
-        neheTexture.image.src = "upbc.gif";//Semana6
+        neheTexture.image.src = "UPBC.gif";//Semana6
     }//Semana6
 
     function webGLStart() {
@@ -264,7 +333,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         initBuffers();
         initTexture();//Semana6
         
-        gl.clearColor(1.0, 1.0, 1.0, 1.0);
+        gl.clearColor(0.5, 0.0, 1.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
         //drawScene();//Semana4
@@ -284,7 +353,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         var timeNow = new Date().getTime();//Semana4
         if (lastTime != 0) {//Semana4
             var elapsed = timeNow - lastTime;//Semana4
-            rTri += (90 * elapsed) / 10000.0;//Semana4
+            rTri += (90 * elapsed) / 1000.0;//Semana4
         }//Semana4
         lastTime = timeNow;//Semana4
     }//Semana4
