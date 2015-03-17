@@ -27,13 +27,13 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	nave = new Nave(screenBuffer, "minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE);
+	nave = new Nave(screenBuffer, "minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
 	menuObjeto = new Objeto(screenBuffer, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
 	textosObjeto = new Objeto(screenBuffer, "Titulos.bmp", 0, 0, -1);
 	fondoObjeto = new Objeto(screenBuffer, "Jugando.bmp", 0, 0, 1);
 	for (int i = 0; i < 5; i++)
 	{
-		enemigoArreglo[i] = new Nave(screenBuffer, "enemigo.bmp", i * 60, 0, 2);
+		enemigoArreglo[i] = new Nave(screenBuffer, "enemigo.bmp", i * 60, 0, 2, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
 		enemigoArreglo[i]->GetNaveObjeto()->SetPasoLimite(4);
 	}
@@ -181,7 +181,7 @@ void CGame::JugandoPintar(){
 			enemigosEliminados++;
 			if (enemigosEliminados < nivel[nivelActual].NumeroEnemigosEliminar)
 			{
-				enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64), NAVE_ENEMIGA);
+				enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64));
 			}
 		}
 	}
@@ -193,10 +193,10 @@ void CGame::JugandoPintar(){
 	{
 		nivelActual++;
 	}
-	nave->Pintar(NAVE_PROPIA);
+	nave->Pintar();
 	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
 	{
-		enemigoArreglo[i]->Pintar(NAVE_ENEMIGA);
+		enemigoArreglo[i]->Pintar();
 		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].velocidadBalasEnemigo);
 	}
 }
@@ -238,7 +238,7 @@ void CGame::JugandoActualizar(){
 	}
 	if (keys[SDLK_SPACE])
 	{
-		nave->Disparar(NAVE_PROPIA, nivel[nivelActual].balasMaximas);
+ 		nave->Disparar(nivel[nivelActual].balasMaximas);
 	}
 	
 	if (keys[SDLK_c]){//nuestra bala / nave enemigo
@@ -297,9 +297,9 @@ void CGame::MenuPintar()
 
 void CGame::IniciarEnemigo(){
 	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
-		enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64), NAVE_ENEMIGA);
+		enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64));
 }
 
 void CGame::IniciarNave(){
-	nave->crearNuevo(WIDTH_SCREEN / 2, NAVE_PROPIA);
+	nave->crearNuevo(WIDTH_SCREEN / 2);
 }

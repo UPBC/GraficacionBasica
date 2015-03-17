@@ -1,6 +1,6 @@
 #include "Nave.h"
 #include "Config.h"
-Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module)
+Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module, int tipoNave)
 {
 	nave = new Objeto(screen, rutaImagen, x, y, module);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
@@ -11,9 +11,10 @@ Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module)
 	balaVisible = 0;
 	visible = true;
 	colision = false;
+	this->tipoNave = tipoNave;
 }
 
-void Nave::crearNuevo(int pos, int tipoNave)
+void Nave::crearNuevo(int pos)
 {
 	balaVisible = 0;
 	visible = true;
@@ -29,7 +30,7 @@ void Nave::crearNuevo(int pos, int tipoNave)
 
 }
 
-void Nave::Disparar(int tipoNave, int balas)
+void Nave::Disparar(int balas)
 {
 	if (visible)
 	{
@@ -51,7 +52,7 @@ void Nave::Disparar(int tipoNave, int balas)
 	}
 }
 
-void Nave::Pintar(int tipoNave)
+void Nave::Pintar()
 {
 	if (visible){
 		nave->Pintar();
@@ -97,7 +98,7 @@ void Nave::AutoDisparar(int balas)
 {
 	if ((rand()%100)<2)
 	{
-		Disparar(NAVE_ENEMIGA, balas);
+		Disparar(balas);
 	}
 }
 
