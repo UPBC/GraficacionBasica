@@ -22,12 +22,12 @@ void Nave::crearNuevo(int pos)
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
 		bala[i]->SetVisible(false);
+		bala[i]->SetXY(-5, 0);
 	}
 	if (tipoNave == NAVE_PROPIA)
 		nave->SetXY(pos, HEIGHT_SCREEN - 64);
 	if (tipoNave == NAVE_ENEMIGA)
 		nave->SetXY(pos, 0);
-
 }
 
 void Nave::Disparar(int balas)
