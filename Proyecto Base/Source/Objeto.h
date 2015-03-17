@@ -28,10 +28,13 @@ public:
 	void Pintar(int modulo, int x, int y);
 	void MoverLados(int posicion);
 	void Actualizar();
-	int ObtenerY();
-	int ObtenerX();
-	int ObtenerW();
-	int ObtenerH();
-	void ponerEn(int x, int y);
+	int GetY();
+	int GetX();
+	int GetW();
+	int GetH();
+	void SetXY(int x, int y);
+	void SetX(int x);
+	void SetY(int y);
+
 };
 #endif

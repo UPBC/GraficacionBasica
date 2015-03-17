@@ -10,6 +10,11 @@ class Nave
 	bool visible;
 	bool colision;
 public:
+	enum TipoColision{
+		NAVE,
+		BALA,
+	};
+
 	Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module);
 	void Pintar(int tipoNave);
 	void Disparar(int tipoNave, int balas);
@@ -20,7 +25,7 @@ public:
 	void MoverDerecha(int velocidad);
 	Objeto* GetNaveObjeto();
 	void setVisible(bool visible);
-	bool Colision(Nave * nave);
-	void crearNuevo();
+	bool Colision(Nave * nave, TipoColision tipoColision);
+	void crearNuevo(int pos, int tipoNave);
 };
 #endif

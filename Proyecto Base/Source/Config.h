@@ -27,7 +27,7 @@
 #define MAXIMO_DE_BALAS 30
 
 #define NAVE_PROPIA 0
-#define NAVE_ENEMIGO 1
+#define NAVE_ENEMIGA 1
 
 #define CERO 0
 #define UNO 1

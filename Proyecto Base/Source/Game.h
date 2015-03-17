@@ -36,7 +36,8 @@ private:
 	void JugandoActualizar();
 	bool LimitePantalla(Objeto * objeto, int bandera);
 	void InicializandoStage();
-
+	void IniciarEnemigo();
+	void IniciarNave();
 
 	Uint8 *keys;//Esta variable nos servira para ver si determinadas teclas estan o no pulsadas
 	SDL_Event event;//La variable event de tipo evento de SDL nos servira para motorizar

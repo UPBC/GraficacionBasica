@@ -13,7 +13,7 @@ Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module)
 	colision = false;
 }
 
-void Nave::crearNuevo()
+void Nave::crearNuevo(int pos, int tipoNave)
 {
 	balaVisible = 0;
 	visible = true;
@@ -22,7 +22,11 @@ void Nave::crearNuevo()
 	{
 		bala[i]->SetVisible(false);
 	}
-	nave->ponerEn(0,0);
+	if (tipoNave == NAVE_PROPIA)
+		nave->SetXY(pos, HEIGHT_SCREEN - 64);
+	if (tipoNave == NAVE_ENEMIGA)
+		nave->SetXY(pos, 0);
+
 }
 
 void Nave::Disparar(int tipoNave, int balas)
@@ -33,11 +37,11 @@ void Nave::Disparar(int tipoNave, int balas)
 		switch (tipoNave)
 		{
 		case NAVE_PROPIA:
-			bala[balaVisible]->ponerEn(nave->ObtenerX() + nave->ObtenerW() / 2, nave->ObtenerY());
+			bala[balaVisible]->SetXY(nave->GetX() + nave->GetW() / 2, nave->GetY());
 			break;
 
-		case NAVE_ENEMIGO:
-			bala[balaVisible]->ponerEn(nave->ObtenerX() + nave->ObtenerW() / 2, nave->ObtenerY() + nave->ObtenerH());
+		case NAVE_ENEMIGA:
+			bala[balaVisible]->SetXY(nave->GetX() + nave->GetW() / 2, nave->GetY() + nave->GetH());
 			break;
 		}
 		balaVisible++;
@@ -60,7 +64,7 @@ void Nave::Pintar(int tipoNave)
 				bala[i]->MoverArribaAbajo(-10);
 				break;
 
-			case NAVE_ENEMIGO:
+			case NAVE_ENEMIGA:
 				bala[i]->MoverArribaAbajo(10);
 				break;
 			}
@@ -93,7 +97,7 @@ void Nave::AutoDisparar(int balas)
 {
 	if ((rand()%100)<2)
 	{
-		Disparar(NAVE_ENEMIGO, balas);
+		Disparar(NAVE_ENEMIGA, balas);
 	}
 }
 
@@ -102,20 +106,44 @@ void Nave::setVisible(bool visible)
 	this->visible = visible;
 }
 
-bool Nave::Colision(Nave * nave){
-	int x = GetNaveObjeto()->ObtenerX();
-	int y = GetNaveObjeto()->ObtenerY();
-	int w = GetNaveObjeto()->ObtenerW();
-	int h = GetNaveObjeto()->ObtenerH();
+bool Nave::Colision(Nave * nave, TipoColision tipoColision){
+	int x_o, y_o, w_o, h_o;
+	int x, y, w, h;
+	
+	switch (tipoColision){
+	case TipoColision::NAVE:
+		x = GetNaveObjeto()->GetX();
+		y = GetNaveObjeto()->GetY();
+		w = GetNaveObjeto()->GetW();
+		h = GetNaveObjeto()->GetH();
+		
+		x_o = nave->GetNaveObjeto()->GetX();
+		y_o = nave->GetNaveObjeto()->GetY();
+		w_o = nave->GetNaveObjeto()->GetW();
+		h_o = nave->GetNaveObjeto()->GetH();
 
-	int x_o = nave->GetNaveObjeto()->ObtenerX();
-	int y_o = nave->GetNaveObjeto()->ObtenerY();
-	int w_o = nave->GetNaveObjeto()->ObtenerW();
-	int h_o = nave->GetNaveObjeto()->ObtenerH();
+		if ((x <= x_o + w_o && 	y <= y_o + h_o) && (x_o <= x + w && y_o <= y + h))
+			return true;
 
-	if ((x <= x_o + w_o && 	y <= y_o + h_o) && (x_o <= x + w && y_o <= y + h))
-		return true;
-	else
-		return false;
+		break;
+	case TipoColision::BALA:
+		x = nave->GetNaveObjeto()->GetX();
+		y = nave->GetNaveObjeto()->GetY();
+		w = nave->GetNaveObjeto()->GetW();
+		h = nave->GetNaveObjeto()->GetH();
+
+		for (int i = 0; i < MAXIMO_DE_BALAS; i++){
+			x_o = bala[i]->GetX();
+			y_o = bala[i]->GetY();
+			w_o = bala[i]->GetW();
+			h_o = bala[i]->GetH();
+
+			if ((x <= x_o + w_o && 	y <= y_o + h_o) && (x_o <= x + w && y_o <= y + h))
+				return true;
+		}
+		break;
+	}
+
+	return false;
 
 }

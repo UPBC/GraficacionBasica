@@ -58,21 +58,21 @@ void Objeto::MoverArribaAbajo(int posicion)
 }
 
 
-int Objeto::ObtenerX(){
+int Objeto::GetX(){
 	return x;
 }
 
-int Objeto::ObtenerY(){
+int Objeto::GetY(){
 	return y;
 
 }
 
-int Objeto::ObtenerW()
+int Objeto::GetW()
 {
 	return w;
 }
 
-int Objeto::ObtenerH()
+int Objeto::GetH()
 {
 	return h;
 }
@@ -91,11 +91,18 @@ void Objeto::IncrementarPasoActual()
 	pasoActual++;
 }
 
-void Objeto::ponerEn(int x, int y){
-	this->x = x;
-	this->y = y;
+void Objeto::SetXY(int x, int y){
+	SetX(x);
+	SetY(y);
 }
 
+void Objeto::SetX(int x){
+	this->x = x;
+}
+
+void Objeto::SetY(int y){
+	this->y = y;
+}
 //bool Objeto::EstaColicionandObjetove * b)
 //{
 //}

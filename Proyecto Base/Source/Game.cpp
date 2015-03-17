@@ -70,6 +70,8 @@ bool CGame::Start()
 			vida = UNO;
 			enemigosEliminados = CERO;
 			estadoJuego = ESTADO_JUGANDO;
+			IniciarEnemigo();
+			IniciarNave();
 			break;
 		case Estado::ESTADO_JUGANDO:
 			JugandoActualizar();
@@ -114,17 +116,17 @@ bool CGame::Start()
 bool CGame::LimitePantalla(Objeto*objeto, int bandera)
 {
 	if (bandera & BORDE_IZQUIERDO)
-		if (objeto->ObtenerX() <= 0)
+		if (objeto->GetX() <= 0)
 			return true;
 	if (bandera & BORDE_SUPERIOR)
-		if (objeto->ObtenerY() <= 0)
+		if (objeto->GetY() <= 0)
 			return true;
 
 	if (bandera & BORDE_DERECHO)
-		if (objeto->ObtenerX() >= (WIDTH_SCREEN - objeto->ObtenerW()))
+		if (objeto->GetX() >= (WIDTH_SCREEN - objeto->GetW()))
 			return true;
 	if (bandera & BORDE_INFERIOR)
-		if (objeto->ObtenerY() >= HEIGHT_SCREEN - objeto->ObtenerH())
+		if (objeto->GetY() >= HEIGHT_SCREEN - objeto->GetH())
 			return true;
 	return false;
 
@@ -171,14 +173,15 @@ void CGame::JugandoPintar(){
 	//////// CONTROL DE COLISIONES /////////
 	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
 	{
-		if (enemigoArreglo[i]->Colision(nave))
+		
+		if (enemigoArreglo[i]->Colision(nave, Nave::TipoColision::NAVE) || enemigoArreglo[i]->Colision(nave, Nave::TipoColision::BALA))//Nave vs Nave Enemigo
 			vida--;
-		if (nave->Colision(enemigoArreglo[i])){
+		if (nave->Colision(enemigoArreglo[i], Nave::TipoColision::BALA)){//Nave vs Naves Bala
 			enemigoArreglo[i]->setVisible(false);
 			enemigosEliminados++;
 			if (enemigosEliminados < nivel[nivelActual].NumeroEnemigosEliminar)
 			{
-				enemigoArreglo[i]->crearNuevo();
+				enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64), NAVE_ENEMIGA);
 			}
 		}
 	}
@@ -193,7 +196,7 @@ void CGame::JugandoPintar(){
 	nave->Pintar(NAVE_PROPIA);
 	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
 	{
-		enemigoArreglo[i]->Pintar(NAVE_ENEMIGO);
+		enemigoArreglo[i]->Pintar(NAVE_ENEMIGA);
 		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].velocidadBalasEnemigo);
 	}
 }
@@ -291,3 +294,12 @@ void CGame::MenuPintar()
 	textosObjeto->Pintar(MODULO_TEXTO_MENU_OPCION1, 320, 220);
 	textosObjeto->Pintar(MODULO_TEXTO_MENU_OPCION2, 320, 250);
 }//void	
+
+void CGame::IniciarEnemigo(){
+	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+		enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64), NAVE_ENEMIGA);
+}
+
+void CGame::IniciarNave(){
+	nave->crearNuevo(WIDTH_SCREEN / 2, NAVE_PROPIA);
+}
