@@ -1,23 +1,46 @@
 #include "Game.h"
 
 void CGame::InicializandoStage(){
-	nivel[0].fondoNivel = 0;
-	nivel[0].balasMaximas = 5;
-	nivel[0].NumeroEnemigosEliminar = 5;
-	nivel[0].NumeroEnemigosVisibles=2;
-	nivel[0].velocidadBalasEnemigo = 3;
-	nivel[0].velocidadBalasPropoias = 5;
-	nivel[0].VelocidadNaveEnemigo = 4;
-	nivel[0].VelocidadNavePropia = 4;
-	nivel[0].vidaEnemigo = 1;
+	int n = 0;
+	///0
+	nivel[n].Nave_BalasMaximas = 1;
+	nivel[n].Enemigo_EliminarPorNivel = 1;
+	nivel[n].Enemigos_VisiblesAlMismoTiempo=1;
+	nivel[n].Enemigo_VelocidadBala = 1;
+	nivel[n].Nave_VelocidadBala = 1;
+	nivel[n].Enemigo_Velocidad = 2;
+	nivel[n++].Nave_Velocidad = 1;
+	///1
+	nivel[n].Nave_BalasMaximas = 2;
+	nivel[n].Enemigo_EliminarPorNivel = 4;
+	nivel[n].Enemigos_VisiblesAlMismoTiempo = 2;
+	nivel[n].Enemigo_VelocidadBala = 2;
+	nivel[n].Nave_VelocidadBala = 2;
+	nivel[n].Enemigo_Velocidad = 2;
+	nivel[n++].Nave_Velocidad = 1;
+	///2
+	nivel[n].Nave_BalasMaximas = 4;
+	nivel[n].Enemigo_EliminarPorNivel = 10;
+	nivel[n].Enemigos_VisiblesAlMismoTiempo = 4;
+	nivel[n].Enemigo_VelocidadBala = 10;
+	nivel[n].Nave_VelocidadBala = 5;
+	nivel[n].Enemigo_Velocidad = 5;
+	nivel[n++].Nave_Velocidad = 4;
+	///3
+	nivel[n].Nave_BalasMaximas = 10;
+	nivel[n].Enemigo_EliminarPorNivel = 20;
+	nivel[n].Enemigos_VisiblesAlMismoTiempo = 8;
+	nivel[n].Enemigo_VelocidadBala = 15;
+	nivel[n].Nave_VelocidadBala = 8;
+	nivel[n].Enemigo_Velocidad = 6;
+	nivel[n++].Nave_Velocidad = 8;
+	///4
+	nivel[n].Nave_BalasMaximas = 20;
+	nivel[n].Enemigo_EliminarPorNivel = 50;
+	nivel[n].Enemigos_VisiblesAlMismoTiempo = 15;
+	nivel[n].Enemigo_VelocidadBala = 20;
+	nivel[n].Nave_VelocidadBala = 20;
+	nivel[n].Enemigo_Velocidad = 10;
+	nivel[n++].Nave_Velocidad = 18;
 
-	nivel[1].fondoNivel = 1;
-	nivel[1].balasMaximas = 5;
-	nivel[1].NumeroEnemigosEliminar = 20;
-	nivel[1].NumeroEnemigosVisibles = 4;
-	nivel[1].velocidadBalasEnemigo = 6;
-	nivel[1].velocidadBalasPropoias = 9;
-	nivel[1].VelocidadNaveEnemigo = 13;
-	nivel[1].VelocidadNavePropia = 6;
-	nivel[1].vidaEnemigo = 1;
 }

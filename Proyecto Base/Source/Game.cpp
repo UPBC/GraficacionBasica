@@ -31,9 +31,9 @@ void CGame::CargandoObjetos()
 	menuObjeto = new Objeto(screenBuffer, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
 	textosObjeto = new Objeto(screenBuffer, "Titulos.bmp", 0, 0, -1);
 	fondoObjeto = new Objeto(screenBuffer, "Jugando.bmp", 0, 0, 1);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		enemigoArreglo[i] = new Nave(screenBuffer, "enemigo.bmp", i * 60, 0, 2, NAVE_ENEMIGA);
+		enemigoArreglo[i] = new Nave(screenBuffer, "enemigo.bmp", i * 2, 0, 2, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
 		enemigoArreglo[i]->GetNaveObjeto()->SetPasoLimite(4);
 	}
@@ -134,32 +134,32 @@ bool CGame::LimitePantalla(Objeto*objeto, int bandera)
 
 void CGame::MoverEnemigo(){
 
-	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
 		if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 0)
 			if (!LimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_DERECHO))
-				enemigoArreglo[i]->GetNaveObjeto()->MoverLados(nivel[nivelActual].VelocidadNaveEnemigo);//Derecha
+				enemigoArreglo[i]->GetNaveObjeto()->MoverLados(nivel[nivelActual].Enemigo_Velocidad);//Derecha
 			else{
 				enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 			}//fin else derecho
 
 			if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 1)
 				if (!LimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_INFERIOR))
-					enemigoArreglo[i]->GetNaveObjeto()->MoverArribaAbajo(nivel[nivelActual].VelocidadNaveEnemigo);//Abajo
+					enemigoArreglo[i]->GetNaveObjeto()->MoverArribaAbajo(nivel[nivelActual].Enemigo_Velocidad);//Abajo
 				else{
 					enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 				}//Fn else inferior
 
 				if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 2)
 					if (!LimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_IZQUIERDO))
-						enemigoArreglo[i]->GetNaveObjeto()->MoverLados(-nivel[nivelActual].VelocidadNaveEnemigo);//Izquierda
+						enemigoArreglo[i]->GetNaveObjeto()->MoverLados(-nivel[nivelActual].Enemigo_Velocidad);//Izquierda
 					else{
 						enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 					}//fin else izquierda
 
 					if (enemigoArreglo[i]->GetNaveObjeto()->ObtenerPasoActual() == 3)
 						if (!LimitePantalla(enemigoArreglo[i]->GetNaveObjeto(), BORDE_SUPERIOR))
-							enemigoArreglo[i]->GetNaveObjeto()->MoverArribaAbajo(-nivel[nivelActual].VelocidadNaveEnemigo);//Arriba
+							enemigoArreglo[i]->GetNaveObjeto()->MoverArribaAbajo(-nivel[nivelActual].Enemigo_Velocidad);//Arriba
 						else{
 							enemigoArreglo[i]->GetNaveObjeto()->IncrementarPasoActual();
 						}//fin else arriba
@@ -171,7 +171,7 @@ void CGame::JugandoPintar(){
 	fondoObjeto->Pintar();
 	////////////////////////////////////////
 	//////// CONTROL DE COLISIONES /////////
-	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
 		
 		if (enemigoArreglo[i]->Colision(nave, Nave::TipoColision::NAVE) || enemigoArreglo[i]->Colision(nave, Nave::TipoColision::BALA))//Nave vs Nave Enemigo
@@ -179,7 +179,7 @@ void CGame::JugandoPintar(){
 		if (nave->Colision(enemigoArreglo[i], Nave::TipoColision::BALA)){//Nave vs Naves Bala
 			enemigoArreglo[i]->setVisible(false);
 			enemigosEliminados++;
-			if (enemigosEliminados < nivel[nivelActual].NumeroEnemigosEliminar)
+			if (enemigosEliminados < nivel[nivelActual].Enemigo_EliminarPorNivel)
 			{
 				enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64));
 			}
@@ -189,22 +189,23 @@ void CGame::JugandoPintar(){
 	if (vida <= 0)
 		estadoJuego = ESTADO_MENU;
 
-	if (enemigosEliminados >= nivel[nivelActual].NumeroEnemigosEliminar)
+	if (enemigosEliminados >= nivel[nivelActual].Enemigo_EliminarPorNivel)
 	{
-		nivelActual++;
+		if (nivelActual < MAXIMO_DE_NIVELES)
+			nivelActual++;
 	}
 	nave->Pintar();
-	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
 		enemigoArreglo[i]->Pintar();
-		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].velocidadBalasEnemigo);
+		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].Enemigo_VelocidadBala);
 	}
 }
 
 void CGame::JugandoActualizar(){
 	keys = SDL_GetKeyState(NULL);
 
-	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
 		enemigoArreglo[i]->GetNaveObjeto()->Actualizar();
 	}
@@ -213,23 +214,23 @@ void CGame::JugandoActualizar(){
 	if (keys[SDLK_UP])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_SUPERIOR))
-			nave->MoverArriba(nivel[nivelActual].VelocidadNavePropia);
+			nave->MoverArriba(nivel[nivelActual].Nave_Velocidad);
 	}
 	if (keys[SDLK_DOWN])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_INFERIOR))
-			nave->MoverAbajo(nivel[nivelActual].VelocidadNavePropia);
+			nave->MoverAbajo(nivel[nivelActual].Nave_Velocidad);
 	}
 
 	if (keys[SDLK_LEFT])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_IZQUIERDO))
-			nave->MoverIzquierda(nivel[nivelActual].VelocidadNavePropia);
+			nave->MoverIzquierda(nivel[nivelActual].Nave_Velocidad);
 	}
 	if (keys[SDLK_RIGHT])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_DERECHO))
-			nave->MoverDerecha(nivel[nivelActual].VelocidadNavePropia);
+			nave->MoverDerecha(nivel[nivelActual].Nave_Velocidad);
 	}
 
 	if (keys[SDLK_ESCAPE])
@@ -238,11 +239,11 @@ void CGame::JugandoActualizar(){
 	}
 	if (keys[SDLK_SPACE])
 	{
- 		nave->Disparar(nivel[nivelActual].balasMaximas);
+		nave->Disparar(nivel[nivelActual].Nave_BalasMaximas);
 	}
 	
 	if (keys[SDLK_c]){//nuestra bala / nave enemigo
-		int enemigoAEliminar = rand() % nivel[nivelActual].NumeroEnemigosVisibles;
+		int enemigoAEliminar = rand() % nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo;
 		//enemigoArreglo[enemigoAEliminar]->simularColision(true);
 	}
 
@@ -296,7 +297,7 @@ void CGame::MenuPintar()
 }//void	
 
 void CGame::IniciarEnemigo(){
-	for (int i = 0; i < nivel[nivelActual].NumeroEnemigosVisibles; i++)
+	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 		enemigoArreglo[i]->crearNuevo(rand() % (WIDTH_SCREEN - 64));
 }
 

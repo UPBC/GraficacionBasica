@@ -49,8 +49,8 @@ private:
 	int enemigosEliminados;
 
 	Nave *nave;
-	Nave *enemigoArreglo[5];
-	Stage nivel[4];
+	Nave *enemigoArreglo[MAXIMO_DE_ENEMIGOS];
+	Stage nivel[MAXIMO_DE_NIVELES];
 	
 	Estado estadoJuego;
 	

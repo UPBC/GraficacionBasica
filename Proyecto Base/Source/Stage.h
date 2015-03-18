@@ -4,15 +4,13 @@
 
 class Stage{
 public:
-	int VelocidadNavePropia;
-	int VelocidadNaveEnemigo;
-	int vidaEnemigo;
-	int balasMaximas;
-	int fondoNivel;
-	int velocidadBalasEnemigo;
-	int velocidadBalasPropoias;
-	int NumeroEnemigosVisibles;
-	int NumeroEnemigosEliminar;
+	int Nave_BalasMaximas;
+	int Enemigo_EliminarPorNivel;
+	int Enemigos_VisiblesAlMismoTiempo;
+	int Enemigo_VelocidadBala;
+	int Nave_VelocidadBala;
+	int Enemigo_Velocidad;
+	int Nave_Velocidad;
 };
 
 #endif
