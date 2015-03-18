@@ -34,6 +34,8 @@ private:
 	void MenuActualizar();
 	void JugandoPintar();
 	void JugandoActualizar();
+	void TerminadoPintar();
+	void TerminadoActualizar();
 	bool LimitePantalla(Objeto * objeto, int bandera);
 	void InicializandoStage();
 	void IniciarEnemigo();
@@ -47,6 +49,7 @@ private:
 	int nivelActual;
 	int vida;
 	int enemigosEliminados;
+	bool juegoGanado;
 
 	Nave *nave;
 	Nave *enemigoArreglo[MAXIMO_DE_ENEMIGOS];
@@ -58,10 +61,10 @@ private:
 	int tiempoFrameInicial;
 	int tiempoFrameFinal;
 
-	Objeto *menuObjeto;//Fondo del menu
+	Objeto *menuFondo;//Fondo del menu
 	Objeto *textosObjeto;//Textos del juego
-	Objeto *fondoObjeto;//Fondo del juego
-
-	
+	Objeto *jugandoFondo;//Fondo del juego
+	Objeto *ganasteFondo;//Fondo cuando ganas
+	Objeto *perdisteFondo;//Fondo cuando ganas
 
 };

@@ -13,11 +13,14 @@ CGame::CGame(){
 
 void CGame::IniciandoVideo()
 {
+	
 	if (SDL_Init(SDL_INIT_VIDEO)){
 		printf("Error %s ", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
+	
 	screenBuffer = SDL_SetVideoMode(WIDTH_SCREEN, HEIGHT_SCREEN, 24, SDL_HWSURFACE);
+	//SDL_EnableKeyRepeat(500, 60);
 	if (screenBuffer == NULL){
 		printf("Error %s ", SDL_GetError());
 		exit(EXIT_FAILURE);
@@ -28,10 +31,13 @@ void CGame::IniciandoVideo()
 void CGame::CargandoObjetos()
 {
 	nave = new Nave(screenBuffer, "minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
-	menuObjeto = new Objeto(screenBuffer, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
+	menuFondo = new Objeto(screenBuffer, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
 	textosObjeto = new Objeto(screenBuffer, "Titulos.bmp", 0, 0, -1);
-	fondoObjeto = new Objeto(screenBuffer, "Jugando.bmp", 0, 0, 1);
-	for (int i = 0; i < 15; i++)
+	jugandoFondo = new Objeto(screenBuffer, "Jugando.bmp", 0, 0, 1);
+	ganasteFondo = new Objeto(screenBuffer, "Ganaste.bmp", 0, 0, 1);
+	perdisteFondo = new Objeto(screenBuffer, "Perdiste.bmp", 0, 0, 1);
+
+	for (int i = 0; i < MAXIMO_DE_ENEMIGOS; i++)
 	{
 		enemigoArreglo[i] = new Nave(screenBuffer, "enemigo.bmp", i * 2, 0, 2, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
@@ -53,6 +59,7 @@ bool CGame::Start()
 	int salirJuego = false;
 
 	while (salirJuego == false){
+		keys = SDL_GetKeyState(NULL);
 		//Maquina de estados
 		switch (estadoJuego){///ACT2: Mal,, te faltaron 2 estados mas.
 		case Estado::ESTADO_INICIANDO:
@@ -70,6 +77,7 @@ bool CGame::Start()
 			vida = UNO;
 			enemigosEliminados = CERO;
 			estadoJuego = ESTADO_JUGANDO;
+			juegoGanado = false;
 			IniciarEnemigo();
 			IniciarNave();
 			break;
@@ -82,7 +90,8 @@ bool CGame::Start()
 			salirJuego = false;
 			break;
 		case Estado::ESTADO_TERMINANDO:
-			estadoJuego = Estado::ESTADO_MENU;
+			TerminadoPintar();
+			TerminadoActualizar();
 			break;
 
 		case Estado::ESTADO_ESPERANDO:
@@ -95,6 +104,7 @@ bool CGame::Start()
 			if (event.type == SDL_QUIT) { salirJuego = true; } //si se detecta una salida del sdl o.....
 			if (event.type == SDL_KEYDOWN) {}
 		}
+
 		//Este codigo estara provicionalmente aqui.
 		SDL_Flip(screenBuffer);
 
@@ -167,8 +177,7 @@ void CGame::MoverEnemigo(){
 }//Termina MoverEnemigo
 
 void CGame::JugandoPintar(){
-	SDL_FillRect(screenBuffer, NULL, SDL_MapRGB(screenBuffer->format, 0, 0, 0));
-	fondoObjeto->Pintar();
+	jugandoFondo->Pintar();
 	////////////////////////////////////////
 	//////// CONTROL DE COLISIONES /////////
 	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
@@ -186,14 +195,18 @@ void CGame::JugandoPintar(){
 		}
 	}
 	/////////////////////////////////////////
-	if (vida <= 0)
-		estadoJuego = ESTADO_MENU;
-
 	if (enemigosEliminados >= nivel[nivelActual].Enemigo_EliminarPorNivel)
 	{
 		if (nivelActual < MAXIMO_DE_NIVELES)
 			nivelActual++;
+		else{
+			juegoGanado = true;
+			estadoJuego = ESTADO_TERMINANDO;
+		}
 	}
+	if (vida <= CERO)
+		estadoJuego = ESTADO_TERMINANDO;
+
 	nave->Pintar();
 	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
@@ -256,7 +269,6 @@ void CGame::MenuActualizar()
 {
 	for (int i = MODULO_TEXTO_MENU_OPCION1, j = 0; i <= MODULO_TEXTO_MENU_OPCION2; i++, j++)
 	{
-		keys = SDL_GetKeyState(NULL);
 		if (keys[SDLK_UP])
 		{
 			opcionSeleccionada = MODULO_TEXTO_MENU_OPCION1;
@@ -289,7 +301,7 @@ void CGame::MenuActualizar()
 
 void CGame::MenuPintar()
 {
-	menuObjeto->Pintar();
+	menuFondo->Pintar();
 	textosObjeto->Pintar(MODULO_TEXTO_TITULO, 150, 0);
 	textosObjeto->Pintar(MODULO_TEXTO_NOMBRE, 620, 570);
 	textosObjeto->Pintar(MODULO_TEXTO_MENU_OPCION1, 320, 220);
@@ -303,4 +315,17 @@ void CGame::IniciarEnemigo(){
 
 void CGame::IniciarNave(){
 	nave->crearNuevo(WIDTH_SCREEN / 2);
+}
+
+void CGame::TerminadoPintar(){
+	if (juegoGanado)
+		ganasteFondo->Pintar();
+	else
+		perdisteFondo->Pintar();
+}
+
+void CGame::TerminadoActualizar(){
+	if (keys[SDLK_RETURN]){
+		estadoJuego = Estado::ESTADO_MENU;
+	}
 }
