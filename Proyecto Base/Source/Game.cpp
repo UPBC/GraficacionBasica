@@ -20,7 +20,7 @@ void CGame::IniciandoVideo()
 	}
 	
 	screenBuffer = SDL_SetVideoMode(WIDTH_SCREEN, HEIGHT_SCREEN, 24, SDL_HWSURFACE);
-	//SDL_EnableKeyRepeat(500, 60);
+	
 	if (screenBuffer == NULL){
 		printf("Error %s ", SDL_GetError());
 		exit(EXIT_FAILURE);
