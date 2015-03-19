@@ -197,7 +197,7 @@ void CGame::JugandoPintar(){
 	/////////////////////////////////////////
 	if (enemigosEliminados >= nivel[nivelActual].Enemigo_EliminarPorNivel)
 	{
-		if (nivelActual < MAXIMO_DE_NIVELES)
+		if (nivelActual < (MAXIMO_DE_NIVELES-1))
 			nivelActual++;
 		else{
 			juegoGanado = true;

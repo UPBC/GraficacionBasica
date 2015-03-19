@@ -3,7 +3,7 @@
 void CGame::InicializandoStage(){
 	int n = 0;
 	///0
-	nivel[n].Nave_BalasMaximas = 10;
+	nivel[n].Nave_BalasMaximas = 1;
 	nivel[n].Enemigo_EliminarPorNivel = 1;
 	nivel[n].Enemigos_VisiblesAlMismoTiempo=1;
 	nivel[n].Enemigo_VelocidadBala = 1;
