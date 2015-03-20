@@ -1,5 +1,7 @@
 #include "Nave.h"
 #include "Config.h"
+#include <stdlib.h>
+
 Nave::Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module, int tipoNave)
 {
 	nave = new Objeto(screen, rutaImagen, x, y, module);

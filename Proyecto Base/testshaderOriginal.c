@@ -1,4 +1,21 @@
+/*
+  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
 
+  This software is provided 'as-is', without any express or implied
+  warranty.  In no event will the authors be held liable for any damages
+  arising from the use of this software.
+
+  Permission is granted to anyone to use this software for any purpose,
+  including commercial applications, and to alter it and redistribute it
+  freely.
+*/
+/* This is a simple example of using GLSL shaders with SDL */
+
+#include "SDL.h"
+
+#ifdef HAVE_OPENGL
+
+#include "SDL_opengl.h"
 
 
 static SDL_bool shaders_supported;
@@ -399,8 +416,9 @@ void DrawGLScene(SDL_Window *window, GLuint texture, GLfloat * texcoord)
 int main(int argc, char **argv)
 {
     int done;
-    
-	GLuint texture;
+    SDL_Window *window;
+    SDL_Surface *surface;
+    GLuint texture;
     GLfloat texcoords[4];
 
 	/* Enable standard application logging */
@@ -468,4 +486,15 @@ int main(int argc, char **argv)
     return 1;
 }
 
-#
+#else /* HAVE_OPENGL */
+
+int
+main(int argc, char *argv[])
+{
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "No OpenGL support on this system\n");
+    return 1;
+}
+
+#endif /* HAVE_OPENGL */
+
+/* vi: set ts=4 sw=4 expandtab: */
