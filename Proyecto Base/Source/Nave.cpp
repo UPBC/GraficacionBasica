@@ -2,12 +2,12 @@
 #include "Config.h"
 #include <stdlib.h>
 
-Nave::Nave(SDL_Window *window,char*rutaImagen, int x, int y, int module, int tipoNave)
+Nave::Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int module, int tipoNave)
 {
-	nave = new Objeto(window,rutaImagen, x, y, module);
+	nave = new Objeto(openGlImplement, rutaImagen, x, y, module);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
-		bala[i] = new Objeto(window,"balas.bmp", 0, 0, MODULO_BALAS_BALA);
+		bala[i] = new Objeto(openGlImplement, "balas.bmp", 0, 0, MODULO_BALAS_BALA);
 		bala[i]->SetVisible(false);
 	}
 	balaVisible = 0;

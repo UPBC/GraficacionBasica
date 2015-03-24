@@ -1,10 +1,10 @@
 #include "Objeto.h"
 #include "Config.h"
 
-Objeto::Objeto(SDL_Window *window,char * rutaImagen, int x, int y, int module)
+Objeto::Objeto(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module)
 {
 	this->module = module;
-	sprite = new Sprite(window);
+	sprite = new Sprite(openGlImplement);
 	sprite->cargarimagen(rutaImagen);
 	w = sprite->WidthModule(this->module);
 	h = sprite->HeightModule(this->module);

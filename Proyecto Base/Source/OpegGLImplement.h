@@ -40,12 +40,13 @@ class OpenGlImplement
 public:
 	OpenGlImplement();
 	void setSDLWindow(SDL_Window *window);
+	SDL_Window *getSDLWindow();
 	void InitGL(int Width, int Height);
 	SDL_bool InitShaders();
 	void QuitShaders();
 	void DestroyShaderProgram(ShaderData *data);
 	SDL_bool CompileShaderProgram(ShaderData *data);
 	SDL_bool CompileShader(GLhandleARB shader, const char *source);
-
+	void Draw(SDL_Window *window, GLuint texture, GLfloat * texcoord);
 };
 #endif

@@ -19,7 +19,7 @@ class Objeto{
 public:
 	void SetVisible(bool isVisible);
 	void MoverArribaAbajo(int posicion);
-	Objeto(SDL_Window *window,char * rutaImagen, int x, int y, int module);//Constructor
+	Objeto(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module);//Constructor
 	void SetAutoMovimiento(bool automovimiento);
 	void SetPasoLimite(int pasos);
 	int ObtenerPasoActual();

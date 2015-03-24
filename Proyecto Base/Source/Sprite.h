@@ -17,8 +17,7 @@ public:
 	int WidthModule(int module);
 	int HeightModule(int module);
 	/////////// OPENGL
-	void Draw(SDL_Window *window, GLuint texture, GLfloat * texcoord);
-	SDL_Window *window;//la pantalla
+	OpenGlImplement *openGlImplement;
 	GLuint SDL_GL_LoadTexture(SDL_Surface * surface, GLfloat * texcoord);
 	int power_of_two(int input);
 
