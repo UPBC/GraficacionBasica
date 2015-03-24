@@ -27,10 +27,6 @@ void OpenGlImplement::setSDLWindow(SDL_Window *window){
 	this->window = window;
 }
 
-SDL_Window* OpenGlImplement::getSDLWindow(){
-	return window;
-}
-
 void OpenGlImplement::InitGL(int Width, int Height)                    /* We call this right after our OpenGL window is created. */
 {
 	GLdouble aspect;
@@ -190,19 +186,20 @@ void OpenGlImplement::QuitShaders()
 	}
 }
 
-/* The main drawing function. */
-void OpenGlImplement::Draw(SDL_Window *window, GLuint texture, GLfloat * texcoord)
+void OpenGlImplement::DrawStart()
 {
-	/* Texture coordinate lookup, to make it simple */
-	enum {
-		MINX,
-		MINY,
-		MAXX,
-		MAXY
-	};
-
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();                /* Reset The View */
+}
 
+void OpenGlImplement::DrawEnd()
+{
+	SDL_GL_SwapWindow(window);
+}
+
+/* The main drawing function. */
+void OpenGlImplement::Draw(GLuint texture, GLfloat * texcoord)
+{
 	glTranslatef(-1.5f, 0.0f, 0.0f);        /* Move Left 1.5 Units */
 
 	/* draw a triangle (in smooth coloring mode) */

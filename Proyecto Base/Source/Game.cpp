@@ -79,12 +79,9 @@ bool CGame::Start()
 			estadoJuego = Estado::ESTADO_MENU;
 			break;
 		case Estado::ESTADO_MENU:
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);        /* Clear The Screen And The Depth Buffer */
 
 			MenuActualizar();
 			MenuPintar();
-
-			SDL_GL_SwapWindow(window);
 
 			break;
 		case Estado::ESTADO_PRE_JUGANDO:

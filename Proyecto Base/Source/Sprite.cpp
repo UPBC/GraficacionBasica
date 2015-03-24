@@ -44,7 +44,7 @@ void Sprite::cargarimagen(char*nombre){
 	dest.y = y;
 	dest.x = x;
 	//SDL_BlitSurface(imagen, &src, screen, &dest);// Estudiar
-	openGlImplement->Draw(openGlImplement->getSDLWindow(), texture, texcoords);
+	openGlImplement->Draw(texture, texcoords);
 
 }
 
