@@ -74,6 +74,7 @@
     <ClCompile Include="..\Source\Game.cpp" />
     <ClCompile Include="..\Source\Nave.cpp" />
     <ClCompile Include="..\Source\Objeto.cpp" />
+    <ClCompile Include="..\Source\OpegGLImplement.cpp" />
     <ClCompile Include="..\Source\Sprite.cpp" />
     <ClCompile Include="..\Source\SpriteDef.cpp" />
     <ClCompile Include="..\Source\Stage.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\Source\Game.h" />
     <ClInclude Include="..\Source\Nave.h" />
     <ClInclude Include="..\Source\Objeto.h" />
+    <ClInclude Include="..\Source\OpegGLImplement.h" />
     <ClInclude Include="..\Source\Sprite.h" />
     <ClInclude Include="..\Source\SpriteDeF.h" />
     <ClInclude Include="..\Source\Stage.h" />

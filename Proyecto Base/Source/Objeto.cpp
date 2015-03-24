@@ -1,10 +1,10 @@
 #include "Objeto.h"
 #include "Config.h"
 
-Objeto::Objeto(SDL_Surface * screen, char * rutaImagen, int x, int y, int module)
+Objeto::Objeto(SDL_Window *window,char * rutaImagen, int x, int y, int module)
 {
 	this->module = module;
-	sprite = new Sprite(screen);
+	sprite = new Sprite(window);
 	sprite->cargarimagen(rutaImagen);
 	w = sprite->WidthModule(this->module);
 	h = sprite->HeightModule(this->module);
@@ -35,12 +35,12 @@ void Objeto::Actualizar()
 	}	
 	}
 
-void Objeto::Pintar(){
-	sprite->PintarModulo(this->module,x,y);
+void Objeto::Draw(){
+	sprite->DrawModulo(this->module,x,y);
 }
 
-void Objeto::Pintar(int modulo, int x, int y){
-	sprite->PintarModulo(modulo, x, y);
+void Objeto::Draw(int modulo, int x, int y){
+	sprite->DrawModulo(modulo, x, y);
 }
 
 void Objeto::SetVisible(bool isVisible)

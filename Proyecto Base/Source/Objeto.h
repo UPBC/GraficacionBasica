@@ -1,6 +1,7 @@
 #ifndef _NAVE_H_
 #define _NAVE_H_
 #include "Sprite.h"
+#include "SDL_opengl.h"
 
 class Objeto{
 	Sprite * sprite;
@@ -18,14 +19,14 @@ class Objeto{
 public:
 	void SetVisible(bool isVisible);
 	void MoverArribaAbajo(int posicion);
-	Objeto(SDL_Surface * screen, char * rutaImagen, int x, int y, int module);//Constructor
+	Objeto(SDL_Window *window,char * rutaImagen, int x, int y, int module);//Constructor
 	void SetAutoMovimiento(bool automovimiento);
 	void SetPasoLimite(int pasos);
 	int ObtenerPasoActual();
 	void IncrementarPasoActual();
 	//bool EstaColicionando(Objeto * b);
-	void Pintar();
-	void Pintar(int modulo, int x, int y);
+	void Draw();
+	void Draw(int modulo, int x, int y);
 	void MoverLados(int posicion);
 	void Actualizar();
 	int GetY();
@@ -35,6 +36,12 @@ public:
 	void SetXY(int x, int y);
 	void SetX(int x);
 	void SetY(int y);
+	///////////// OPENGL
+	
+	GLuint texture;
+	GLfloat texcoords[4];
+	GLuint GetTexture();
 
+	////////////////////
 };
 #endif

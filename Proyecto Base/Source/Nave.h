@@ -2,6 +2,8 @@
 #define __NAVE_H__
 #include "Objeto.h"
 #include "Config.h"
+#include "SDL_opengl.h"
+
 class Nave
 {
 	Objeto * nave;
@@ -16,7 +18,7 @@ public:
 		BALA,
 	};
 
-	Nave(SDL_Surface*screen, char*rutaImagen, int x, int y, int module, int tipoNave);
+	Nave(SDL_Window *window,char*rutaImagen, int x, int y, int module, int tipoNave);
 	void Pintar();
 	void Disparar(int balas);
 	void AutoDisparar(int balas);
@@ -28,5 +30,9 @@ public:
 	void setVisible(bool visible);
 	bool Colision(Nave * nave, TipoColision tipoColision);
 	void crearNuevo(int pos);
+	//////////// OPENGL
+	GLuint GetTexture();
+
+	///////////////////
 };
 #endif
