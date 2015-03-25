@@ -46,9 +46,9 @@ public:
 	void DrawStart();
 	void DrawEnd();
 
-	GLuint gProgramID = 0;
-	GLint gVertexPos2DLocation = -1;
-	GLuint gVBO = 0;
-	GLuint gIBO = 0;
+	GLuint shaderProgram = 0;
+	GLint vertexPositionAttribute = -1;
+	GLuint gVertexBufferObject = 0;
+	GLuint gIndexBufferObject = 0;
 };
 #endif

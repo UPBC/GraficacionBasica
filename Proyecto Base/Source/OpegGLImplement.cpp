@@ -38,7 +38,7 @@ void OpenGlImplement::InitShaders()
 	bool success = true;
 
 	//Generate program
-	gProgramID = glCreateProgram();
+	shaderProgram = glCreateProgram();
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -55,7 +55,7 @@ void OpenGlImplement::InitShaders()
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vShaderCompiled);
 	if (vShaderCompiled != GL_TRUE)
 		printf("Unable to compile vertex shader %d!\n", vertexShader);
-	glAttachShader(gProgramID, vertexShader);
+	glAttachShader(shaderProgram, vertexShader);
 
 
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
@@ -64,18 +64,18 @@ void OpenGlImplement::InitShaders()
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fShaderCompiled);
 	if (fShaderCompiled != GL_TRUE)
 		printf("Unable to compile fragment shader %d!\n", fragmentShader);
-	glAttachShader(gProgramID, fragmentShader);
+	glAttachShader(shaderProgram, fragmentShader);
 
 
-	glLinkProgram(gProgramID);
+	glLinkProgram(shaderProgram);
 	GLint programSuccess = GL_TRUE;
-	glGetProgramiv(gProgramID, GL_LINK_STATUS, &programSuccess);
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &programSuccess);
 		
 	if (programSuccess != GL_TRUE)
-		printf("Error linking program %d!\n", gProgramID);
+		printf("Error linking program %d!\n", shaderProgram);
 		
 	//Get vertex attribute location
-	gVertexPos2DLocation = glGetAttribLocation(gProgramID, "aVertexPosition");
+	vertexPositionAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
 	
 	//Initialize clear color
 	glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -86,30 +86,30 @@ void OpenGlImplement::InitBuffers(){
 	//VBO data
 	GLfloat vertexData[] =
 	{
-		-0.5f, -0.5f,
-		0.5f, -0.5f,
-		0.5f, 0.5f,
-		-0.5f, 0.5f
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f
 	};
 
 	//IBO data
 	GLuint indexData[] = { 0, 1, 2, 3 };
 	//Create VBO
-	glGenBuffers(1, &gVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-	glBufferData(GL_ARRAY_BUFFER, 2 * 4 * sizeof(GLfloat), vertexData, GL_STATIC_DRAW);
+	glGenBuffers(1, &gVertexBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, 3 * 4 * sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
 	//Create IBO
-	glGenBuffers(1, &gIBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), indexData, GL_STATIC_DRAW);
+	glGenBuffers(1, &gIndexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
 
 }
 
 void OpenGlImplement::QuitShaders()
 {
 	//Deallocate program
-	glDeleteProgram(gProgramID);
+	glDeleteProgram(shaderProgram);
 	//Destroy window	
 	SDL_DestroyWindow(window);
 	window = NULL;
@@ -135,21 +135,21 @@ void OpenGlImplement::Draw(GLuint texture, GLfloat * texcoord)
 
 
 	//Bind program
-	glUseProgram(gProgramID);
+	glUseProgram(shaderProgram);
 
 	//Enable vertex position
-	glEnableVertexAttribArray(gVertexPos2DLocation);
+	glEnableVertexAttribArray(vertexPositionAttribute);
 
 	//Set vertex data
-	glBindBuffer(GL_ARRAY_BUFFER, gVBO);
-	glVertexAttribPointer(gVertexPos2DLocation, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
+	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
 
 	//Set index data and render
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
 	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
 
 	//Disable vertex position
-	glDisableVertexAttribArray(gVertexPos2DLocation);
+	glDisableVertexAttribArray(vertexPositionAttribute);
 
 	//Unbind program
 	glUseProgram(NULL);
@@ -157,7 +157,7 @@ void OpenGlImplement::Draw(GLuint texture, GLfloat * texcoord)
 }
 
 OpenGlImplement::~OpenGlImplement(){
-	glDeleteProgram(gProgramID);
+	glDeleteProgram(shaderProgram);
 	SDL_DestroyWindow(window);
 	window = NULL;
 	SDL_Quit();
