@@ -1,6 +1,6 @@
 #version 140
 
-in vec2 aVertexPosition;
+in vec3 aVertexPosition;
 void main() {
-	gl_Position = vec4( aVertexPosition.x, aVertexPosition.y, 0.0, 1.0 );
+	gl_Position = vec4( aVertexPosition.x, aVertexPosition.y, aVertexPosition.z, 1.0 );
 }

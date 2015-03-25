@@ -82,27 +82,19 @@ void OpenGlImplement::InitShaders()
 	
 }
 
-void OpenGlImplement::InitBuffers(){
-	//VBO data
-	GLfloat vertexData[] =
-	{
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f
-	};
+void OpenGlImplement::InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vertexData, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen){
+	int i = sizeof(vertexData);
+	int i2 = sizeof(*vertexData);
 
-	//IBO data
-	GLuint indexData[] = { 0, 1, 2, 3 };
 	//Create VBO
-	glGenBuffers(1, &gVertexBufferObject);
-	glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, 3 * 4 * sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+	glGenBuffers(1, gVertexBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, *gVertexBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vertexData, GL_STATIC_DRAW);
 
 	//Create IBO
-	glGenBuffers(1, &gIndexBufferObject);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), indexData, GL_STATIC_DRAW);
+	glGenBuffers(1, gIndexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gIndexBufferObject);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexDataLen, indexData, GL_STATIC_DRAW);
 
 }
 
@@ -121,39 +113,35 @@ void OpenGlImplement::DrawStart()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();                /* Reset The View */
+	glTranslatef(-1.5f, 0.0f, 0.0f);        /* Move Left 1.5 Units */
+}
+
+/* The main drawing function. */
+void OpenGlImplement::Draw(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject)
+{
+	//Bind program
+	glUseProgram(shaderProgram);
+	//Enable vertex position
+	glEnableVertexAttribArray(vertexPositionAttribute);
+
+	//Set vertex data
+	glBindBuffer(GL_ARRAY_BUFFER, *gVertexBufferObject);
+	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+
+	//Set index data and render
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gIndexBufferObject);
+	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
+
+	//Disable vertex position
+	glDisableVertexAttribArray(vertexPositionAttribute);
+	//Unbind program
+	glUseProgram(NULL);
+
 }
 
 void OpenGlImplement::DrawEnd()
 {
 	SDL_GL_SwapWindow(window);
-}
-
-/* The main drawing function. */
-void OpenGlImplement::Draw(GLuint texture, GLfloat * texcoord)
-{
-	glTranslatef(-1.5f, 0.0f, 0.0f);        /* Move Left 1.5 Units */
-
-
-	//Bind program
-	glUseProgram(shaderProgram);
-
-	//Enable vertex position
-	glEnableVertexAttribArray(vertexPositionAttribute);
-
-	//Set vertex data
-	glBindBuffer(GL_ARRAY_BUFFER, gVertexBufferObject);
-	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-
-	//Set index data and render
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
-	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
-
-	//Disable vertex position
-	glDisableVertexAttribArray(vertexPositionAttribute);
-
-	//Unbind program
-	glUseProgram(NULL);
-
 }
 
 OpenGlImplement::~OpenGlImplement(){

@@ -38,7 +38,7 @@ private:
 	void JugandoActualizar();
 	void TerminadoPintar();
 	void TerminadoActualizar();
-	bool LimitePantalla(Objeto * objeto, int bandera);
+	bool LimitePantalla(Sprite * objeto, int bandera);
 	void InicializandoStage();
 	void IniciarEnemigo();
 	void IniciarNave();
@@ -52,10 +52,6 @@ private:
 	SDL_GLContext gContext;
 	OpenGlImplement openGlImplement;
 
-	SDL_Surface *surface;
-	GLuint texture;
-	GLfloat texcoords[4];
-	
 	///////////
 
 	int opcionSeleccionada;
@@ -74,10 +70,10 @@ private:
 	int tiempoFrameInicial;
 	int tiempoFrameFinal;
 
-	Objeto *menuFondo;//Fondo del menu
-	Objeto *textosObjeto;//Textos del juego
-	Objeto *jugandoFondo;//Fondo del juego
-	Objeto *ganasteFondo;//Fondo cuando ganas
-	Objeto *perdisteFondo;//Fondo cuando ganas
+	Sprite *menuFondo;//Fondo del menu
+	Sprite *textosObjeto;//Textos del juego
+	Sprite *jugandoFondo;//Fondo del juego
+	Sprite *ganasteFondo;//Fondo cuando ganas
+	Sprite *perdisteFondo;//Fondo cuando ganas
 
 };

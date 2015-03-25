@@ -40,15 +40,13 @@ public:
 	void setSDLWindow(SDL_Window *window);
 	void InitGL();
 	void InitShaders();
-	void InitBuffers();
+	void InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vertexData, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen);
 	void QuitShaders();
-	void Draw(GLuint texture, GLfloat * texcoord);
+	void Draw(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject);
 	void DrawStart();
 	void DrawEnd();
 
 	GLuint shaderProgram = 0;
 	GLint vertexPositionAttribute = -1;
-	GLuint gVertexBufferObject = 0;
-	GLuint gIndexBufferObject = 0;
 };
 #endif

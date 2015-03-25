@@ -7,16 +7,52 @@
 #include "SDL_opengl.h"
 
 class Sprite{
+	int x;
+	int y;
+	int w;
+	int h;
+
+	int pasos;
+	int pasoActual;
+	int pasoLimite;
+	int module;//Modulo actual
+	bool isVisible;
+	bool automovimiento;
+	
 	SDL_Surface * imagen;//La imagen a manipular
 	SpriteDef spriteDef;//definiciones de sprite
+
 public:
 	Sprite(OpenGlImplement *openGlImplement);//constructor recibe la pantalla
 	~Sprite();
 	void cargarimagen (char * nombre);
-	/*void PintarModulo(int nombre, int x, int y, int w, int h);*/
+	
 	void DrawModulo(int nombre, int x, int y);
 	int WidthModule(int module);
 	int HeightModule(int module);
+
+	void SetVisible(bool isVisible);
+	void MoverArribaAbajo(int posicion);
+
+	Sprite(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module);//
+
+	void SetAutoMovimiento(bool automovimiento);
+	void SetPasoLimite(int pasos);
+	int ObtenerPasoActual();
+	void IncrementarPasoActual();
+	//bool EstaColicionando(Objeto * b);
+	void Draw();
+	void Draw(int modulo, int x, int y);
+	void MoverLados(int posicion);
+	void Actualizar();
+	int GetY();
+	int GetX();
+	int GetW();
+	int GetH();
+	void SetXY(int x, int y);
+	void SetX(int x);
+	void SetY(int y);
+
 	/////////// OPENGL
 	OpenGlImplement *openGlImplement;
 	GLuint SDL_GL_LoadTexture(SDL_Surface * surface, GLfloat * texcoord);
@@ -24,6 +60,9 @@ public:
 
 	GLuint texture;
 	GLfloat texcoords[4];
+
+	GLuint gVertexBufferObject = 0;
+	GLuint gIndexBufferObject = 0;
 	//////////////////
 };
 

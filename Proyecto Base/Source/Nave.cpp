@@ -4,10 +4,10 @@
 
 Nave::Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int module, int tipoNave)
 {
-	nave = new Objeto(openGlImplement, rutaImagen, x, y, module);
+	nave = new Sprite(openGlImplement, rutaImagen, x, y, module);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
-		bala[i] = new Objeto(openGlImplement, "balas.bmp", 0, 0, MODULO_BALAS_BALA);
+		bala[i] = new Sprite(openGlImplement, "balas.bmp", 0, 0, MODULO_BALAS_BALA);
 		bala[i]->SetVisible(false);
 	}
 	balaVisible = 0;
@@ -91,7 +91,7 @@ void Nave::MoverIzquierda(int velocidad)
 {
 	nave->MoverLados(-velocidad);
 }
-Objeto*Nave::GetNaveObjeto()
+Sprite*Nave::GetNaveObjeto()
 {
 	return nave;
 }

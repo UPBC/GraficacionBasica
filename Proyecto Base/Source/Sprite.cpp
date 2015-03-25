@@ -44,7 +44,7 @@ void Sprite::cargarimagen(char*nombre){
 	dest.y = y;
 	dest.x = x;
 	//SDL_BlitSurface(imagen, &src, screen, &dest);// Estudiar
-	openGlImplement->Draw(texture, texcoords);
+	openGlImplement->Draw(&gVertexBufferObject, &gIndexBufferObject);
 
 }
 
@@ -122,4 +122,121 @@ void Sprite::cargarimagen(char*nombre){
 			value <<= 1;
 		}
 		return value;
+	}
+
+
+	Sprite::Sprite(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module)
+	{
+		this->module = module;
+		this->openGlImplement = openGlImplement;
+		cargarimagen(rutaImagen);
+		w = WidthModule(this->module);
+		h = HeightModule(this->module);
+		this->x = x;
+		this->y = y;
+		automovimiento = false;
+		pasoActual = 0;
+		pasoLimite = -1;
+
+		//VBO data
+		GLfloat vertexData[] =
+		{
+			-0.3f, -0.3f, 0.0f,
+			0.3f, -0.3f, 0.0f,
+			0.3f, 0.3f, 0.0f,
+			-0.3f, 0.3f, 0.0f
+		};
+
+		//IBO data
+		GLuint indexData[] = { 0, 1, 2, 3 };
+		openGlImplement->InitBuffers(&gVertexBufferObject, &gIndexBufferObject, vertexData, sizeof(vertexData), indexData, sizeof(indexData));
+	}
+
+	void Sprite::SetAutoMovimiento(bool automovimiento)
+	{
+		this->automovimiento = automovimiento;
+	}
+
+	void Sprite::Actualizar()
+	{
+		if (automovimiento)
+		{
+			MoverLados(1);
+			MoverArribaAbajo(1);
+		}
+		if (pasoLimite>0)
+		{
+			//pasoActual++;
+			if (pasoActual >= pasoLimite)
+				pasoActual = 0;
+		}
+	}
+
+	void Sprite::Draw(){
+		DrawModulo(this->module, x, y);
+	}
+
+	void Sprite::Draw(int modulo, int x, int y){
+		DrawModulo(modulo, x, y);
+	}
+
+	void Sprite::SetVisible(bool isVisible)
+	{
+		this->isVisible = isVisible;
+	}
+
+	void Sprite::MoverLados(int posicion){
+		x += posicion;
+	}
+
+	void Sprite::MoverArribaAbajo(int posicion)
+	{
+		y += posicion;
+	}
+
+
+	int Sprite::GetX(){
+		return x;
+	}
+
+	int Sprite::GetY(){
+		return y;
+
+	}
+
+	int Sprite::GetW()
+	{
+		return w;
+	}
+
+	int Sprite::GetH()
+	{
+		return h;
+	}
+
+	void Sprite::SetPasoLimite(int pasos)
+	{
+		this->pasoLimite = pasos;
+	}
+
+	int Sprite::ObtenerPasoActual(){
+		return pasoActual;
+	}
+
+	void Sprite::IncrementarPasoActual()
+	{
+		pasoActual++;
+	}
+
+	void Sprite::SetXY(int x, int y){
+		SetX(x);
+		SetY(y);
+	}
+
+	void Sprite::SetX(int x){
+		this->x = x;
+	}
+
+	void Sprite::SetY(int y){
+		this->y = y;
 	}

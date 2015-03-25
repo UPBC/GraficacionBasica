@@ -42,13 +42,12 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	openGlImplement.InitBuffers();
 	nave = new Nave(&openGlImplement,"minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
-	menuFondo = new Objeto(&openGlImplement, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
-	textosObjeto = new Objeto(&openGlImplement, "Titulos.bmp", 0, 0, -1);
-	jugandoFondo = new Objeto(&openGlImplement, "Jugando.bmp", 0, 0, 1);
-	ganasteFondo = new Objeto(&openGlImplement, "Ganaste.bmp", 0, 0, 1);
-	perdisteFondo = new Objeto(&openGlImplement, "Perdiste.bmp", 0, 0, 1);
+	menuFondo = new Sprite(&openGlImplement, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
+	textosObjeto = new Sprite(&openGlImplement, "Titulos.bmp", 0, 0, -1);
+	jugandoFondo = new Sprite(&openGlImplement, "Jugando.bmp", 0, 0, 1);
+	ganasteFondo = new Sprite(&openGlImplement, "Ganaste.bmp", 0, 0, 1);
+	perdisteFondo = new Sprite(&openGlImplement, "Perdiste.bmp", 0, 0, 1);
 
 	for (int i = 0; i < MAXIMO_DE_ENEMIGOS; i++)
 	{
@@ -144,7 +143,7 @@ bool CGame::Start()
 	return true;
 }
 
-bool CGame::LimitePantalla(Objeto*objeto, int bandera)
+bool CGame::LimitePantalla(Sprite*objeto, int bandera)
 {
 	if (bandera & BORDE_IZQUIERDO)
 		if (objeto->GetX() <= 0)
