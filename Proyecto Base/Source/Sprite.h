@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "SpriteDeF.h"
 #include "OpegGLImplement.h"
+#include "Config.h"
 #include "SDL_opengl.h"
 
 class Sprite{

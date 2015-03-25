@@ -13,6 +13,10 @@ CGame::CGame(){
 
 void CGame::IniciandoVideo()
 {
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
@@ -26,7 +30,9 @@ void CGame::IniciandoVideo()
 		exit(2);
 	}
 	
-	if (!SDL_GL_CreateContext(window)) {
+	gContext = SDL_GL_CreateContext(window);
+
+	if (!gContext) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create OpenGL context: %s\n", SDL_GetError());
 		SDL_Quit();
 		exit(2);
@@ -36,6 +42,7 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
+	openGlImplement.InitBuffers();
 	nave = new Nave(&openGlImplement,"minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
 	menuFondo = new Objeto(&openGlImplement, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
 	textosObjeto = new Objeto(&openGlImplement, "Titulos.bmp", 0, 0, -1);
@@ -55,7 +62,7 @@ void CGame::CargandoObjetos()
 // Con esta función eliminaremos todos los elementos en pantalla
 void CGame::Finalize(){
 	delete(nave);
-	//SDL_FreeSurface(screenBuffer);
+	
 	SDL_Quit();
 }
 
@@ -70,19 +77,17 @@ bool CGame::Start()
 		switch (estadoJuego){///ACT2: Mal,, te faltaron 2 estados mas.
 		case Estado::ESTADO_INICIANDO:
 			IniciandoVideo();
+			openGlImplement.InitGL();
+			openGlImplement.InitShaders();
 			CargandoObjetos();
 			InicializandoStage();
-			openGlImplement.InitGL(WIDTH_SCREEN, HEIGHT_SCREEN);
-			openGlImplement.InitShaders();
-			
-			///////////
 			estadoJuego = Estado::ESTADO_MENU;
 			break;
 		case Estado::ESTADO_MENU:
-
+			openGlImplement.DrawStart();
 			MenuActualizar();
 			MenuPintar();
-
+			openGlImplement.DrawEnd();
 			break;
 		case Estado::ESTADO_PRE_JUGANDO:
 			nivelActual = CERO;

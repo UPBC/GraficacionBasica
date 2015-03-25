@@ -89,6 +89,10 @@
     <ClInclude Include="..\Source\SpriteDeF.h" />
     <ClInclude Include="..\Source\Stage.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Ejecutable\fragment.glsl" />
+    <None Include="..\Ejecutable\vertex.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

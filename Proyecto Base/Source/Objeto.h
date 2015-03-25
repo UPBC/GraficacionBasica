@@ -1,6 +1,7 @@
 #ifndef _NAVE_H_
 #define _NAVE_H_
 #include "Sprite.h"
+#include "Config.h"
 #include "SDL_opengl.h"
 
 class Objeto{

@@ -3,6 +3,7 @@
 #include "Objeto.h"
 #include "Nave.h"
 #include "Stage.h"
+#include "Config.h"
 #include "SDL_opengl.h"
 #include "OpegGLImplement.h"
 
@@ -48,6 +49,7 @@ private:
 	
 	///////// NUEVO
 	SDL_Window *window;
+	SDL_GLContext gContext;
 	OpenGlImplement openGlImplement;
 
 	SDL_Surface *surface;
