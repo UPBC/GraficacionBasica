@@ -42,16 +42,16 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	nave = new Nave(&openGlImplement,"minave.bmp", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
-	menuFondo = new Sprite(&openGlImplement, "Menu.bmp", 0, 0, MODULO_MENU_FONDO);
-	textosObjeto = new Sprite(&openGlImplement, "Titulos.bmp", 0, 0, -1);
-	jugandoFondo = new Sprite(&openGlImplement, "Jugando.bmp", 0, 0, 1);
-	ganasteFondo = new Sprite(&openGlImplement, "Ganaste.bmp", 0, 0, 1);
-	perdisteFondo = new Sprite(&openGlImplement, "Perdiste.bmp", 0, 0, 1);
+	nave = new Nave(&openGlImplement,"minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
+	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULO_MENU_FONDO);
+	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, -1);
+	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, 1);
+	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, 1);
+	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, 1);
 
 	for (int i = 0; i < MAXIMO_DE_ENEMIGOS; i++)
 	{
-		enemigoArreglo[i] = new Nave(&openGlImplement, "enemigo.bmp", i * 2, 0, 2, NAVE_ENEMIGA);
+		enemigoArreglo[i] = new Nave(&openGlImplement, "enemigo", i * 2, 0, 2, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
 		enemigoArreglo[i]->GetNaveObjeto()->SetPasoLimite(4);
 	}

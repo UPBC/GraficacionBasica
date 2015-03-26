@@ -1,6 +1,4 @@
 #pragma once
-//#include <SDL_image.h>
-#include "Objeto.h"
 #include "Nave.h"
 #include "Stage.h"
 #include "Config.h"

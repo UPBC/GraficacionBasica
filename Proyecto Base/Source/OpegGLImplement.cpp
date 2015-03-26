@@ -82,20 +82,16 @@ void OpenGlImplement::InitShaders()
 	
 }
 
-void OpenGlImplement::InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vertexData, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen){
-	int i = sizeof(vertexData);
-	int i2 = sizeof(*vertexData);
-
+void OpenGlImplement::InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen){
 	//Create VBO
 	glGenBuffers(1, gVertexBufferObject);
 	glBindBuffer(GL_ARRAY_BUFFER, *gVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vertexData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vexterPositions, GL_STATIC_DRAW);
 
 	//Create IBO
 	glGenBuffers(1, gIndexBufferObject);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gIndexBufferObject);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexDataLen, indexData, GL_STATIC_DRAW);
-
 }
 
 void OpenGlImplement::QuitShaders()

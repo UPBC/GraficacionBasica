@@ -125,11 +125,19 @@ void Sprite::cargarimagen(char*nombre){
 	}
 
 
-	Sprite::Sprite(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module)
+	Sprite::Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int module)
 	{
+		char pathImg[40];  
+		char pathDat[40]; 
+
+		strcpy(pathImg, nameResource); 
+		strcpy(pathDat, nameResource);
+		strcat(pathImg, ".bmp");
+		strcat(pathDat, ".dat");
+
 		this->module = module;
 		this->openGlImplement = openGlImplement;
-		cargarimagen(rutaImagen);
+		cargarimagen(pathImg);
 		w = WidthModule(this->module);
 		h = HeightModule(this->module);
 		this->x = x;
@@ -138,18 +146,25 @@ void Sprite::cargarimagen(char*nombre){
 		pasoActual = 0;
 		pasoLimite = -1;
 
-		//VBO data
-		GLfloat vertexData[] =
-		{
-			-0.3f, -0.3f, 0.0f,
-			0.3f, -0.3f, 0.0f,
-			0.3f, 0.3f, 0.0f,
-			-0.3f, 0.3f, 0.0f
-		};
-
 		//IBO data
 		GLuint indexData[] = { 0, 1, 2, 3 };
-		openGlImplement->InitBuffers(&gVertexBufferObject, &gIndexBufferObject, vertexData, sizeof(vertexData), indexData, sizeof(indexData));
+
+		Model model = getOBJinfo(pathDat);
+		
+		vexterPositions = new GLfloat[model.positions * 3];
+
+		GLfloat** texels = new GLfloat*[model.texels];
+		for (int i = 0; i < model.texels; i++)
+			texels[i] = new GLfloat[2];
+
+		GLfloat** normals = new GLfloat*[model.normals];
+		for (int i = 0; i < model.normals; i++)
+			normals[i] = new GLfloat[3];
+
+		faces[model.faces][9];
+
+		extractOBJdata(pathDat, vexterPositions, texels, normals, faces);
+		openGlImplement->InitBuffers(&gVertexBufferObject, &gIndexBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), indexData, sizeof(indexData));
 	}
 
 	void Sprite::SetAutoMovimiento(bool automovimiento)
@@ -239,4 +254,102 @@ void Sprite::cargarimagen(char*nombre){
 
 	void Sprite::SetY(int y){
 		this->y = y;
+	}
+
+	Sprite::Model Sprite::getOBJinfo(std::string fp)
+	{
+		Model model = { 0 };
+
+		// Open OBJ file
+		std::ifstream inOBJ;
+		inOBJ.open(fp);
+		if (!inOBJ.good())
+		{
+			exit(1);
+		}
+
+		// Read OBJ file
+		while (!inOBJ.eof())
+		{
+			std::string line;
+			getline(inOBJ, line);
+			std::string type = line.substr(0, 2);
+
+			if (type.compare("v ") == 0)
+				model.positions++;
+			else if (type.compare("vt") == 0)
+				model.texels++;
+			else if (type.compare("vn") == 0)
+				model.normals++;
+			else if (type.compare("f ") == 0)
+				model.faces++;
+		}
+
+		model.vertices = model.faces * 3;
+
+		// Close OBJ file
+		inOBJ.close();
+
+		return model;
+	}
+
+	void Sprite::extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat** texels, GLfloat**, GLuint faces[][9])
+	{
+		// Counters
+		int p = 0;
+		int t = 0;
+		int n = 0;
+		int f = 0;
+
+		// Open OBJ file
+		std::ifstream inOBJ;
+		inOBJ.open(fp);
+		if (!inOBJ.good())
+		{
+			exit(1);
+		}
+
+		// Read OBJ file
+		while (!inOBJ.eof())
+		{
+			std::string line;
+			getline(inOBJ, line);
+			std::string type = line.substr(0, 2);
+
+			// Positions
+			if (type.compare("v ") == 0)
+			{
+				// Copy line for parsing
+				char* l = new char[line.size() + 1];
+				memcpy(l, line.c_str(), line.size() + 1);
+
+				// Extract tokens
+				strtok(l, " ");
+				for (int i = 0; i < 3; i++){
+					vexterPositions[(p*3)+i] = atof(strtok(NULL, " "));
+					printf("%f ", vexterPositions[(p * 3) + i]);
+				}
+				// Wrap up
+				delete[] l;
+				p++;
+			}
+
+			// Texels
+			else if (type.compare("vt") == 0)
+			{
+			}
+
+			// Normals
+			else if (type.compare("vn") == 0)
+			{
+			}
+
+			// Faces
+			else if (type.compare("f ") == 0)
+			{
+			}
+		}
+
+		// Close OBJ file
+		inOBJ.close();
 	}

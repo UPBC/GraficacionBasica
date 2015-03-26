@@ -40,7 +40,7 @@ public:
 	void setSDLWindow(SDL_Window *window);
 	void InitGL();
 	void InitShaders();
-	void InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vertexData, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen);
+	void InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen);
 	void QuitShaders();
 	void Draw(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject);
 	void DrawStart();

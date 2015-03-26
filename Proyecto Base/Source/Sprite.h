@@ -34,7 +34,7 @@ public:
 	void SetVisible(bool isVisible);
 	void MoverArribaAbajo(int posicion);
 
-	Sprite(OpenGlImplement* openGlImplement, char * rutaImagen, int x, int y, int module);//
+	Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int module);//
 
 	void SetAutoMovimiento(bool automovimiento);
 	void SetPasoLimite(int pasos);
@@ -54,6 +54,20 @@ public:
 	void SetY(int y);
 
 	/////////// OPENGL
+	// Model Structure
+	typedef struct Model
+	{
+		int vertices;
+		int positions;
+		int texels;
+		int normals;
+		int faces;
+	}
+	Model;
+
+	Model getOBJinfo(std::string fp);
+	void extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat** texels, GLfloat** normals, GLuint faces[][9]);
+
 	OpenGlImplement *openGlImplement;
 	GLuint SDL_GL_LoadTexture(SDL_Surface * surface, GLfloat * texcoord);
 	int power_of_two(int input);
@@ -63,6 +77,12 @@ public:
 
 	GLuint gVertexBufferObject = 0;
 	GLuint gIndexBufferObject = 0;
+
+	GLfloat* vexterPositions;    // XYZ
+	GLfloat** texels;          // UV
+	GLfloat** normals;        // XYZ
+	GLuint faces[][9];              // PTN PTN PTN
+
 	//////////////////
 };
 
