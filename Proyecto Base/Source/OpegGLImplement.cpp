@@ -147,7 +147,7 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 	glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
 	//glUniform1i(samplerUniform, 0);
 
-	glDrawElements(GL_TRIANGLE_FAN, 5, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, NULL);
 	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	//Disable vertex position
 	glDisableVertexAttribArray(vertexTextureCoordAttribute);

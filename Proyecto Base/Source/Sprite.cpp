@@ -129,8 +129,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		char pathImg[40];  
 		char pathDat[40]; 
 
-		strcpy(pathImg, nameResource);
-		strcpy(pathDat, nameResource);
+		strcpy(pathImg, "balas");
+		strcpy(pathDat, "balas");
 		strcat(pathImg, ".bmp");
 		strcat(pathDat, ".dat");
 
@@ -146,7 +146,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		pasoLimite = -1;
 
 		//IBO data
-		GLuint indexData[] = { 0, 1, 2, 3 };
+		GLuint indexData[] = { 1, 0, 2 , 3 };
 
 		Model model = getOBJinfo(pathDat);
 		
