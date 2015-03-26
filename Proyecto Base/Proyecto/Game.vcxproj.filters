@@ -9,9 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Archivos de recursos">
+    <Filter Include="OpenGL">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{46b45870-24ba-46fd-ba5f-8e2892586141}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -62,10 +65,37 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Ejecutable\fragment.glsl">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>OpenGL</Filter>
     </None>
     <None Include="..\Ejecutable\vertex.glsl">
-      <Filter>Archivos de recursos</Filter>
+      <Filter>OpenGL</Filter>
+    </None>
+    <None Include="..\Ejecutable\balas.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\cuadro.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\enemigo.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Ganaste.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Jugando.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Menu.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\minave.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Perdiste.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Titulos.dat">
+      <Filter>Data</Filter>
     </None>
   </ItemGroup>
 </Project>

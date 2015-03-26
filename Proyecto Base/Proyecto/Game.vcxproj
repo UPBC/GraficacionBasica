@@ -88,7 +88,16 @@
     <ClInclude Include="..\Source\Stage.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Ejecutable\balas.dat" />
+    <None Include="..\Ejecutable\cuadro.dat" />
+    <None Include="..\Ejecutable\enemigo.dat" />
     <None Include="..\Ejecutable\fragment.glsl" />
+    <None Include="..\Ejecutable\Ganaste.dat" />
+    <None Include="..\Ejecutable\Jugando.dat" />
+    <None Include="..\Ejecutable\Menu.dat" />
+    <None Include="..\Ejecutable\minave.dat" />
+    <None Include="..\Ejecutable\Perdiste.dat" />
+    <None Include="..\Ejecutable\Titulos.dat" />
     <None Include="..\Ejecutable\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
