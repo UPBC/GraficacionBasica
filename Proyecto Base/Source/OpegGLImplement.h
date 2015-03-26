@@ -23,6 +23,7 @@ class OpenGlImplement
 	PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 	PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
 	PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+	PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 	PFNGLGETPROGRAMIVPROC glGetProgramiv;
 	PFNGLGETSHADERIVPROC glGetShaderiv;
 	PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
@@ -30,6 +31,8 @@ class OpenGlImplement
 	PFNGLISSHADERPROC glIsShader;
 	PFNGLISPROGRAMPROC glIsProgram;
 	PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+	PFNGLACTIVETEXTUREPROC glActiveTexture;
+	PFNGLUNIFORM1IPROC glUniform1i;
 
 	SDL_Window *window;
 	std::string readFile(const char *filePath);
@@ -40,13 +43,16 @@ public:
 	void setSDLWindow(SDL_Window *window);
 	void InitGL();
 	void InitShaders();
-	void InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen);
+	void InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen);
 	void QuitShaders();
-	void Draw(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject);
+	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject);
 	void DrawStart();
 	void DrawEnd();
 
 	GLuint shaderProgram = 0;
 	GLint vertexPositionAttribute = -1;
+	GLint vertexTextureCoordAttribute = -1;
+	GLint samplerUniform = -1;
+
 };
 #endif

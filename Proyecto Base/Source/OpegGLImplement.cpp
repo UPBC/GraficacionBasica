@@ -23,6 +23,7 @@ void OpenGlImplement::InitGL()
 	glDisableVertexAttribArray = (PFNGLDISABLEVERTEXATTRIBARRAYPROC)SDL_GL_GetProcAddress("glDisableVertexAttribArray");
 	glEnableVertexAttribArray = (PFNGLENABLEVERTEXATTRIBARRAYPROC)SDL_GL_GetProcAddress("glEnableVertexAttribArray");
 	glGetAttribLocation = (PFNGLGETATTRIBLOCATIONPROC)SDL_GL_GetProcAddress("glGetAttribLocation");
+	glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)SDL_GL_GetProcAddress("glGetUniformLocation");
 	glGetProgramiv = (PFNGLGETPROGRAMIVPROC)SDL_GL_GetProcAddress("glGetProgramiv");
 	glGetShaderiv = (PFNGLGETSHADERIVPROC)SDL_GL_GetProcAddress("glGetShaderiv");
 	glGetShaderInfoLog = (PFNGLGETSHADERINFOLOGPROC)SDL_GL_GetProcAddress("glGetShaderInfoLog");
@@ -30,6 +31,8 @@ void OpenGlImplement::InitGL()
 	glIsShader = (PFNGLISSHADERPROC)SDL_GL_GetProcAddress("glIsShader");
 	glIsProgram = (PFNGLISPROGRAMPROC)SDL_GL_GetProcAddress("glIsProgram");
 	glVertexAttribPointer = (PFNGLVERTEXATTRIBPOINTERPROC)SDL_GL_GetProcAddress("glVertexAttribPointer");
+	glActiveTexture = (PFNGLACTIVETEXTUREPROC)SDL_GL_GetProcAddress("glActiveTexture");
+	glUniform1i = (PFNGLUNIFORM1IPROC)SDL_GL_GetProcAddress("glActiveTexture");
 }
 
 void OpenGlImplement::InitShaders()
@@ -76,22 +79,30 @@ void OpenGlImplement::InitShaders()
 		
 	//Get vertex attribute location
 	vertexPositionAttribute = glGetAttribLocation(shaderProgram, "aVertexPosition");
+	vertexTextureCoordAttribute = glGetAttribLocation(shaderProgram, "aTextureCoord");
+	samplerUniform = glGetUniformLocation(shaderProgram, "uSampler");
 	
 	//Initialize clear color
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	
 }
 
-void OpenGlImplement::InitBuffers(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen){
+void OpenGlImplement::InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen){
 	//Create VBO
-	glGenBuffers(1, gVertexBufferObject);
-	glBindBuffer(GL_ARRAY_BUFFER, *gVertexBufferObject);
+	glGenBuffers(1, vertexBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
 	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vexterPositions, GL_STATIC_DRAW);
 
 	//Create IBO
-	glGenBuffers(1, gIndexBufferObject);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gIndexBufferObject);
+	glGenBuffers(1, indexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexDataLen, indexData, GL_STATIC_DRAW);
+
+	//Create Texture
+	glGenBuffers(1, textureBufferObject);
+	glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vexterPositions, GL_STATIC_DRAW);
+
 }
 
 void OpenGlImplement::QuitShaders()
@@ -113,23 +124,35 @@ void OpenGlImplement::DrawStart()
 }
 
 /* The main drawing function. */
-void OpenGlImplement::Draw(GLuint* gVertexBufferObject, GLuint* gIndexBufferObject)
+void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject)
 {
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position
 	glEnableVertexAttribArray(vertexPositionAttribute);
-
+	//glEnableVertexAttribArray(vertexTextureCoordAttribute);
 	//Set vertex data
-	glBindBuffer(GL_ARRAY_BUFFER, *gVertexBufferObject);
-	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-
+	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
+	glVertexAttribPointer(vertexPositionAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
 	//Set index data and render
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *gIndexBufferObject);
-	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
 
+	//glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
+	//glVertexAttribPointer(vertexTextureCoordAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+
+	
+
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
+	//glUniform1i(samplerUniform, 0);
+
+	//glDrawElements(GL_TRIANGLE_STRIP, 0, GL_UNSIGNED_INT, NULL);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	//Disable vertex position
+	//glDisableVertexAttribArray(vertexTextureCoordAttribute);
 	glDisableVertexAttribArray(vertexPositionAttribute);
+
+	
 	//Unbind program
 	glUseProgram(NULL);
 

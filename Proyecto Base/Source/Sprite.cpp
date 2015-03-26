@@ -11,8 +11,8 @@ Sprite::~Sprite()
 	SDL_FreeSurface(imagen);
 }
 
-void Sprite::cargarimagen(char*nombre){
-	imagen = SDL_LoadBMP(nombre);	
+void Sprite::loadTexture(char* name){
+	imagen = SDL_LoadBMP(name);
 	if (!imagen)
 	{
 		printf("No se ha podido cargar la imagen: %s\n", SDL_GetError());
@@ -20,7 +20,7 @@ void Sprite::cargarimagen(char*nombre){
 		exit(3);
 	}
 
-	texture = SDL_GL_LoadTexture(imagen, texcoords);
+	textureBufferObject = SDL_GL_LoadTexture(imagen, texcoords);
 	SDL_FreeSurface(imagen);
 
 }
@@ -34,7 +34,7 @@ void Sprite::cargarimagen(char*nombre){
 //	SDL_BlitSurface(imagen, &src, screen, NULL);
 //}
 
-	void Sprite::DrawModulo(int nombre, int x, int y){
+void Sprite::DrawModulo(int nombre, int x, int y){
 	SDL_Rect src;
 	src.x = spriteDef.modulos[nombre].x;
 	src.y = spriteDef.modulos[nombre].y;
@@ -44,8 +44,7 @@ void Sprite::cargarimagen(char*nombre){
 	dest.y = y;
 	dest.x = x;
 	//SDL_BlitSurface(imagen, &src, screen, &dest);// Estudiar
-	openGlImplement->Draw(&gVertexBufferObject, &gIndexBufferObject);
-
+	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject);
 }
 
 	int Sprite::WidthModule(int module){
@@ -137,7 +136,7 @@ void Sprite::cargarimagen(char*nombre){
 
 		this->module = module;
 		this->openGlImplement = openGlImplement;
-		cargarimagen(pathImg);
+		loadTexture(pathImg);
 		w = WidthModule(this->module);
 		h = HeightModule(this->module);
 		this->x = x;
@@ -147,15 +146,12 @@ void Sprite::cargarimagen(char*nombre){
 		pasoLimite = -1;
 
 		//IBO data
-		GLuint indexData[] = { 0, 1, 2, 3 };
+		GLuint indexData[] = { 1, 3, 2, 3 };
 
 		Model model = getOBJinfo(pathDat);
 		
 		vexterPositions = new GLfloat[model.positions * 3];
-
-		GLfloat** texels = new GLfloat*[model.texels];
-		for (int i = 0; i < model.texels; i++)
-			texels[i] = new GLfloat[2];
+		vertexTextures = new GLfloat[model.texels * 2];
 
 		GLfloat** normals = new GLfloat*[model.normals];
 		for (int i = 0; i < model.normals; i++)
@@ -163,8 +159,8 @@ void Sprite::cargarimagen(char*nombre){
 
 		faces[model.faces][9];
 
-		extractOBJdata(pathDat, vexterPositions, texels, normals, faces);
-		openGlImplement->InitBuffers(&gVertexBufferObject, &gIndexBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), indexData, sizeof(indexData));
+		extractOBJdata(pathDat, vexterPositions, vertexTextures, normals, faces);
+		openGlImplement->InitBuffers(&vertexBufferObject, &indexBufferObject, &textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), indexData, sizeof(indexData), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
 	}
 
 	void Sprite::SetAutoMovimiento(bool automovimiento)
@@ -293,7 +289,7 @@ void Sprite::cargarimagen(char*nombre){
 		return model;
 	}
 
-	void Sprite::extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat** texels, GLfloat**, GLuint faces[][9])
+	void Sprite::extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat* vertexTextures, GLfloat**, GLuint faces[][9])
 	{
 		// Counters
 		int p = 0;
@@ -337,6 +333,19 @@ void Sprite::cargarimagen(char*nombre){
 			// Texels
 			else if (type.compare("vt") == 0)
 			{
+				// Copy line for parsing
+				char* l = new char[line.size() + 1];
+				memcpy(l, line.c_str(), line.size() + 1);
+
+				// Extract tokens
+				strtok(l, " ");
+				for (int i = 0; i < 2; i++){
+					vertexTextures[(t * 2) + i] = atof(strtok(NULL, " "));
+					printf("%f ", vertexTextures[(t * 2) + i]);
+				}
+				// Wrap up
+				delete[] l;
+				t++;
 			}
 
 			// Normals

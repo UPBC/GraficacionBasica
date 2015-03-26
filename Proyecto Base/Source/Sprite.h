@@ -25,7 +25,7 @@ class Sprite{
 public:
 	Sprite(OpenGlImplement *openGlImplement);//constructor recibe la pantalla
 	~Sprite();
-	void cargarimagen (char * nombre);
+	void loadTexture (char * name);
 	
 	void DrawModulo(int nombre, int x, int y);
 	int WidthModule(int module);
@@ -66,21 +66,21 @@ public:
 	Model;
 
 	Model getOBJinfo(std::string fp);
-	void extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat** texels, GLfloat** normals, GLuint faces[][9]);
+	void extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat* vertexTextures, GLfloat** normals, GLuint faces[][9]);
 
 	OpenGlImplement *openGlImplement;
 	GLuint SDL_GL_LoadTexture(SDL_Surface * surface, GLfloat * texcoord);
 	int power_of_two(int input);
 
-	GLuint texture;
 	GLfloat texcoords[4];
 
-	GLuint gVertexBufferObject = 0;
-	GLuint gIndexBufferObject = 0;
+	GLuint vertexBufferObject = 0;
+	GLuint indexBufferObject = 0;
+	GLuint textureBufferObject = 0;
 
-	GLfloat* vexterPositions;    // XYZ
-	GLfloat** texels;          // UV
-	GLfloat** normals;        // XYZ
+	GLfloat* vexterPositions; 
+	GLfloat* vertexTextures; 
+	GLfloat** normals;  
 	GLuint faces[][9];              // PTN PTN PTN
 
 	//////////////////
