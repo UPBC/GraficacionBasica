@@ -83,7 +83,7 @@ void OpenGlImplement::InitShaders()
 	samplerUniform = glGetUniformLocation(shaderProgram, "uSampler");
 	
 	//Initialize clear color
-	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClearColor(1.f, 1.f, 1.f, 1.f);
 	
 }
 
@@ -101,7 +101,7 @@ void OpenGlImplement::InitBuffers(GLuint* vertexBufferObject, GLuint* indexBuffe
 	//Create Texture
 	glGenBuffers(1, textureBufferObject);
 	glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, vertexDataLen, vexterPositions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, textureDataLen, textureData, GL_STATIC_DRAW);
 
 }
 
@@ -126,36 +126,55 @@ void OpenGlImplement::DrawStart()
 /* The main drawing function. */
 void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject)
 {
+	
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position
 	glEnableVertexAttribArray(vertexPositionAttribute);
-	//glEnableVertexAttribArray(vertexTextureCoordAttribute);
+	glEnableVertexAttribArray(vertexTextureCoordAttribute);
 	//Set vertex data
 	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
-	glVertexAttribPointer(vertexPositionAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
 	//Set index data and render
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
-	//glVertexAttribPointer(vertexTextureCoordAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
+	glVertexAttribPointer(vertexTextureCoordAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
 
 	
 
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
 	//glUniform1i(samplerUniform, 0);
 
-	//glDrawElements(GL_TRIANGLE_STRIP, 0, GL_UNSIGNED_INT, NULL);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawElements(GL_TRIANGLE_FAN, 5, GL_UNSIGNED_INT, NULL);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	//Disable vertex position
-	//glDisableVertexAttribArray(vertexTextureCoordAttribute);
+	glDisableVertexAttribArray(vertexTextureCoordAttribute);
 	glDisableVertexAttribArray(vertexPositionAttribute);
 
 	
 	//Unbind program
 	glUseProgram(NULL);
+	
+	/*
+	//Bind program
+	glUseProgram(shaderProgram);
+	//Enable vertex position
+	glEnableVertexAttribArray(vertexPositionAttribute);
 
+	//Set vertex data
+	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
+	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+
+	//Set index data and render
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
+	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
+
+	//Disable vertex position
+	glDisableVertexAttribArray(vertexPositionAttribute);
+	//Unbind program
+	glUseProgram(NULL);*/
 }
 
 void OpenGlImplement::DrawEnd()
