@@ -242,11 +242,9 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 
 				// Extract tokens
 				strtok(l, " ");
-				for (int i = 0; i < 3; i++){
-					vexterPositions[(p * 3) + i] = atof(strtok(NULL, " "));
-					//vexterPositions[(p * 3) + i] = openGlImplement->ConvertCOORDf(atoi(strtok(NULL, " ")));
-					//printf("%f ", vexterPositions[(p * 3) + i]);
-				}
+				for (int i = 0; i < 3; i++)
+					vexterPositions[(p * 3) + i] = openGlImplement->ConvertCOORDf(atoi(strtok(NULL, " ")));
+
 				// Wrap up
 				delete[] l;
 				p++;
@@ -261,10 +259,9 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 
 				// Extract tokens
 				strtok(l, " ");
-				for (int i = 0; i < 2; i++){
+				for (int i = 0; i < 2; i++)
 					vertexTextures[(t * 2) + i] = atof(strtok(NULL, " "));
-					//printf("%f ", vertexTextures[(t * 2) + i]);
-				}
+					
 				// Wrap up
 				delete[] l;
 				t++;
@@ -278,9 +275,9 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 
 				// Extract tokens
 				strtok(l, " ");
-				for (int i = 0; i < indexes; i++){
+				for (int i = 0; i < indexes; i++)
 					vextexIndex[(in * 1) + i] = atoi(strtok(NULL, " "));
-				}
+				
 				// Wrap up
 				delete[] l;
 				in++;

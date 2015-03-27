@@ -132,7 +132,7 @@ void OpenGlImplement::DrawStart()
 	glTranslatef(-1.0f, 1.0f, 0.0f); 
 }
 
-GLfloat OpenGlImplement::ConvertCOORDf(GLuint x){
+GLfloat OpenGlImplement::ConvertCOORDf(GLint x){
 	return ((GLfloat)x * 2.0f) / (GLfloat)WIDTH_SCREEN;
 }
 
