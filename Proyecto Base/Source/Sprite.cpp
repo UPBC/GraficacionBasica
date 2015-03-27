@@ -69,19 +69,16 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 
 		//IBO data
 		GLuint indexData[] = { 1, 0, 2 , 3 };
-
 		Model model = getOBJinfo(pathDat);
 		
 		vexterPositions = new GLfloat[model.positions * 3];
 		vertexTextures = new GLfloat[model.texels * 2];
-
-		GLfloat** normals = new GLfloat*[model.normals];
-		for (int i = 0; i < model.normals; i++)
-			normals[i] = new GLfloat[3];
+		vextexIndex = new GLuint[model.positions];
+		vextexNormals = new GLfloat[model.texels * 3];
 
 		faces[model.faces][9];
 
-		extractOBJdata(pathDat, vexterPositions, vertexTextures, normals, faces);
+		extractOBJdata(pathDat, model.positions);
 		openGlImplement->InitBuffers(&vertexBufferObject, &indexBufferObject, &textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), indexData, sizeof(indexData), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
 	}
 
@@ -211,13 +208,14 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		return model;
 	}
 
-	void Sprite::extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat* vertexTextures, GLfloat**, GLuint faces[][9])
+	void Sprite::extractOBJdata(std::string fp, GLuint indexes)
 	{
 		// Counters
 		int p = 0;
 		int t = 0;
 		int n = 0;
 		int f = 0;
+		int in = 0;
 
 		// Open OBJ file
 		std::ifstream inOBJ;
@@ -269,7 +267,22 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 				delete[] l;
 				t++;
 			}
+			// Index
+			else if (type.compare("i ") == 0)
+			{
+				// Copy line for parsing
+				char* l = new char[line.size() + 1];
+				memcpy(l, line.c_str(), line.size() + 1);
 
+				// Extract tokens
+				strtok(l, " ");
+				for (int i = 0; i < indexes; i++){
+					vextexIndex[(in * 1) + i] = atoi(strtok(NULL, " "));
+				}
+				// Wrap up
+				delete[] l;
+				in++;
+			}
 			// Normals
 			else if (type.compare("vn") == 0)
 			{

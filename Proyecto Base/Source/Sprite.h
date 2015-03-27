@@ -66,7 +66,7 @@ public:
 	Model;
 
 	Model getOBJinfo(std::string fp);
-	void extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat* vertexTextures, GLfloat** normals, GLuint faces[][9]);
+	void extractOBJdata(std::string fp, GLuint indexs);
 
 	OpenGlImplement *openGlImplement;
 
@@ -76,7 +76,8 @@ public:
 
 	GLfloat* vexterPositions; 
 	GLfloat* vertexTextures; 
-	GLfloat** normals;  
+	GLuint* vextexIndex;
+	GLfloat* vextexNormals;  
 	GLuint faces[][9];              // PTN PTN PTN
 
 	//////////////////
