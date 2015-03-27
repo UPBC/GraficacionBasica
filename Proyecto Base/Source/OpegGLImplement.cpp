@@ -83,7 +83,7 @@ void OpenGlImplement::InitShaders()
 	samplerUniform = glGetUniformLocation(shaderProgram, "uSampler");
 	
 	//Initialize clear color
-	glClearColor(1.f, 0.9f, 1.f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
 
@@ -141,7 +141,7 @@ GLfloat OpenGlImplement::ConvertYf(GLuint y){
 }
 
 /* The main drawing function. */
-void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat x, GLfloat y)
+void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -164,7 +164,7 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 	glVertexAttribPointer(vertexTextureCoordAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
+	glBindTexture(GL_TEXTURE_2D, textureObject);
 	//glUniform1i(samplerUniform, 0);
 
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, NULL);

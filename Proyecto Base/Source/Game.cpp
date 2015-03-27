@@ -71,9 +71,10 @@ bool CGame::Start()
 	int salirJuego = false;
 
 	while (salirJuego == false){
+		openGlImplement.DrawStart();
 		keys = (Uint8*)SDL_GetKeyboardState(NULL);
 		//Maquina de estados
-		switch (estadoJuego){///ACT2: Mal,, te faltaron 2 estados mas.
+		switch (estadoJuego){
 		case Estado::ESTADO_INICIANDO:
 			IniciandoVideo();
 			openGlImplement.InitGL();
@@ -83,10 +84,8 @@ bool CGame::Start()
 			estadoJuego = Estado::ESTADO_MENU;
 			break;
 		case Estado::ESTADO_MENU:
-			openGlImplement.DrawStart();
 			MenuActualizar();
 			MenuPintar();
-			openGlImplement.DrawEnd();
 			break;
 		case Estado::ESTADO_PRE_JUGANDO:
 			nivelActual = CERO;
@@ -118,15 +117,13 @@ bool CGame::Start()
 			break;
 		};
 
+		openGlImplement.DrawEnd();
+
 		while (SDL_PollEvent(&event))//Aqui sdl creara una lista de eventos ocurridos
 		{
 			if (event.type == SDL_QUIT) { salirJuego = true; } //si se detecta una salida del sdl o.....
 			if (event.type == SDL_KEYDOWN) {}
 		}
-
-		//Este codigo estara provicionalmente aqui.
-		//SDL_Flip(screenBuffer);
-		
 
 		//Calculando fps
 		tiempoFrameFinal = SDL_GetTicks();
@@ -138,6 +135,7 @@ bool CGame::Start()
 
 		tiempoFrameInicial = tiempoFrameFinal;
 		tick++;
+
 
 	}
 	return true;
@@ -287,8 +285,6 @@ void CGame::JugandoActualizar(){
 
 void CGame::MenuActualizar()
 {
-	for (int i = MODULO_TEXTO_MENU_OPCION1, j = 0; i <= MODULO_TEXTO_MENU_OPCION2; i++, j++)
-	{
 		if (keys[SDL_SCANCODE_UP])
 		{
 			opcionSeleccionada = MODULO_TEXTO_MENU_OPCION1;
@@ -298,11 +294,6 @@ void CGame::MenuActualizar()
 		{
 			opcionSeleccionada = MODULO_TEXTO_MENU_OPCION2;
 		}
-
-		if (i == opcionSeleccionada)
-			textosObjeto->Draw(i + 2, 320, 220 + (j * 30));
-		else
-			textosObjeto->Draw(i, 320, 220 + (j * 30));
 
 		if (keys[SDL_SCANCODE_RETURN])
 		{
@@ -316,7 +307,6 @@ void CGame::MenuActualizar()
 				estadoJuego = Estado::ESTADO_FINALIZANDO;
 			}
 		}// SDL_SCANCODE__return 
-	}//for 
 }
 
 void CGame::MenuPintar()
@@ -326,6 +316,11 @@ void CGame::MenuPintar()
 	textosObjeto->Draw(MODULO_TEXTO_NOMBRE, 620, 570);
 	textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION1, 320, 220);
 	textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION2, 320, 250);
+	if (opcionSeleccionada == MODULO_TEXTO_MENU_OPCION1)
+		textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION1, 320, 220 );
+	else
+		textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION2, 320, 220 + 30);
+
 }//void	
 
 void CGame::IniciarEnemigo(){

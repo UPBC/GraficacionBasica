@@ -20,7 +20,7 @@ void Sprite::loadTexture(char* name){
 		exit(3);
 	}
 
-	textureBufferObject = openGlImplement->LoadTexture(imagen);
+	textureObject = openGlImplement->LoadTexture(imagen);
 	SDL_FreeSurface(imagen);
 
 }
@@ -35,7 +35,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 	dest.y = y;
 	dest.x = x;
 	
-	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject, x, y);
+	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject, textureObject, x, y);
 }
 
 	int Sprite::WidthModule(int module){

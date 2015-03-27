@@ -73,6 +73,7 @@ public:
 	GLuint vertexBufferObject = 0;
 	GLuint indexBufferObject = 0;
 	GLuint textureBufferObject = 0;
+	GLuint textureObject = 0;
 
 	GLfloat* vexterPositions; 
 	GLfloat* vertexTextures; 
