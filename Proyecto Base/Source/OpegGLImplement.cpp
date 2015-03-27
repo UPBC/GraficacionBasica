@@ -83,7 +83,7 @@ void OpenGlImplement::InitShaders()
 	samplerUniform = glGetUniformLocation(shaderProgram, "uSampler");
 	
 	//Initialize clear color
-	glClearColor(1.f, 1.f, 1.f, 1.f);
+	glClearColor(1.f, 0.9f, 1.f, 1.f);
 	
 }
 
@@ -120,13 +120,15 @@ void OpenGlImplement::DrawStart()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();                /* Reset The View */
-	glTranslatef(-1.5f, 0.0f, 0.0f);        /* Move Left 1.5 Units */
+	
+	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
+
+	glTranslatef(0.f, 0.f, 0.f);        /* Move Left 1.5 Units */
 }
 
 /* The main drawing function. */
 void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject)
 {
-	
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position
@@ -140,8 +142,6 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 
 	glBindBuffer(GL_ARRAY_BUFFER, *textureBufferObject);
 	glVertexAttribPointer(vertexTextureCoordAttribute, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), NULL);
-
-	
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, *textureBufferObject);
@@ -157,24 +157,6 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 	//Unbind program
 	glUseProgram(NULL);
 	
-	/*
-	//Bind program
-	glUseProgram(shaderProgram);
-	//Enable vertex position
-	glEnableVertexAttribArray(vertexPositionAttribute);
-
-	//Set vertex data
-	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
-	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
-
-	//Set index data and render
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
-	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, NULL);
-
-	//Disable vertex position
-	glDisableVertexAttribArray(vertexPositionAttribute);
-	//Unbind program
-	glUseProgram(NULL);*/
 }
 
 void OpenGlImplement::DrawEnd()
@@ -205,4 +187,29 @@ std::string OpenGlImplement::readFile(const char *filePath) {
 
 	fileStream.close();
 	return content;
+}
+
+GLuint OpenGlImplement::LoadTexture(SDL_Surface * surface)
+{
+	GLuint texture;
+	int w, h;
+	SDL_Surface *image;
+	SDL_Rect area;
+
+	image = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w, surface->h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+
+	area.x = 0;
+	area.y = 0;
+	area.w = surface->w;
+	area.h = surface->h;
+	SDL_BlitSurface(surface, &area, image, &area);
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
+	SDL_FreeSurface(image);
+
+	return texture;
 }

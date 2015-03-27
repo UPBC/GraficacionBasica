@@ -69,10 +69,6 @@ public:
 	void extractOBJdata(std::string fp, GLfloat* vexterPositions, GLfloat* vertexTextures, GLfloat** normals, GLuint faces[][9]);
 
 	OpenGlImplement *openGlImplement;
-	GLuint SDL_GL_LoadTexture(SDL_Surface * surface, GLfloat * texcoord);
-	int power_of_two(int input);
-
-	GLfloat texcoords[4];
 
 	GLuint vertexBufferObject = 0;
 	GLuint indexBufferObject = 0;
