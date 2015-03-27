@@ -129,7 +129,15 @@ void OpenGlImplement::DrawStart()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();    
-	glTranslatef(1.f, 1.f, 0.8f); 
+	glTranslatef(-0.7f, 0.7f, -1.0f); 
+}
+
+GLfloat OpenGlImplement::ConvertXf(GLuint x){
+	return ((GLfloat)x * 2.0f) / (GLfloat)WIDTH_SCREEN;
+}
+
+GLfloat OpenGlImplement::ConvertYf(GLuint y){
+	return ((GLfloat)y * -2.0f) / (GLfloat)HEIGHT_SCREEN;
 }
 
 /* The main drawing function. */
@@ -137,7 +145,8 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.f, 0.f, 0.f); 
+
+	glTranslatef(ConvertXf(x), ConvertYf(y), 0.f);
 
 	//Bind program
 	glUseProgram(shaderProgram);

@@ -244,43 +244,43 @@ void CGame::JugandoActualizar(){
 	}
 	MoverEnemigo();
 
-	if (keys[SDLK_UP])
+	if (keys[SDL_SCANCODE_UP])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_SUPERIOR))
 			nave->MoverArriba(nivel[nivelActual].Nave_Velocidad);
 	}
-	if (keys[SDLK_DOWN])
+	if (keys[SDL_SCANCODE_DOWN])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_INFERIOR))
 			nave->MoverAbajo(nivel[nivelActual].Nave_Velocidad);
 	}
 
-	if (keys[SDLK_LEFT])
+	if (keys[SDL_SCANCODE_LEFT])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_IZQUIERDO))
 			nave->MoverIzquierda(nivel[nivelActual].Nave_Velocidad);
 	}
-	if (keys[SDLK_RIGHT])
+	if (keys[SDL_SCANCODE_RIGHT])
 	{
 		if (!LimitePantalla(nave->GetNaveObjeto(), BORDE_DERECHO))
 			nave->MoverDerecha(nivel[nivelActual].Nave_Velocidad);
 	}
 
-	if (keys[SDLK_ESCAPE])
+	if (keys[SDL_SCANCODE_ESCAPE])
 	{
 		estadoJuego = Estado::ESTADO_MENU;
 	}
-	if (keys[SDLK_SPACE])
+	if (keys[SDL_SCANCODE_SPACE])
 	{
 		nave->Disparar(nivel[nivelActual].Nave_BalasMaximas);
 	}
 	
-	if (keys[SDLK_c]){//nuestra bala / nave enemigo
+	if (keys[SDL_SCANCODE_C]){//nuestra bala / nave enemigo
 		int enemigoAEliminar = rand() % nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo;
 		//enemigoArreglo[enemigoAEliminar]->simularColision(true);
 	}
 
-	if (keys[SDLK_v]){//nuestra nave / nave enemigo
+	if (keys[SDL_SCANCODE_V]){//nuestra nave / nave enemigo
 
 	}
 }
@@ -304,7 +304,7 @@ void CGame::MenuActualizar()
 		else
 			textosObjeto->Draw(i, 320, 220 + (j * 30));
 
-		if (keys[SDLK_RETURN])
+		if (keys[SDL_SCANCODE_RETURN])
 		{
 			if (opcionSeleccionada == MODULO_TEXTO_MENU_OPCION1)
 			{
@@ -315,7 +315,7 @@ void CGame::MenuActualizar()
 			{
 				estadoJuego = Estado::ESTADO_FINALIZANDO;
 			}
-		}// sdlk_return 
+		}// SDL_SCANCODE__return 
 	}//for 
 }
 
@@ -345,7 +345,7 @@ void CGame::TerminadoPintar(){
 }
 
 void CGame::TerminadoActualizar(){
-	if (keys[SDLK_RETURN]){
+	if (keys[SDL_SCANCODE_RETURN]){
 		estadoJuego = Estado::ESTADO_MENU;
 	}
 }

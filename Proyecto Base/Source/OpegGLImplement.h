@@ -48,6 +48,8 @@ public:
 	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat x, GLfloat y);
 	void DrawStart();
 	void DrawEnd();
+	GLfloat ConvertXf(GLuint x);
+	GLfloat ConvertYf(GLuint y);
 	GLuint LoadTexture(SDL_Surface * surface);
 
 	GLuint shaderProgram = 0;

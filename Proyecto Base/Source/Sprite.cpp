@@ -67,8 +67,6 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		pasoActual = 0;
 		pasoLimite = -1;
 
-		//IBO data
-		GLuint indexData[] = { 1, 0, 2 , 3 };
 		Model model = getOBJinfo(pathDat);
 		
 		vexterPositions = new GLfloat[model.positions * 3];
@@ -79,7 +77,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		faces[model.faces][9];
 
 		extractOBJdata(pathDat, model.positions);
-		openGlImplement->InitBuffers(&vertexBufferObject, &indexBufferObject, &textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), indexData, sizeof(indexData), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
+		openGlImplement->InitBuffers(&vertexBufferObject, &indexBufferObject, &textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), vextexIndex, model.positions * sizeof(GLuint), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
 	}
 
 	void Sprite::SetAutoMovimiento(bool automovimiento)
