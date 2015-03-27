@@ -84,7 +84,15 @@ void OpenGlImplement::InitShaders()
 	
 	//Initialize clear color
 	glClearColor(1.f, 0.9f, 1.f, 1.f);
-	
+	glEnable(GL_DEPTH_TEST);
+	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
+
+	glClearDepth(1.0f);                   // Set background depth to farthest
+	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+	glShadeModel(GL_SMOOTH);   // Enable smooth shading
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
+
 }
 
 void OpenGlImplement::InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen){
@@ -119,21 +127,24 @@ void OpenGlImplement::QuitShaders()
 void OpenGlImplement::DrawStart()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();                /* Reset The View */
-	
-	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
-
-	glTranslatef(0.f, 0.f, 0.f);        /* Move Left 1.5 Units */
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();    
+	glTranslatef(1.f, 1.f, 0.8f); 
 }
 
 /* The main drawing function. */
-void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject)
+void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat x, GLfloat y)
 {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef(0.f, 0.f, 0.f); 
+
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position
 	glEnableVertexAttribArray(vertexPositionAttribute);
 	glEnableVertexAttribArray(vertexTextureCoordAttribute);
+
 	//Set vertex data
 	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
 	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);

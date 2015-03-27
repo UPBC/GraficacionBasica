@@ -34,8 +34,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 	SDL_Rect dest;
 	dest.y = y;
 	dest.x = x;
-	//SDL_BlitSurface(imagen, &src, screen, &dest);// Estudiar
-	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject);
+	
+	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject, x, y);
 }
 
 	int Sprite::WidthModule(int module){
