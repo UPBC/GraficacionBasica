@@ -11,31 +11,36 @@ Sprite::~Sprite()
 	SDL_FreeSurface(imagen);
 }
 
-void Sprite::loadTexture(char* name){
+void Sprite::CreateTextures(char* name){
 	imagen = SDL_LoadBMP(name);
+
 	if (!imagen)
 	{
 		printf("No se ha podido cargar la imagen: %s\n", SDL_GetError());
 		SDL_Quit();
 		exit(3);
 	}
+	for (int i = 0; i < modules; i++)
+		textureObject[i] = openGlImplement->LoadTexture(imagen);
 
-	textureObject = openGlImplement->LoadTexture(imagen);
 	SDL_FreeSurface(imagen);
+
+
+//	SDL_Rect src;
+//	src.x = spriteDef.modulos[nombre].x;
+//	src.y = spriteDef.modulos[nombre].y;
+//	src.w = spriteDef.modulos[nombre].w;
+//	src.h = spriteDef.modulos[nombre].h;
+//	SDL_Rect dest;
+//	dest.y = y;
+//	dest.x = x;
+
+
 
 }
 
 void Sprite::DrawModulo(int nombre, int x, int y){
-	SDL_Rect src;
-	src.x = spriteDef.modulos[nombre].x;
-	src.y = spriteDef.modulos[nombre].y;
-	src.w = spriteDef.modulos[nombre].w;
-	src.h = spriteDef.modulos[nombre].h;
-	SDL_Rect dest;
-	dest.y = y;
-	dest.x = x;
-	
-	openGlImplement->Draw(&vertexBufferObject, &indexBufferObject, &textureBufferObject, textureObject, x, y);
+	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, *textureObject, x, y);
 }
 
 	int Sprite::WidthModule(int module){
@@ -46,7 +51,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		return spriteDef.modulos[module].h;
 	}
 
-	Sprite::Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int module)
+	Sprite::Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int modules)
 	{
 		char pathImg[40];  
 		char pathDat[40]; 
@@ -56,18 +61,24 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		strcat(pathImg, ".bmp");
 		strcat(pathDat, ".dat");
 
-		this->module = module;
+		this->modules = modules;
 		this->openGlImplement = openGlImplement;
-		loadTexture(pathImg);
-		w = WidthModule(this->module);
-		h = HeightModule(this->module);
+
+		vertexBufferObject = new GLuint[1];
+		indexBufferObject = new GLuint[1];
+		textureBufferObject = new GLuint[1];
+		textureObject = new GLuint[1];
+
+		CreateTextures(pathImg);
+		w = WidthModule(this->modules);
+		h = HeightModule(this->modules);
 		this->x = x;
 		this->y = y;
 		automovimiento = false;
 		pasoActual = 0;
 		pasoLimite = -1;
 
-		Model model = getOBJinfo(pathDat);
+		Model model = GetOBJinfo(pathDat);
 		
 		vexterPositions = new GLfloat[model.positions * 3];
 		vertexTextures = new GLfloat[model.texels * 2];
@@ -76,8 +87,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 
 		faces[model.faces][9];
 
-		extractOBJdata(pathDat, model.positions);
-		openGlImplement->InitBuffers(&vertexBufferObject, &indexBufferObject, &textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), vextexIndex, model.positions * sizeof(GLuint), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
+		ExtractOBJdata(pathDat, model.positions);
+		openGlImplement->InitBuffers(vertexBufferObject, indexBufferObject, textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), vextexIndex, model.positions * sizeof(GLuint), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
 	}
 
 	void Sprite::SetAutoMovimiento(bool automovimiento)
@@ -101,7 +112,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 	}
 
 	void Sprite::Draw(){
-		DrawModulo(this->module, x, y);
+		DrawModulo(this->modules, x, y);
 	}
 
 	void Sprite::Draw(int modulo, int x, int y){
@@ -169,7 +180,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		this->y = y;
 	}
 
-	Sprite::Model Sprite::getOBJinfo(std::string fp)
+	Sprite::Model Sprite::GetOBJinfo(std::string fp)
 	{
 		Model model = { 0 };
 
@@ -206,7 +217,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		return model;
 	}
 
-	void Sprite::extractOBJdata(std::string fp, GLuint indexes)
+	void Sprite::ExtractOBJdata(std::string fp, GLuint indexes)
 	{
 		// Counters
 		int p = 0;

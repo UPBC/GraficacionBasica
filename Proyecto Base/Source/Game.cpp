@@ -44,7 +44,7 @@ void CGame::CargandoObjetos()
 {
 	nave = new Nave(&openGlImplement,"minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
 	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULO_MENU_FONDO);
-	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, -1);
+	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, 1);
 	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, 1);
 	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, 1);
 	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, 1);

@@ -15,7 +15,7 @@ class Sprite{
 	int pasos;
 	int pasoActual;
 	int pasoLimite;
-	int module;//Modulo actual
+	GLuint modules;
 	bool isVisible;
 	bool automovimiento;
 	
@@ -25,7 +25,7 @@ class Sprite{
 public:
 	Sprite(OpenGlImplement *openGlImplement);//constructor recibe la pantalla
 	~Sprite();
-	void loadTexture (char * name);
+	void CreateTextures (char * name);
 	
 	void DrawModulo(int nombre, int x, int y);
 	int WidthModule(int module);
@@ -34,7 +34,7 @@ public:
 	void SetVisible(bool isVisible);
 	void MoverArribaAbajo(int posicion);
 
-	Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int module);//
+	Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int modules);//
 
 	void SetAutoMovimiento(bool automovimiento);
 	void SetPasoLimite(int pasos);
@@ -65,15 +65,15 @@ public:
 	}
 	Model;
 
-	Model getOBJinfo(std::string fp);
-	void extractOBJdata(std::string fp, GLuint indexs);
+	Model GetOBJinfo(std::string fp);
+	void ExtractOBJdata(std::string fp, GLuint indexs);
 
 	OpenGlImplement *openGlImplement;
 
-	GLuint vertexBufferObject = 0;
-	GLuint indexBufferObject = 0;
-	GLuint textureBufferObject = 0;
-	GLuint textureObject = 0;
+	GLuint* vertexBufferObject;
+	GLuint* indexBufferObject;
+	GLuint* textureBufferObject;
+	GLuint* textureObject;
 
 	GLfloat* vexterPositions; 
 	GLfloat* vertexTextures; 
