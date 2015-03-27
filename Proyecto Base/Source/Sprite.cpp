@@ -21,26 +21,13 @@ void Sprite::CreateTextures(char* name){
 		exit(3);
 	}
 	for (int i = 0; i < modules; i++)
-		textureObject[i] = openGlImplement->LoadTexture(imagen);
+		textureObject[i] = openGlImplement->LoadTexture(imagen, vextexModules[(i * 4) + 0], vextexModules[(i * 4) + 1], vextexModules[(i * 4) + 2], vextexModules[(i * 4) + 3]);
 
 	SDL_FreeSurface(imagen);
-
-
-//	SDL_Rect src;
-//	src.x = spriteDef.modulos[nombre].x;
-//	src.y = spriteDef.modulos[nombre].y;
-//	src.w = spriteDef.modulos[nombre].w;
-//	src.h = spriteDef.modulos[nombre].h;
-//	SDL_Rect dest;
-//	dest.y = y;
-//	dest.x = x;
-
-
-
 }
 
-void Sprite::DrawModulo(int nombre, int x, int y){
-	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, *textureObject, x, y);
+void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
+	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[idArray], x, y);
 }
 
 	int Sprite::WidthModule(int module){
@@ -69,7 +56,17 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		textureBufferObject = new GLuint[modules];
 		textureObject = new GLuint[modules];
 
+		Model model = GetOBJinfo(pathDat);
+
+		vexterPositions = new GLfloat[model.positions * 3];
+		vertexTextures = new GLfloat[model.texels * 2];
+		vextexIndex = new GLuint[model.positions];
+		vextexNormals = new GLfloat[model.texels * 3];
+		vextexModules = new GLuint[model.modules * 4];
+
+		ExtractOBJdata(pathDat, model.positions);
 		CreateTextures(pathImg);
+
 		w = WidthModule(modules);
 		h = HeightModule(modules);
 		this->x = x;
@@ -78,16 +75,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		pasoActual = 0;
 		pasoLimite = -1;
 
-		Model model = GetOBJinfo(pathDat);
-		
-		vexterPositions = new GLfloat[model.positions * 3];
-		vertexTextures = new GLfloat[model.texels * 2];
-		vextexIndex = new GLuint[model.positions];
-		vextexNormals = new GLfloat[model.texels * 3];
-
 		faces[model.faces][9];
 
-		ExtractOBJdata(pathDat, model.positions);
 		openGlImplement->InitBuffers(vertexBufferObject, indexBufferObject, textureBufferObject, vexterPositions, 3 * model.positions * sizeof(vexterPositions), vextexIndex, model.positions * sizeof(GLuint), vertexTextures, 2 * model.texels * sizeof(vertexTextures));
 	}
 
@@ -115,8 +104,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		DrawModulo(this->modules, x, y);
 	}
 
-	void Sprite::Draw(int modulo, int x, int y){
-		DrawModulo(modulo, x, y);
+	void Sprite::Draw(GLuint idArray, GLuint x, GLuint y){
+		DrawModulo(idArray, x, y);
 	}
 
 	void Sprite::SetVisible(bool isVisible)
@@ -207,6 +196,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 				model.normals++;
 			else if (type.compare("f ") == 0)
 				model.faces++;
+			else if (type.compare("m ") == 0)
+				model.modules++;
 		}
 
 		model.vertices = model.faces * 3;
@@ -225,6 +216,7 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		int n = 0;
 		int f = 0;
 		int in = 0;
+		int m = 0;
 
 		// Open OBJ file
 		std::ifstream inOBJ;
@@ -251,7 +243,8 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 				// Extract tokens
 				strtok(l, " ");
 				for (int i = 0; i < 3; i++){
-					vexterPositions[(p*3)+i] = atof(strtok(NULL, " "));
+					vexterPositions[(p * 3) + i] = atof(strtok(NULL, " "));
+					//vexterPositions[(p * 3) + i] = openGlImplement->ConvertCOORDf(atoi(strtok(NULL, " ")));
 					//printf("%f ", vexterPositions[(p * 3) + i]);
 				}
 				// Wrap up
@@ -291,6 +284,22 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 				// Wrap up
 				delete[] l;
 				in++;
+			}
+			// Modules
+			else if (type.compare("m ") == 0)
+			{
+				// Copy line for parsing
+				char* l = new char[line.size() + 1];
+				memcpy(l, line.c_str(), line.size() + 1);
+
+				// Extract tokens
+				strtok(l, " ");
+				for (int i = 0; i < 4; i++){
+					vextexModules[(m * 4) + i] = atoi(strtok(NULL, " "));
+				}
+				// Wrap up
+				delete[] l;
+				m++;
 			}
 			// Normals
 			else if (type.compare("vn") == 0)

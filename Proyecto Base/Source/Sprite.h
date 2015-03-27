@@ -27,7 +27,6 @@ public:
 	~Sprite();
 	void CreateTextures (char * name);
 	
-	void DrawModulo(int nombre, int x, int y);
 	int WidthModule(int module);
 	int HeightModule(int module);
 
@@ -42,7 +41,8 @@ public:
 	void IncrementarPasoActual();
 	//bool EstaColicionando(Objeto * b);
 	void Draw();
-	void Draw(int modulo, int x, int y);
+	void Draw(GLuint idArray, GLuint x, GLuint y);
+	void DrawModulo(GLuint idArray, GLuint x, GLuint y);
 	void MoverLados(int posicion);
 	void Actualizar();
 	int GetY();
@@ -62,6 +62,7 @@ public:
 		int texels;
 		int normals;
 		int faces;
+		int modules;
 	}
 	Model;
 
@@ -78,6 +79,7 @@ public:
 	GLfloat* vexterPositions; 
 	GLfloat* vertexTextures; 
 	GLuint* vextexIndex;
+	GLuint* vextexModules;
 	GLfloat* vextexNormals;  
 	GLuint faces[][9];              // PTN PTN PTN
 

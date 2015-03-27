@@ -73,9 +73,6 @@
     <None Include="..\Ejecutable\balas.dat">
       <Filter>Data</Filter>
     </None>
-    <None Include="..\Ejecutable\cuadro.dat">
-      <Filter>Data</Filter>
-    </None>
     <None Include="..\Ejecutable\enemigo.dat">
       <Filter>Data</Filter>
     </None>

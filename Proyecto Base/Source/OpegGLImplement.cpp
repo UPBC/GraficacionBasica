@@ -83,7 +83,7 @@ void OpenGlImplement::InitShaders()
 	samplerUniform = glGetUniformLocation(shaderProgram, "uSampler");
 	
 	//Initialize clear color
-	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClearColor(0.6f, 0.6f, 0.6f, 1.f);
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
 
@@ -132,12 +132,8 @@ void OpenGlImplement::DrawStart()
 	glTranslatef(-1.0f, 1.0f, 0.0f); 
 }
 
-GLfloat OpenGlImplement::ConvertXf(GLuint x){
+GLfloat OpenGlImplement::ConvertCOORDf(GLuint x){
 	return ((GLfloat)x * 2.0f) / (GLfloat)WIDTH_SCREEN;
-}
-
-GLfloat OpenGlImplement::ConvertYf(GLuint y){
-	return ((GLfloat)y * 2.0f) / (GLfloat)HEIGHT_SCREEN;
 }
 
 /* The main drawing function. */
@@ -146,7 +142,7 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(ConvertXf(x), ConvertYf(y), 0.f);
+	glTranslatef(ConvertCOORDf(x), -ConvertCOORDf(y), 0.f);
 
 	//Bind program
 	glUseProgram(shaderProgram);
@@ -209,10 +205,9 @@ std::string OpenGlImplement::readFile(const char *filePath) {
 	return content;
 }
 
-GLuint OpenGlImplement::LoadTexture(SDL_Surface * surface)
+GLuint OpenGlImplement::LoadTexture(SDL_Surface * surface, GLuint x, GLuint y, GLuint w, GLuint h)
 {
 	GLuint texture;
-	int w, h;
 	SDL_Surface *image;
 	SDL_Rect area;
 
