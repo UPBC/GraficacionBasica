@@ -7,7 +7,7 @@ Nave::Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int 
 	nave = new Sprite(openGlImplement, rutaImagen, x, y, module);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
-		bala[i] = new Sprite(openGlImplement, "balas", 0, 0, MODULES_BALAS);
+		bala[i] = new Sprite(openGlImplement, "balas", 0, 0, MODULES_BALAS_MAX);
 		bala[i]->SetVisible(false);
 	}
 	balaVisible = 0;

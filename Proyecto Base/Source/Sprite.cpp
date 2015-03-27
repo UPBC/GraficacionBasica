@@ -64,14 +64,14 @@ void Sprite::DrawModulo(int nombre, int x, int y){
 		this->modules = modules;
 		this->openGlImplement = openGlImplement;
 
-		vertexBufferObject = new GLuint[1];
-		indexBufferObject = new GLuint[1];
-		textureBufferObject = new GLuint[1];
-		textureObject = new GLuint[1];
+		vertexBufferObject = new GLuint[modules];
+		indexBufferObject = new GLuint[modules];
+		textureBufferObject = new GLuint[modules];
+		textureObject = new GLuint[modules];
 
 		CreateTextures(pathImg);
-		w = WidthModule(this->modules);
-		h = HeightModule(this->modules);
+		w = WidthModule(modules);
+		h = HeightModule(modules);
 		this->x = x;
 		this->y = y;
 		automovimiento = false;

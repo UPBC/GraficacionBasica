@@ -42,21 +42,21 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	nave = new Nave(&openGlImplement,"minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULO_MINAVE_NAVE, NAVE_PROPIA);
-	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULO_MENU_FONDO);
-	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, 1);
-	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, 1);
-	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, 1);
-	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, 1);
+	nave = new Nave(&openGlImplement, "minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULES_MINAVE_MAX, NAVE_PROPIA);
+	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULES_BALAS_MAX);
+	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, MODULES_TITULOS_MAX);
+	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, MODULES_JUGANDO_MAX);
+	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, MODULES_GANASTE_MAX);
+	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, MODULES_PERDISTE_MAX);
 
 	for (int i = 0; i < MAXIMO_DE_ENEMIGOS; i++)
 	{
-		enemigoArreglo[i] = new Nave(&openGlImplement, "enemigo", i * 2, 0, 2, NAVE_ENEMIGA);
+		enemigoArreglo[i] = new Nave(&openGlImplement, "enemigo", i * 2, 0, MODULES_ENEMIGO_MAX, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
 		enemigoArreglo[i]->GetNaveObjeto()->SetPasoLimite(4);
 	}
 
-	opcionSeleccionada = MODULO_TEXTO_MENU_OPCION1;
+	opcionSeleccionada = MODULES_TEXTO_MENU_OPCION1;
 }
 // Con esta función eliminaremos todos los elementos en pantalla
 void CGame::Finalize(){
@@ -287,22 +287,22 @@ void CGame::MenuActualizar()
 {
 		if (keys[SDL_SCANCODE_UP])
 		{
-			opcionSeleccionada = MODULO_TEXTO_MENU_OPCION1;
+			opcionSeleccionada = MODULES_TEXTO_MENU_OPCION1;
 		}
 
 		if (keys[SDL_SCANCODE_DOWN])
 		{
-			opcionSeleccionada = MODULO_TEXTO_MENU_OPCION2;
+			opcionSeleccionada = MODULES_TEXTO_MENU_OPCION2;
 		}
 
 		if (keys[SDL_SCANCODE_RETURN])
 		{
-			if (opcionSeleccionada == MODULO_TEXTO_MENU_OPCION1)
+			if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
 			{
 				estadoJuego = Estado::ESTADO_PRE_JUGANDO;
 			}
 
-			if (opcionSeleccionada == MODULO_TEXTO_MENU_OPCION2)
+			if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION2)
 			{
 				estadoJuego = Estado::ESTADO_FINALIZANDO;
 			}
@@ -311,15 +311,15 @@ void CGame::MenuActualizar()
 
 void CGame::MenuPintar()
 {
-	menuFondo->Draw();
-	textosObjeto->Draw(MODULO_TEXTO_TITULO, 150, 0);
-	textosObjeto->Draw(MODULO_TEXTO_NOMBRE, 620, 570);
-	textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION1, 320, 220);
-	textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION2, 320, 250);
-	if (opcionSeleccionada == MODULO_TEXTO_MENU_OPCION1)
-		textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION1, 320, 220 );
+	//menuFondo->Draw();
+	textosObjeto->Draw(MODULES_TEXTO_TITULO, 150, 0);
+	textosObjeto->Draw(MODULES_TEXTO_NOMBRE, 620, 570);
+	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
+	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 250);
+	if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
+		textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220 );
 	else
-		textosObjeto->Draw(MODULO_TEXTO_MENU_OPCION2, 320, 220 + 30);
+		textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
 
 }//void	
 

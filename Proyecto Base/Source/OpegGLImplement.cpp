@@ -129,7 +129,7 @@ void OpenGlImplement::DrawStart()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();    
-	glTranslatef(-0.7f, 0.7f, -1.0f); 
+	glTranslatef(-1.0f, 1.0f, 0.0f); 
 }
 
 GLfloat OpenGlImplement::ConvertXf(GLuint x){
@@ -137,7 +137,7 @@ GLfloat OpenGlImplement::ConvertXf(GLuint x){
 }
 
 GLfloat OpenGlImplement::ConvertYf(GLuint y){
-	return ((GLfloat)y * -2.0f) / (GLfloat)HEIGHT_SCREEN;
+	return ((GLfloat)y * 2.0f) / (GLfloat)HEIGHT_SCREEN;
 }
 
 /* The main drawing function. */
