@@ -42,16 +42,16 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	nave = new Nave(&openGlImplement, "minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULES_MINAVE_MAX, NAVE_PROPIA);
-	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULES_BALAS_MAX);
 	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, MODULES_TITULOS_MAX);
+	nave = new Nave(&openGlImplement, "Minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULES_MINAVE_MAX, NAVE_PROPIA);
+	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULES_BALAS_MAX);
 	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, MODULES_JUGANDO_MAX);
 	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, MODULES_GANASTE_MAX);
 	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, MODULES_PERDISTE_MAX);
 
 	for (int i = 0; i < MAXIMO_DE_ENEMIGOS; i++)
 	{
-		enemigoArreglo[i] = new Nave(&openGlImplement, "enemigo", i * 2, 0, MODULES_ENEMIGO_MAX, NAVE_ENEMIGA);
+		enemigoArreglo[i] = new Nave(&openGlImplement, "Enemigo", i * 2, 0, MODULES_ENEMIGO_MAX, NAVE_ENEMIGA);
 		enemigoArreglo[i]->GetNaveObjeto()->SetAutoMovimiento(false);
 		enemigoArreglo[i]->GetNaveObjeto()->SetPasoLimite(4);
 	}
@@ -312,14 +312,14 @@ void CGame::MenuActualizar()
 void CGame::MenuPintar()
 {
 	//menuFondo->Draw();
-	textosObjeto->Draw(MODULES_TEXTO_TITULO, 150, 0);
-	textosObjeto->Draw(MODULES_TEXTO_NOMBRE, 620, 570);
-	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
-	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 250);
-	if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
-		textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220 );
-	else
-		textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
+	textosObjeto->Draw(MODULES_TEXTO_TITULO, 40, 0);
+	//textosObjeto->Draw(MODULES_TEXTO_NOMBRE, WIDTH_SCREEN / 2, 570);
+	//textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
+	//textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 250);
+	//if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
+	//	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220 );
+	//else
+	//	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
 
 }//void	
 
