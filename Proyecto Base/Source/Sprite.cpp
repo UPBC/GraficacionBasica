@@ -3,7 +3,15 @@
 #include <SDL.h>
 
 Sprite::Sprite(OpenGlImplement *openGlImplement){
-	angle_x = 0;
+	rotate_x = 0.f; 
+	rotate_y = 0.f;
+	rotate_z = 0.f;
+	translate_x = 0.f;
+	translate_y = 0.f;
+	translate_z = 0.f;
+	scale_x = 1.f;
+	scale_y = 1.f;
+	scale_z = 1.f;
 	this->openGlImplement = openGlImplement;
 }
 
@@ -25,10 +33,6 @@ void Sprite::CreateTextures(char* name){
 	textureObject[0] = openGlImplement->LoadTexture(imagen, vextexPositions[0], vextexPositions[1], vextexPositions[0], vextexPositions[1]);
 
 	SDL_FreeSurface(imagen);
-}
-
-void Sprite::DrawModulo(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
-	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[idArray], x, y, z, angle_x, numero_vertices);
 }
 
 	int Sprite::WidthModule(int module){
@@ -73,7 +77,16 @@ void Sprite::DrawModulo(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
 		automovimiento = false;
 		pasoActual = 0;
 		pasoLimite = -1;
-		angle_x = 0;
+
+		rotate_x = 0.f;
+		rotate_y = 0.f;
+		rotate_z = 0.f;
+		translate_x = 0.f;
+		translate_y = 0.f;
+		translate_z = 0.f;
+		scale_x = 1.f;
+		scale_y = 1.f;
+		scale_z = 1.f;
 
 		faces[model.faces][9];
 
@@ -101,15 +114,30 @@ void Sprite::DrawModulo(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
 	}
 
 	void Sprite::Draw(){
-		DrawModulo(0, x, y, 0.f);
+		openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[0], translate_x, translate_y, translate_z, rotate_x,rotate_y,rotate_z,scale_x,scale_y,scale_z, numero_vertices);
 	}
 
-	void Sprite::Draw(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
-		DrawModulo(idArray, x, y, z);
+	void Sprite::TranslateXYZ(GLfloat x, GLfloat y, GLfloat z){
+		translate_x = x;
+		translate_y = y;
+		translate_z = z;
 	}
 
-	void Sprite::Rotate(){
-		angle_x++;
+	void Sprite::TranslateXYDraw(GLfloat x, GLfloat y){
+		translate_x = x;
+		translate_y = y;
+		Draw();
+	}
+
+	void Sprite::RotateXYZ(GLfloat x, GLfloat y, GLfloat z){
+		rotate_x++;
+		rotate_y++;
+		rotate_z++;
+	}
+	void Sprite::ScaleXYZ(GLfloat x, GLfloat y, GLfloat z){
+		scale_x = x;
+		scale_y = y;
+		scale_z = z;
 	}
 
 	void Sprite::SetVisible(bool isVisible)

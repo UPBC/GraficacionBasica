@@ -45,10 +45,10 @@ public:
 	void InitShaders();
 	void InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen);
 	void QuitShaders();
-	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y, GLfloat z, GLfloat angle_x, GLuint size);
+	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat translate_x, GLfloat translate_y, GLfloat translate_z, GLfloat rotate_x, GLfloat rotate_y, GLfloat rotate_z, GLfloat scale_x, GLfloat scale_y, GLfloat scale_z, GLuint size);
 	void DrawStart();
 	void DrawEnd();
-	GLfloat ConvertCOORDf(GLint coord);
+	GLfloat ConvertCOORDf(GLfloat coord);
 	GLuint LoadTexture(SDL_Surface * surface, GLuint x, GLuint y, GLuint w, GLuint h);
 
 	GLuint shaderProgram = 0;

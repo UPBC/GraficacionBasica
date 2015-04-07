@@ -91,7 +91,6 @@ void OpenGlImplement::InitShaders()
 	glDepthFunc(GL_ALWAYS);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-
 }
 
 void OpenGlImplement::InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen){
@@ -129,22 +128,24 @@ void OpenGlImplement::DrawStart()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.999999, 30.0);
-	glTranslatef(-1.0f, 1.0f, -2.0f);
+	glTranslatef(-1.0f, 1.0f, -2.00f);
 }
 
-GLfloat OpenGlImplement::ConvertCOORDf(GLint x){
+GLfloat OpenGlImplement::ConvertCOORDf(GLfloat x){
 	return ((GLfloat)x * 2.0f) / (GLfloat)WIDTH_SCREEN;
 }
 
 /* The main drawing function. */
-void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y, GLfloat z, GLfloat angle_x, GLuint size)
+void  OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat translate_x, GLfloat translate_y, GLfloat translate_z, GLfloat rotate_x, GLfloat rotate_y, GLfloat rotate_z, GLfloat scale_x, GLfloat scale_y, GLfloat scale_z, GLuint size)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glTranslatef(ConvertCOORDf(translate_x), -ConvertCOORDf(translate_y), translate_z);
+	glRotatef(rotate_x, 1.f, 0.f, 0.f);
+	glRotatef(rotate_y, 0.f, 1.f, 0.f);
+	glRotatef(rotate_z, 0.f, 0.f, 1.f);
 
-	glTranslatef(ConvertCOORDf(x), -ConvertCOORDf(y), 0.f);
-	glRotatef(angle_x, 0.f, 1.f, 0.f);
-	glScalef(z, z, 1.f);
+	glScalef(scale_x, scale_y, scale_z);
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position

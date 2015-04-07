@@ -40,11 +40,22 @@ public:
 	void IncrementarPasoActual();
 	//bool EstaColicionando(Objeto * b);
 	void Draw();
-	void Draw(GLuint idArray, GLfloat x, GLfloat y, GLfloat z);
-	void DrawModulo(GLuint idArray, GLfloat x, GLfloat y, GLfloat z);
 	
-	void Rotate();
-	GLuint angle_x;
+	void TranslateXYZ(GLfloat x, GLfloat y, GLfloat z);
+	void TranslateXYDraw(GLfloat x, GLfloat y);
+	void RotateXYZ(GLfloat x, GLfloat y, GLfloat z);
+	void ScaleXYZ(GLfloat x, GLfloat y, GLfloat z);
+
+	GLfloat rotate_x;
+	GLfloat rotate_y;
+	GLfloat rotate_z;
+	GLfloat translate_x;
+	GLfloat translate_y;
+	GLfloat translate_z;
+	GLfloat scale_x;
+	GLfloat scale_y;
+	GLfloat scale_z;
+
 	GLuint numero_vertices;
 
 	void MoverLados(int posicion);
