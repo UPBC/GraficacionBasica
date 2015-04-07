@@ -18,7 +18,7 @@ public:
 		BALA,
 	};
 
-	Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int module, int tipoNave);
+	Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int tipoNave);
 	void Pintar();
 	void Disparar(int balas);
 	void AutoDisparar(int balas);

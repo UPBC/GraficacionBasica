@@ -38,7 +38,7 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 		return spriteDef.modulos[module].h;
 	}
 
-	Sprite::Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int modules)
+	Sprite::Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y)
 	{
 		char pathImg[40];  
 		char pathDat[40]; 
@@ -65,8 +65,8 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 		ExtractOBJdata(pathDat, model.positions);
 		CreateTextures(pathImg);
 
-		w = WidthModule(modules);
-		h = HeightModule(modules);
+		w = WidthModule(0);
+		h = HeightModule(0);
 		this->x = x;
 		this->y = y;
 		automovimiento = false;

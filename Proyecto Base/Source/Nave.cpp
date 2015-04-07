@@ -2,12 +2,12 @@
 #include "Config.h"
 #include <stdlib.h>
 
-Nave::Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int module, int tipoNave)
+Nave::Nave(OpenGlImplement* openGlImplement, char*rutaImagen, int x, int y, int tipoNave)
 {
-	nave = new Sprite(openGlImplement, rutaImagen, x, y, module);
+	nave = new Sprite(openGlImplement, rutaImagen, x, y);
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
-		bala[i] = new Sprite(openGlImplement, "Balas", 0, 0, MODULES_BALAS_MAX);
+		bala[i] = new Sprite(openGlImplement, "Balas", 0, 0);
 		bala[i]->SetVisible(false);
 	}
 	balaVisible = 0;

@@ -32,7 +32,7 @@ public:
 	void SetVisible(bool isVisible);
 	void MoverArribaAbajo(int posicion);
 
-	Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y, int modules);//
+	Sprite(OpenGlImplement* openGlImplement, char * nameResource, int x, int y);
 
 	void SetAutoMovimiento(bool automovimiento);
 	void SetPasoLimite(int pasos);
