@@ -96,7 +96,12 @@
     <None Include="..\Ejecutable\Menu.dat" />
     <None Include="..\Ejecutable\minave.dat" />
     <None Include="..\Ejecutable\Perdiste.dat" />
-    <None Include="..\Ejecutable\Titulos.dat" />
+    <None Include="..\Ejecutable\Texto_Nombre.dat" />
+    <None Include="..\Ejecutable\Texto_Opcion1.dat" />
+    <None Include="..\Ejecutable\Texto_Opcion1Sel.dat" />
+    <None Include="..\Ejecutable\Texto_Opcion2.dat" />
+    <None Include="..\Ejecutable\Texto_Opcion2Sel.dat" />
+    <None Include="..\Ejecutable\Texto_Titulo.dat" />
     <None Include="..\Ejecutable\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

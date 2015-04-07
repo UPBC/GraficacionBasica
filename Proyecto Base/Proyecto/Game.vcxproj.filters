@@ -91,7 +91,22 @@
     <None Include="..\Ejecutable\Perdiste.dat">
       <Filter>Data</Filter>
     </None>
-    <None Include="..\Ejecutable\Titulos.dat">
+    <None Include="..\Ejecutable\Texto_Nombre.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Texto_Opcion1.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Texto_Opcion1Sel.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Texto_Opcion2.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Texto_Opcion2Sel.dat">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="..\Ejecutable\Texto_Titulo.dat">
       <Filter>Data</Filter>
     </None>
   </ItemGroup>

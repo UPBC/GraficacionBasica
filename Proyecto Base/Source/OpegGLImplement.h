@@ -45,7 +45,7 @@ public:
 	void InitShaders();
 	void InitBuffers(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLfloat* vexterPositions, GLuint vertexDataLen, GLuint* indexData, GLuint indexDataLen, GLfloat* textureData, GLuint textureDataLen);
 	void QuitShaders();
-	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y);
+	void Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y, GLfloat z, GLfloat angle_x, GLuint size);
 	void DrawStart();
 	void DrawEnd();
 	GLfloat ConvertCOORDf(GLint coord);

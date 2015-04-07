@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 Sprite::Sprite(OpenGlImplement *openGlImplement){
+	angle_x = 0;
 	this->openGlImplement = openGlImplement;
 }
 
@@ -26,8 +27,8 @@ void Sprite::CreateTextures(char* name){
 	SDL_FreeSurface(imagen);
 }
 
-void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
-	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[idArray], x, y);
+void Sprite::DrawModulo(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
+	openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[idArray], x, y, z, angle_x, numero_vertices);
 }
 
 	int Sprite::WidthModule(int module){
@@ -56,7 +57,7 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 		textureObject = new GLuint[1];
 
 		Model model = GetOBJinfo(pathDat);
-
+		numero_vertices = model.positions;
 		vextexPositions = new GLfloat[model.positions * 3];
 		vertexTextures = new GLfloat[model.texels * 2];
 		vextexIndex = new GLuint[model.positions];
@@ -72,6 +73,7 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 		automovimiento = false;
 		pasoActual = 0;
 		pasoLimite = -1;
+		angle_x = 0;
 
 		faces[model.faces][9];
 
@@ -99,11 +101,15 @@ void Sprite::DrawModulo(GLuint idArray, GLuint x, GLuint y){
 	}
 
 	void Sprite::Draw(){
-		DrawModulo(0, x, y);
+		DrawModulo(0, x, y, 0.f);
 	}
 
-	void Sprite::Draw(GLuint idArray, GLuint x, GLuint y){
-		DrawModulo(idArray, x, y);
+	void Sprite::Draw(GLuint idArray, GLfloat x, GLfloat y, GLfloat z){
+		DrawModulo(idArray, x, y, z);
+	}
+
+	void Sprite::Rotate(){
+		angle_x++;
 	}
 
 	void Sprite::SetVisible(bool isVisible)

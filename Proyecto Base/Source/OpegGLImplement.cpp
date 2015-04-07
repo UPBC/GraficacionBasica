@@ -84,12 +84,11 @@ void OpenGlImplement::InitShaders()
 	
 	//Initialize clear color
 	glClearColor(0.6f, 0.6f, 0.6f, 1.f);
-	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, WIDTH_SCREEN, HEIGHT_SCREEN);
 
-	glClearDepth(1.0f);                   // Set background depth to farthest
+	//glClearDepth(1.0f);                   // Set background depth to farthest
 	glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-	glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
+	glDepthFunc(GL_ALWAYS);    // Set the type of depth-test
 	glShadeModel(GL_SMOOTH);   // Enable smooth shading
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 
@@ -126,10 +125,11 @@ void OpenGlImplement::QuitShaders()
 
 void OpenGlImplement::DrawStart()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();    
-	glTranslatef(-1.0f, 1.0f, 0.0f); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.999999, 30.0);
+	glTranslatef(-1.0f, 1.0f, -2.0f);
 }
 
 GLfloat OpenGlImplement::ConvertCOORDf(GLint x){
@@ -137,13 +137,14 @@ GLfloat OpenGlImplement::ConvertCOORDf(GLint x){
 }
 
 /* The main drawing function. */
-void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y)
+void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject, GLuint* textureBufferObject, GLuint textureObject, GLfloat x, GLfloat y, GLfloat z, GLfloat angle_x, GLuint size)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	glTranslatef(ConvertCOORDf(x), -ConvertCOORDf(y), 0.f);
-
+	glRotatef(angle_x, 0.f, 1.f, 0.f);
+	glScalef(z, z, 1.f);
 	//Bind program
 	glUseProgram(shaderProgram);
 	//Enable vertex position
@@ -152,7 +153,7 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 
 	//Set vertex data
 	glBindBuffer(GL_ARRAY_BUFFER, *vertexBufferObject);
-	glVertexAttribPointer(vertexPositionAttribute, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+	glVertexAttribPointer(vertexPositionAttribute, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
 	//Set index data and render
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *indexBufferObject);
 
@@ -162,8 +163,8 @@ void OpenGlImplement::Draw(GLuint* vertexBufferObject, GLuint* indexBufferObject
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureObject);
 	//glUniform1i(samplerUniform, 0);
-
-	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, NULL);
+	
+	glDrawElements(GL_TRIANGLE_STRIP, size, GL_UNSIGNED_INT, NULL);
 	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	//Disable vertex position
 	glDisableVertexAttribArray(vertexTextureCoordAttribute);
