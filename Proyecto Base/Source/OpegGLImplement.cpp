@@ -210,25 +210,14 @@ GLuint OpenGlImplement::LoadTexture(SDL_Surface * surface, GLuint x, GLuint y, G
 	GLuint texture;
 	SDL_Surface *image;
 	SDL_Rect area;
-	SDL_BlendMode saved_mode;
-
 
 	image = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w, surface->h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 
-	/* Save the alpha blending attributes */
-	SDL_GetSurfaceBlendMode(surface, &saved_mode);
-	SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_NONE);
-
-	area.x = x;
-	area.y = y;
-	area.w = w;
-	area.h = h;
-
+	area.x = 0;
+	area.y = 0;
+	area.w = surface->w;
+	area.h = surface->h;
 	SDL_BlitSurface(surface, &area, image, &area);
-
-	/* Restore the alpha blending attributes */
-	SDL_SetSurfaceBlendMode(surface, saved_mode);
-
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);

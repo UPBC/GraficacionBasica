@@ -42,9 +42,14 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
-	textosObjeto = new Sprite(&openGlImplement, "Titulos", 0, 0, MODULES_TITULOS_MAX);
-	nave = new Nave(&openGlImplement, "Minave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULES_MINAVE_MAX, NAVE_PROPIA);
 	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0, MODULES_BALAS_MAX);
+	textoTitulo = new Sprite(&openGlImplement, "Texto_Titulo", 0, 0, MODULES_TITULO_MAX);
+	textoNombre = new Sprite(&openGlImplement, "Texto_Nombre", 0, 0, MODULES_TITULO_MAX);
+	textoOpcion1 = new Sprite(&openGlImplement, "Texto_Opcion1", 0, 0, MODULES_TITULO_MAX);
+	textoOpcion2 = new Sprite(&openGlImplement, "Texto_Opcion2", 0, 0, MODULES_TITULO_MAX);
+	textoOpcion1Sel = new Sprite(&openGlImplement, "Texto_Opcion1Sel", 0, 0, MODULES_TITULO_MAX);
+	textoOpcion2Sel = new Sprite(&openGlImplement, "Texto_Opcion2Sel", 0, 0, MODULES_TITULO_MAX);
+	nave = new Nave(&openGlImplement, "MiNave", (WIDTH_SCREEN / 2), (HEIGHT_SCREEN - 80), MODULES_MINAVE_MAX, NAVE_PROPIA);
 	jugandoFondo = new Sprite(&openGlImplement, "Jugando", 0, 0, MODULES_JUGANDO_MAX);
 	ganasteFondo = new Sprite(&openGlImplement, "Ganaste", 0, 0, MODULES_GANASTE_MAX);
 	perdisteFondo = new Sprite(&openGlImplement, "Perdiste", 0, 0, MODULES_PERDISTE_MAX);
@@ -287,12 +292,12 @@ void CGame::MenuActualizar()
 {
 		if (keys[SDL_SCANCODE_UP])
 		{
-			opcionSeleccionada = MODULES_TEXTO_MENU_OPCION1;
+			opcionSeleccionada = MENU_OPCION1;
 		}
 
 		if (keys[SDL_SCANCODE_DOWN])
 		{
-			opcionSeleccionada = MODULES_TEXTO_MENU_OPCION2;
+			opcionSeleccionada = MENU_OPCION2;
 		}
 
 		if (keys[SDL_SCANCODE_RETURN])
@@ -311,15 +316,16 @@ void CGame::MenuActualizar()
 
 void CGame::MenuPintar()
 {
-	//menuFondo->Draw();
-	textosObjeto->Draw(MODULES_TEXTO_TITULO, 40, 0);
-	//textosObjeto->Draw(MODULES_TEXTO_NOMBRE, WIDTH_SCREEN / 2, 570);
-	//textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
-	//textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 250);
-	//if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
-	//	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220 );
-	//else
-	//	textosObjeto->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
+	menuFondo->Draw();
+	textoTitulo->Draw(MODULES_TEXTO_TITULO, WIDTH_SCREEN/8, 0);
+	textoNombre->Draw(MODULES_TEXTO_NOMBRE, WIDTH_SCREEN/3, 570);
+	textoOpcion1->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
+	textoOpcion2->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
+
+	if (opcionSeleccionada == MODULES_TEXTO_MENU_OPCION1)
+		textoOpcion1Sel->Draw(MODULES_TEXTO_MENU_OPCION1, 320, 220);
+	else
+		textoOpcion2Sel->Draw(MODULES_TEXTO_MENU_OPCION2, 320, 220 + 30);
 
 }//void	
 

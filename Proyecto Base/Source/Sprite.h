@@ -15,7 +15,6 @@ class Sprite{
 	int pasos;
 	int pasoActual;
 	int pasoLimite;
-	GLuint modules;
 	bool isVisible;
 	bool automovimiento;
 	
@@ -76,10 +75,10 @@ public:
 	GLuint* textureBufferObject;
 	GLuint* textureObject;
 
-	GLfloat* vexterPositions; 
+	GLfloat* vextexPositions; 
 	GLfloat* vertexTextures; 
 	GLuint* vextexIndex;
-	GLuint* vextexModules;
+
 	GLfloat* vextexNormals;  
 	GLuint faces[][9];              // PTN PTN PTN
 

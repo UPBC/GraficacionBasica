@@ -69,7 +69,12 @@ private:
 	int tiempoFrameFinal;
 
 	Sprite *menuFondo;//Fondo del menu
-	Sprite *textosObjeto;//Textos del juego
+	Sprite *textoTitulo;//Textos del juego
+	Sprite *textoNombre;//Textos del juego
+	Sprite *textoOpcion1;//Textos del juego
+	Sprite *textoOpcion2;//Textos del juego
+	Sprite *textoOpcion1Sel;//Textos del juego
+	Sprite *textoOpcion2Sel;//Textos del juego
 	Sprite *jugandoFondo;//Fondo del juego
 	Sprite *ganasteFondo;//Fondo cuando ganas
 	Sprite *perdisteFondo;//Fondo cuando ganas
