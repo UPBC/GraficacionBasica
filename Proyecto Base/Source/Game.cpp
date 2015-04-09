@@ -322,9 +322,7 @@ void CGame::MenuPintar()
 	menuFondo->Draw();
 	textoTitulo->TranslateXYDraw(WIDTH_SCREEN / 8, 0);
 
-	//textoNombre->TranslateXYDraw( WIDTH_SCREEN / 3, 450);//570
-
-	textoNombre->TranslateXYZ( WIDTH_SCREEN / 3, 450, 0.f);//570
+	textoNombre->TranslateXY( WIDTH_SCREEN / 3, 450);//570
 	textoNombre->Draw();
 
 	textoOpcion1->TranslateXYDraw(320, 220);
