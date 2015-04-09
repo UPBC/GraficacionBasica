@@ -49,6 +49,7 @@ public:
 	void DrawStart();
 	void DrawEnd();
 	GLfloat ConvertCOORDf(GLfloat coord);
+	GLfloat ConvertCOORDInvf(GLfloat coord);
 	GLuint LoadTexture(SDL_Surface * surface, GLuint x, GLuint y, GLuint w, GLuint h);
 
 	GLuint shaderProgram = 0;

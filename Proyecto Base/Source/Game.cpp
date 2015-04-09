@@ -233,10 +233,10 @@ void CGame::JugandoPintar(){
 	if (vida <= CERO)
 		estadoJuego = ESTADO_TERMINANDO;
 
-	nave->Pintar();
+	nave->Draw();
 	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
-		enemigoArreglo[i]->Pintar();
+		enemigoArreglo[i]->Draw();
 		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].Enemigo_VelocidadBala);
 	}
 }
