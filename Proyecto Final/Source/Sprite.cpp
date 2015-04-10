@@ -115,29 +115,36 @@ void Sprite::CreateTextures(char* name){
 		openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[0], translate_x, translate_y, translate_z, rotate_x,rotate_y,rotate_z,scale_x,scale_y,scale_z, numero_vertices);
 	}
 
-	void Sprite::TranslateXYZ(GLfloat x, GLfloat y, GLfloat z){
+	void Sprite::Translate(GLfloat x, GLfloat y, GLfloat z){
 		translate_x = x;
 		translate_y = y;
 		translate_z = z;
 	}
 
-	void Sprite::TranslateXY(GLfloat x, GLfloat y){
+	void Sprite::Translate(GLfloat x, GLfloat y){
 		translate_x = x;
 		translate_y = y;
 	}
 
-	void Sprite::TranslateXYDraw(GLfloat x, GLfloat y){
+	void Sprite::TranslateDraw(GLfloat x, GLfloat y){
 		translate_x = x;
 		translate_y = y;
 		Draw();
 	}
 
-	void Sprite::RotateXYZ(GLfloat x, GLfloat y, GLfloat z){
+	void Sprite::Rotate(GLfloat x, GLfloat y, GLfloat z){
+		rotate_x=x;
+		rotate_y=y;
+		rotate_z++;
+	}
+
+	void Sprite::Rotate(){
 		rotate_x++;
 		rotate_y++;
 		rotate_z++;
 	}
-	void Sprite::ScaleXYZ(GLfloat x, GLfloat y, GLfloat z){
+
+	void Sprite::Scale(GLfloat x, GLfloat y, GLfloat z){
 		scale_x = x;
 		scale_y = y;
 		scale_z = z;
@@ -264,7 +271,7 @@ void Sprite::CreateTextures(char* name){
 				// Extract tokens
 				strtok(l, " ");
 				for (int i = 0; i < 3; i++)
-					vertexPositions[(p * 3) + i] = openGlImplement->ConvertCOORDf(atoi(strtok(NULL, " ")));
+					vertexPositions[(p * 3) + i] = openGlImplement->ConvertCOORDf(atof(strtok(NULL, " ")));
 
 				// Wrap up
 				delete[] l;

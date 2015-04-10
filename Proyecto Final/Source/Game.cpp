@@ -45,9 +45,9 @@ void CGame::IniciandoVideo()
 
 void CGame::CargandoObjetos()
 {
+	textoNombre = new Sprite(&openGlImplement, "Texto_Nombre", 0, 0);
 	menuFondo = new Sprite(&openGlImplement, "Menu", 0, 0);
 	textoTitulo = new Sprite(&openGlImplement, "Texto_Titulo", 0, 0);
-	textoNombre = new Sprite(&openGlImplement, "Texto_Nombre", 0, 0);
 	textoOpcion1 = new Sprite(&openGlImplement, "Texto_Opcion1", 0, 0);
 	textoOpcion2 = new Sprite(&openGlImplement, "Texto_Opcion2", 0, 0);
 	textoOpcion1Sel = new Sprite(&openGlImplement, "Texto_Opcion1Sel", 0, 0);
@@ -320,18 +320,21 @@ void CGame::MenuActualizar()
 void CGame::MenuPintar()
 {
 	menuFondo->Draw();
-	textoTitulo->TranslateXYDraw(WIDTH_SCREEN / 8, 0);
+	textoTitulo->TranslateDraw(WIDTH_SCREEN / 8, 0);
 
-	textoNombre->TranslateXY( WIDTH_SCREEN / 3, 450);//570
+	textoNombre->Translate( WIDTH_SCREEN / 3, 450,-2.f);//570
+	textoNombre->Scale(60.f, 60.f, 60.f);
+	textoNombre->Rotate(-90.f, 0.f, 90.f);
+	textoNombre->Rotate();
 	textoNombre->Draw();
 
-	textoOpcion1->TranslateXYDraw(320, 220);
-	textoOpcion2->TranslateXYDraw(320, 220 + 30);
+	textoOpcion1->TranslateDraw(320, 220);
+	textoOpcion2->TranslateDraw(320, 220 + 30);
 
 	if (opcionSeleccionada == MENU_OPCION1)
-		textoOpcion1Sel->TranslateXYDraw(320, 220);
+		textoOpcion1Sel->TranslateDraw(320, 220);
 	else
-		textoOpcion2Sel->TranslateXYDraw(320, 220 + 30);
+		textoOpcion2Sel->TranslateDraw(320, 220 + 30);
 
 }//void	
 

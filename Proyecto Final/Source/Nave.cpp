@@ -24,12 +24,12 @@ void Nave::crearNuevo(int pos)
 	for (int i = 0; i < MAXIMO_DE_BALAS; i++)
 	{
 		bala[i]->SetVisible(false);
-		bala[i]->TranslateXY(-5, 0);
+		bala[i]->Translate(-5, 0);
 	}
 	if (tipoNave == NAVE_PROPIA)
-		nave->TranslateXY(pos, HEIGHT_SCREEN - 64);
+		nave->Translate(pos, HEIGHT_SCREEN - 64);
 	if (tipoNave == NAVE_ENEMIGA)
-		nave->TranslateXY(pos, 0);
+		nave->Translate(pos, 0);
 }
 
 void Nave::Disparar(int balas)
@@ -40,11 +40,11 @@ void Nave::Disparar(int balas)
 		switch (tipoNave)
 		{
 		case NAVE_PROPIA:
-			bala[balaVisible]->TranslateXY(nave->GetX() + nave->GetW() / 2, nave->GetY());
+			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY());
 			break;
 
 		case NAVE_ENEMIGA:
-			bala[balaVisible]->TranslateXY(nave->GetX() + nave->GetW() / 2, nave->GetY() + nave->GetH());
+			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY() + nave->GetH());
 			break;
 		}
 		balaVisible++;

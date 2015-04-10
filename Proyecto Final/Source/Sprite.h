@@ -39,11 +39,12 @@ public:
 	//bool EstaColicionando(Objeto * b);
 	void Draw();
 	
-	void TranslateXYZ(GLfloat x, GLfloat y, GLfloat z);
-	void TranslateXY(GLfloat x, GLfloat y);
-	void TranslateXYDraw(GLfloat x, GLfloat y);
-	void RotateXYZ(GLfloat x, GLfloat y, GLfloat z);
-	void ScaleXYZ(GLfloat x, GLfloat y, GLfloat z);
+	void Translate(GLfloat x, GLfloat y, GLfloat z);
+	void Translate(GLfloat x, GLfloat y);
+	void TranslateDraw(GLfloat x, GLfloat y);
+	void Rotate(GLfloat x, GLfloat y, GLfloat z);
+	void Rotate();
+	void Scale(GLfloat x, GLfloat y, GLfloat z);
 
 	GLfloat rotate_x;
 	GLfloat rotate_y;
