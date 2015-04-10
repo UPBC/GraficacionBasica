@@ -1,26 +1,47 @@
-Yara_MArio_Mario
-https://github.com/YarazethIsilaLemusHernandez7AM/ElRepositorio
+_AlejandroC_AngelG
+https://github.com/AngelGonzalezGodoy/Proyecto-Graficacion-Basica/
 
-Susana_JoseMendoza
-https://github.com/SusanaHernandezBarajas7AM/EquipoRepositorio
+_German_LuisH
+https://github.com/luishernandezuno/Proyecto1erCorte_Luis_German/
+
+_Nancy_Sanz
+https://github.com/gabrielsanz7av/Proyecto-1er-corte/
+
+_Penagos_Leo_UrielA
+https://github.com/UrielAcosta7AV/GraficacionBasicaEquipo/
+
+_Roque
+https://github.com/GarridoRoque7av/Graficacion-Basica/trunk/Proyecto
+
+_Yesenia_Eddy
+https://github.com/EddyFlores7AV/Juego_Equipo/
 
 Alfredo_Rogelio
-https://github.com/AlfredoNunez7AM/SuperRepositorio
-
-Jenaro_Diego
-https://github.com/vjenaro/RepositorioDos
-
-Francisco_Manuel_Huitron
-https://github.com/AdrianHuitron/GB_Proyecto
+https://github.com/AlfredoNunez7AM/SuperRepositorio/
 
 Ana
-https://github.com/AnaJulietaMontoya7AM/Proyecto
+https://github.com/AnaJulietaMontoya7AM/Proyecto/
 
-Roben_Monica
-https://github.com/RubenGarci/Repositorio-en-equipo
+Francisco_Manuel_Huitron
+https://github.com/AdrianHuitron/GB_Proyecto/
 
-Lagarda_Cristian
-https://github.com/CristianAM7/Repositoreishon
+Jenaro_Diego
+https://github.com/vjenaro/RepositorioDos/
+
+Cristian
+https://github.com/CristianAM7/Repositoreishon/
+
+Ruben_Monica
+https://github.com/RubenGarci/Repositorio-en-equipo/
+
+Susana_JoseMendoza
+https://github.com/SusanaHernandezBarajas7AM/EquipoRepositorio/
+
+Yara_Mario_Mario
+https://github.com/YarazethIsilaLemusHernandez7AM/ElRepositorio/
 
 Yovany
 https://github.com/YovanyMendoza/MendozaYovany/
+
+Lagarda
+https://github.com/MarioLagarda/Repositoreishon.git/
