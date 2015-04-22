@@ -6,6 +6,9 @@ Sprite::Sprite(OpenGlImplement *openGlImplement){
 	rotate_x = 0.f; 
 	rotate_y = 0.f;
 	rotate_z = 0.f;
+	auto_rotate_x = 0.f;
+	auto_rotate_y = 0.f;
+	auto_rotate_z = 0.f;
 	translate_x = 0.f;
 	translate_y = 0.f;
 	translate_z = 0.f;
@@ -88,6 +91,12 @@ void Sprite::CreateTextures(char* name){
 		rotate_x = 0.f;
 		rotate_y = 0.f;
 		rotate_z = 0.f;
+		auto_rotate_x = 0.f;
+		auto_rotate_y = 0.f;
+		auto_rotate_z = 0.f;
+		auto_enable_rotate_x = false;
+		auto_enable_rotate_y = false;
+		auto_enable_rotate_z = false;
 		translate_x = x;
 		translate_y = y;
 		translate_z = 0.f;
@@ -121,7 +130,7 @@ void Sprite::CreateTextures(char* name){
 	}
 
 	void Sprite::Draw(){
-		openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[0], translate_x, translate_y, translate_z, rotate_x,rotate_y,rotate_z,scale_x,scale_y,scale_z, numero_vertices);
+		openGlImplement->Draw(vertexBufferObject, indexBufferObject, textureBufferObject, textureObject[0], translate_x, translate_y, translate_z, rotate_x + auto_rotate_x, rotate_y + auto_rotate_y, rotate_z + auto_rotate_z, scale_x, scale_y, scale_z, numero_vertices);
 	}
 
 	void Sprite::Translate(GLfloat x, GLfloat y, GLfloat z){
@@ -135,6 +144,10 @@ void Sprite::CreateTextures(char* name){
 		translate_y = y;
 	}
 
+	void Sprite::Translate(GLfloat z){
+		translate_z = z;
+	}
+
 	void Sprite::TranslateDraw(GLfloat x, GLfloat y){
 		translate_x = x;
 		translate_y = y;
@@ -142,9 +155,38 @@ void Sprite::CreateTextures(char* name){
 	}
 
 	void Sprite::Rotate(GLfloat x, GLfloat y, GLfloat z){
-		rotate_x=x;
-		rotate_y=y;
-		rotate_z++;
+		if (!auto_enable_rotate_x)
+			rotate_x=x;
+		if (!auto_enable_rotate_y)
+			rotate_y=y;
+		if (!auto_enable_rotate_z)
+			rotate_z=z;
+	}
+
+	void Sprite::Rotate(GLint coord){
+		switch (coord){
+		case COORD_ROTAR_X:
+			auto_rotate_x++;
+			auto_enable_rotate_x = true;
+			break;
+		case COORD_ROTAR_Y:
+			auto_rotate_y++;
+			auto_enable_rotate_y = true;
+			break;
+		case COORD_ROTAR_Z:
+			auto_rotate_z++;
+			auto_enable_rotate_z = true;
+			break;
+		case COORD_NO_ROTAR_X:
+			auto_enable_rotate_x = false;
+			break;
+		case COORD_NO_ROTAR_Y:
+			auto_enable_rotate_y = false;
+			break;
+		case COORD_NO_ROTAR_Z:
+			auto_enable_rotate_z = false;
+			break;
+		}
 	}
 
 	void Sprite::Rotate(){

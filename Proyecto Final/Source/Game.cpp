@@ -9,6 +9,18 @@ CGame::CGame(){
 	tiempoFrameInicial = CERO;
 	tick = CERO;
 	atexit(SDL_Quit);
+	///// animacion
+	translate_nave_x = -800;
+	translate_nave_y = 450;
+	translate_nave_z = -5.f;
+	rotate_nave_x = -85.f;
+	rotate_nave_y = 0.f;
+	rotate_nave_z = 0.f;
+	/////////
+
+	/////animacion menu
+	translate_jugando_x = 0.f;
+	////////////
 }
 
 void CGame::IniciandoVideo()
@@ -204,6 +216,11 @@ void CGame::MoverEnemigo(){
 }//Termina MoverEnemigo
 
 void CGame::JugandoPintar(){
+	/////animacion menu
+	jugandoFondo->Translate(translate_jugando_x--, 0.f);
+	if (translate_jugando_x-- < -640)
+		translate_jugando_x = 0.f;
+	//////////////////////
 	jugandoFondo->Draw();
 	////////////////////////////////////////
 	//////// CONTROL DE COLISIONES /////////
@@ -233,10 +250,15 @@ void CGame::JugandoPintar(){
 	}
 	if (vida <= CERO)
 		estadoJuego = ESTADO_TERMINANDO;
-
+	nave->GetNaveObjeto()->Scale(10.f, 10.f, 10.f);
+	nave->GetNaveObjeto()->Translate(-2.f);
+	nave->GetNaveObjeto()->Rotate(0.f,0.f,90.f);
 	nave->Draw();
 	for (int i = 0; i < nivel[nivelActual].Enemigos_VisiblesAlMismoTiempo; i++)
 	{
+		enemigoArreglo[i]->GetNaveObjeto()->Scale(10.f, 10.f, 10.f);
+		enemigoArreglo[i]->GetNaveObjeto()->Translate(-2.f);
+		enemigoArreglo[i]->GetNaveObjeto()->Rotate(90.f, 0.f, 90.f);
 		enemigoArreglo[i]->Draw();
 		enemigoArreglo[i]->AutoDisparar(nivel[nivelActual].Enemigo_VelocidadBala);
 	}
@@ -322,21 +344,51 @@ void CGame::MenuPintar()
 {
 	menuFondo->Draw();
 	textoTitulo->TranslateDraw(WIDTH_SCREEN / 8, 0);
+	//// animacion
 
-	textoNombre->Translate( WIDTH_SCREEN / 3, 450,-2.f);//570
+	textoNombre->Translate(translate_nave_x, translate_nave_y, translate_nave_z);//570
+	translate_nave_x += 8;
+	
+	if (translate_nave_x > 1800){
+		translate_nave_x = -800;
+		translate_nave_y = 450;
+		translate_nave_z = -5.f;
+		rotate_nave_x = -85.f;
+		rotate_nave_y = 0.f;
+		rotate_nave_z = 0.f;
+	}
+	if (translate_nave_x > 450){
+		translate_nave_y+=2;
+		translate_nave_z+=0.05f;
+		rotate_nave_x += 1.f;
+		if (rotate_nave_y > -7)
+			rotate_nave_y -= 0.15f;
+		if (rotate_nave_z > -6)
+			rotate_nave_z -= 0.15f;
+	}
+	
 	textoNombre->Scale(60.f, 60.f, 60.f);
-	textoNombre->Rotate(-90.f, 0.f, 90.f);
-	textoNombre->Rotate();
+	textoNombre->Rotate(rotate_nave_x, rotate_nave_y, rotate_nave_z);
 	textoNombre->Draw();
+	//////////////////////////
 
 	textoOpcion1->TranslateDraw(320, 220);
-	textoOpcion2->TranslateDraw(320, 220 + 30);
+	textoOpcion2->TranslateDraw(320, 220 + 50);
 
-	if (opcionSeleccionada == MENU_OPCION1)
-		textoOpcion1Sel->TranslateDraw(320, 220);
-	else
-		textoOpcion2Sel->TranslateDraw(320, 220 + 30);
-
+	if (opcionSeleccionada == MENU_OPCION1){
+		textoOpcion1Sel->Translate(220, 150,-2.f);
+		textoOpcion1Sel->Scale(15.f, 15.f, 15.f);
+		textoOpcion1Sel->Rotate(-90.f, 0.f, 90.f);
+		textoOpcion1Sel->Rotate(Sprite::COORD_ROTAR_Z);
+		textoOpcion1Sel->Draw();
+	}
+	else{
+		textoOpcion2Sel->Translate(220, 260,-2.f);
+		textoOpcion2Sel->Scale(15.f, 15.f, 15.f);
+		textoOpcion2Sel->Rotate(-90.f, 0.f, 90.f);
+		textoOpcion2Sel->Rotate(Sprite::COORD_ROTAR_Z);
+		textoOpcion2Sel->Draw();
+	}
 }//void	
 
 void CGame::IniciarEnemigo(){

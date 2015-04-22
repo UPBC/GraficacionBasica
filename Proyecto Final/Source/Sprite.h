@@ -19,6 +19,15 @@ class Sprite{
 	SpriteDef spriteDef;//definiciones de sprite
 
 public:
+	enum Coordenada{
+		COORD_ROTAR_X,
+		COORD_ROTAR_Y,
+		COORD_ROTAR_Z,
+		COORD_NO_ROTAR_X,
+		COORD_NO_ROTAR_Y,
+		COORD_NO_ROTAR_Z
+	};
+
 	Sprite(OpenGlImplement *openGlImplement);//constructor recibe la pantalla
 	~Sprite();
 	void CreateTextures (char * name);
@@ -40,14 +49,22 @@ public:
 	
 	void Translate(GLfloat x, GLfloat y, GLfloat z);
 	void Translate(GLfloat x, GLfloat y);
+	void Translate(GLfloat z);
 	void TranslateDraw(GLfloat x, GLfloat y);
 	void Rotate(GLfloat x, GLfloat y, GLfloat z);
+	void Rotate(GLint);
 	void Rotate();
 	void Scale(GLfloat x, GLfloat y, GLfloat z);
 
 	GLfloat rotate_x;
 	GLfloat rotate_y;
 	GLfloat rotate_z;
+	GLfloat auto_rotate_x;
+	GLfloat auto_rotate_y;
+	GLfloat auto_rotate_z;
+	GLboolean auto_enable_rotate_x;
+	GLboolean auto_enable_rotate_y;
+	GLboolean auto_enable_rotate_z;
 	GLfloat translate_x;
 	GLfloat translate_y;
 	GLfloat translate_z;
