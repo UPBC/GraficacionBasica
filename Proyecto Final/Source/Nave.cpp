@@ -46,11 +46,11 @@ void Nave::Disparar(int balas)
 		switch (tipoNave)
 		{
 		case NAVE_PROPIA:
-			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY());
+			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY(),-2.f);
 			break;
 
 		case NAVE_ENEMIGA:
-			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY() + nave->GetH());
+			bala[balaVisible]->Translate(nave->GetX() + nave->GetW() / 2, nave->GetY() + nave->GetH(), -2.f);
 			break;
 		}
 		balaVisible++;
