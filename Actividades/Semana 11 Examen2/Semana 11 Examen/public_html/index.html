@@ -192,15 +192,15 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
 
         mat4.identity(mvMatrix);
         
-        mat4.translate(mvMatrix, [-6.0, -13.0, -40.0]);
-
-        mat4.rotate(pMatrix, degToRad(0), [1 , 0, 0]);
+        mat4.translate(mvMatrix, [-3.0, -3.0, -25.0]);
+        mat4.translate(pMatrix, [-3.0, 0.0, -60.0]); 
+        mat4.rotate(pMatrix, degToRad(rTri), [1, 0, 0]);
         
         mvPushMatrix();
         
-        //mat4.rotate(mvMatrix, degToRad(rTri), [0, 0, 0]);
+        mat4.rotate(mvMatrix, degToRad(rTri), [0, 0, 0]);
         
-        //mat4.rotate(pMatrix, degToRad(rTri), [1, 0, 0]);
+        mat4.rotate(pMatrix, degToRad(rTri), [1, 0, 0]);
         
         gl.bindBuffer(gl.ARRAY_BUFFER, piramideVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, piramideVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -265,20 +265,20 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
     function tick() {
         requestAnimationFrame(tick);
         drawScene();
-        //animate();
+        animate();
     }
 
     var rTri = 0;
  
     var lastTime = 0;
-    /*function animate() {
+    function animate() {
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
             rTri += (90 * elapsed) / 3000.0;
         }
         lastTime = timeNow;
-    }*/
+    }
     
     function mvPushMatrix() {
         var copy = mat4.create();

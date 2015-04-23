@@ -156,9 +156,9 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         var textureCoords = [//Semana6
          // Front face//Semana6
          0.0, 0.0,//Semana6
-         0.5, 0.0,//Semana6
-         0.0, 0.5,//Semana6
-         0.5, 0.5,//Semana6
+         1.0, 0.0,//Semana6
+         0.0, 1.0,//Semana6
+         1.0, 1.0,//Semana6
          
          0.0, 0.0,//Semana6
          1.0, 0.0,//Semana6
@@ -264,7 +264,7 @@ try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag
         initBuffers();
         initTexture();//Semana6
         
-        gl.clearColor(1.0, 1.0, 1.0, 1.0);
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
         //drawScene();//Semana4
